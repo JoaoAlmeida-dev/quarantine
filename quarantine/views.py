@@ -11,7 +11,7 @@ from django.contrib.auth import authenticate, login, logout
 
 
 # Create your views here.
-# -----------------------PROBS:arranjar maneira para tirar só os grupos a que request.user pertence
+# ------------------------------------------------------------------------
 
 
 def menu(request):
@@ -128,8 +128,9 @@ def criarpublicacao(request, grupo_id):
     pub = Publicacao(pub_data=timezone.now(), titulo=request.POST['titulo'], conteudo=request.POST['conteudo'],
                      autor=request.user, grupo=grupo)
     pub.save()
-    # return HttpResponseRedirect(reverse('grupo_view', args=grupo_id))
-    return render(request, 'quarantine/publicacao.html', {'grupo': grupo, 'pub': pub})
+    candeletepub = MembroGrupo.objects.get(grupo_id=grupo_id,
+                                           user_id=request.user.id).is_admin or pub.autor.id == request.user.id
+    return render(request, 'quarantine/publicacao.html', {'grupo': grupo, 'pub': pub, 'candeletepub': candeletepub})
 
 
 def apagarpublicacao(request, grupo_id, pub_id):
@@ -138,14 +139,18 @@ def apagarpublicacao(request, grupo_id, pub_id):
 
     candeletepub = MembroGrupo.objects.get(grupo_id=grupo_id,
                                            user_id=request.user.id).is_admin or pub.autor.id == request.user.id
+    isadmin = MembroGrupo.objects.get(grupo_id=grupo_id, user_id=request.user.id).is_admin
 
     if candeletepub:
         pub.delete()
-        return HttpResponseRedirect(reverse('grupo_view', args=grupo_id))
+        return grupo_view(request, grupo_id)
+        #return HttpResponseRedirect(reverse('grupo_view', args=grupo_id))
+        #return render(request, 'quarantine/grupo.html', {'grupo': grupo, 'isadmin': isadmin})
     else:
         return render(request, 'quarantine/publicacao.html', {'grupo': grupo,
                                                               'pub': pub,
-                                                              'error_message': "Não é admin do grupo ou autor da publicação!!"})
+                                                              'error_message':
+                                                                  "Não é admin do grupo ou autor da publicação!!"})
 
 
 # ----------------------------------------------------------------------
@@ -154,10 +159,9 @@ def apagarpublicacao(request, grupo_id, pub_id):
 def publicacao(request, grupo_id, pub_id):
     grupo = get_object_or_404(Grupo, pk=grupo_id)
     pub = get_object_or_404(Publicacao, pk=pub_id)
-    candeletepub = MembroGrupo.objects.get(grupo_id=grupo_id,
-                                           user_id=request.user.id).is_admin or pub.autor.id == request.user.id
+    isadmin = MembroGrupo.objects.get(grupo_id=grupo_id, user_id=request.user.id).is_admin
 
-    return render(request, 'quarantine/publicacao.html', {'grupo': grupo, 'pub': pub, 'candeletepub': candeletepub})
+    return render(request, 'quarantine/publicacao.html', {'grupo': grupo, 'pub': pub, 'isadmin': isadmin})
 
 
 def publicarcomentario(request, grupo_id, pub_id):
@@ -175,14 +179,14 @@ def apagarcomentario(request, grupo_id, pub_id, com_id):
     com = get_object_or_404(Comentario, pk=com_id)
 
     candeletepub = MembroGrupo.objects.get(grupo_id=grupo_id, user_id=request.user.id).is_admin or \
-                                                                                    pub.autor.id == request.user.id
+                   pub.autor.id == request.user.id
     candeletecom = MembroGrupo.objects.get(grupo_id=grupo_id, user_id=request.user.id).is_admin or \
-                                                                                    com.autor.id == request.user.id
+                   com.autor.id == request.user.id
 
     if candeletecom:
         com.delete()
-        return render(request, 'quarantine/publicacao.html',
-                      {'grupo': grupo, 'pub': pub, 'candeletepub': candeletepub, 'candeletecom': candeletecom})
+        return publicacao(request, grupo_id, pub_id)
+        # return render(request, 'quarantine/publicacao.html', {'grupo': grupo, 'pub': pub, 'candeletepub': candeletepub, 'candeletecom': candeletecom})
         # return HttpResponseRedirect(reverse('publicacao', args=(grupo_id, pub_id)))
     else:
         return render(request, 'quarantine/publicacao.html', {'grupo': grupo,
