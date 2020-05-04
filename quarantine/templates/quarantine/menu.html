@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <h1>Quarantine</h1>
+    <p>User: {{request.user.username}}</p>
+</head>
+<html>
+
+    <body>
+        {% if error_message %}
+                <p><strong>{{ error_message }}</strong></p>
+            {% endif %}
+
+
+        {% if not request.user.is_authenticated %}
+        <form action= "{% url 'loginpage' %}" method="get">
+            <input type="submit" value="Login">
+        </form>
+
+        <form action= "{% url 'registopage' %}" method="get">
+            <input type="submit" value="Registo">
+        </form>
+        {% else %}
+                <b>Grupos:</b>
+                   {% if grupos %}
+                    <ul>
+                        {% for grupo in grupos %}
+                        <li>
+                            <a href= "{% url 'grupo_view' grupo.id %}">
+                        {{ grupo.titulo }}
+                        </a>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                    {% else %}
+                       <p>Nao participa em nenhum grupo.</p>
+                   {% endif %}
+            <form action= "{% url 'criargrupopage' %}" method="get">
+                <input type="submit" value="Criar Grupo">
+            </form>
+
+            <form action= "{% url 'logout_view' %}" method="get">
+                    <input type="submit" value="logout">
+             </form>
+        {%  endif %}
+    </body>
+
+</html>

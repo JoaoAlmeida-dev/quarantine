@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+   <a href="{% url 'menu' %}"><h1>Quarantine</h1></a>
+   <p>User: {{request.user.username}}</p>
+
+</head>
+
+<html>
+    <body>
+
+        <a href="{% url 'grupo_view' grupo.id %}"><h1>Grupo: {{ grupo.titulo }}</h1></a>
+        <h1>Titulo: {{ pub.titulo }}</h1>
+        <b>Criado por: {{ pub.autor }}({{ pub.pub_data }})</b>
+        <p>Descrição do grupo: {{ pub.conteudo }}</p>
+
+
+        {% if error_message %}
+            <p><strong>{{ error_message }}</strong></p>
+        {% endif %}
+
+        {% if candeletepub %}
+            <form action= "{% url 'apagargrupo' grupo.id %}" method="get">
+            <input type="submit" value="Apagar Publicação">
+        </form>
+            {% endif %}
+
+        <b>Comentarios:</b>
+        {% if pub.comentario_set.all %}
+            <ul>
+                {% for comentario in pub.comentario_set.all  %}
+                    <li>
+                        <label>{{ comentario.autor }}({{ comentario.pub_data }}):  {{ comentario.conteudo }}</label>
+                        <label>({{ comentario.karma }})</label>
+                        <a href="{% url 'votarup' grupo.id pub.id comentario.id %}"><i>Up</i></a>
+                        <a href="{% url 'votardown' grupo.id pub.id comentario.id %}"><i>down</i></a>
+                            <a href="{% url 'apagarcomentario' grupo.id pub.id comentario.id %}"><i>Apagar</i></a>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Nao ha comentarios.</p>
+        {% endif %}
+
+        <form action="{% url 'publicarcomentario' grupo.id pub.id%}" method="post">
+            {% csrf_token %}
+            <textarea name="conteudo" rows="10" cols="50"></textarea>
+            <br>
+            <input type="submit" value="Publicar comentario">
+        </form>
+
+    </body>
+</html>

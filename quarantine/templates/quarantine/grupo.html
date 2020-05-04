@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <a href="{% url 'menu' %}"><h1>Quarantine</h1></a>
+    <p>User: {{request.user.username}}</p>
+</head>
+
+
+<html>
+    <body>
+
+    <h1>Grupo: {{ grupo.titulo }}</h1>
+    <p>Descrição: {{ grupo.descrição }}</p>
+
+    {% if error_message %}
+            <p><strong>{{ error_message }}</strong></p>
+        {% endif %}
+
+        <b>Publicações:</b>
+        {% if grupo.publicacao_set.all %}
+            <ul>
+                {% for pub in grupo.publicacao_set.all  %}
+                <li>
+                   <a href= "{% url 'publicacao' grupo.id pub.id %}"> {{ pub.titulo }} </a>
+                </li>
+                {% endfor %}
+           </ul>
+        {% else %}
+            <p>Nao ha publicações.</p>
+        {% endif %}
+
+        <form action= "{% url 'criarpublicacaopage' grupo.id %}" method="get">
+            <input type="submit" value="Criar publicação">
+        </form>
+
+    <b></b>
+
+
+        {% if isadmin %}
+            <form action= "{% url 'apagargrupo' grupo.id %}" method="get">
+            <input type="submit" value="Apagar Grupo">
+        </form>
+            {% endif %}
+
+        <b>Membros:</b>
+        {% if grupo.membros.all %}
+            <ul>
+                {% for membro in grupo.membros.all  %}
+                <li>
+                  {{ membro.username }}
+                </li>
+                {% endfor %}
+           </ul>
+        {% else %}
+            <p>O grupo nao tem membros.</p>
+        {% endif %}
+
+            <form action= "" method="get">
+            <input type="submit" value="Adicionar membro">
+        </form>
+
+
+
+    </body>
+<html>
