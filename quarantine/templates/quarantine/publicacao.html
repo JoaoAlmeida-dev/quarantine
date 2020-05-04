@@ -21,7 +21,7 @@
         {% endif %}
 
         {% if candeletepub %}
-            <form action= "{% url 'apagargrupo' grupo.id %}" method="get">
+            <form action= "{% url 'apagarpublicacao' grupo.id pub.id %}" method="get">
             <input type="submit" value="Apagar Publicação">
         </form>
             {% endif %}
