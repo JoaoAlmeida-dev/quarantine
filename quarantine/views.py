@@ -1,6 +1,6 @@
 from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render
-from django.urls import reverse
+from django.shortcuts import render, redirect
+from django.urls import reverse, Resolver404, resolve
 from django.utils import timezone
 from django.http import Http404
 from django.template import loader
@@ -193,59 +193,137 @@ def apagarcomentario(request, grupo_id, pub_id, com_id):
                                                               'pub': pub, 'error_message': "Não é admin do grupo ou "
                                                                                            "autor do comentario!!"})
 
-    # ------------------------------------------Pode votar mais que uma vez
-
-def votaruppub(request, grupo_id, pub_id):
-    grupo = get_object_or_404(Grupo, pk=grupo_id)
-    pub = get_object_or_404(Publicacao, pk=pub_id)
-    try:
-        voto = get_object_or_404(VotoPublicacao, autor=request.user, Publicacao=pub)
-    except(KeyError, voto.DoesNotExist):
-        pub.karma+=1
-        voto.autor=request.user
-        voto.value=True
-        voto.Publicacao=pub_id
-
-    else:
-        if voto.value:
-            pub.karma-=1
-            voto=None
-        else:
-            pub.karma+=2
-            voto.value=True
-    voto.save()
-    return HttpResponseRedirect(reverse('publicacao', args=(grupo_id, pub_id)))
+# ----------------------------------------------------------------------
 
 def votarupcom(request, grupo_id, pub_id, com_id):
     com = get_object_or_404(Comentario, pk=com_id)
+
+    url = request.GET.get("next")
     try:
-        voto = get_object_or_404(VotoComentario, autor=request.user, Comentario=com)
-    except(KeyError, voto.DoesNotExist):
-        voto = VotoComentario(autor=request.user, value=True, Comentario=com_id)
-        com.karma += 1
-    else:
-        if voto.value:
-            com.karma -= 1
-            voto.delete()
+        resolve(url)
+        try:
+            voto = get_object_or_404(VotoComentario, autor=request.user, Comentario=com)
+        except(KeyError, Http404):
+            voto = VotoComentario(autor=request.user, value=True, Comentario=com)
+            com.karma += 1
+            com.save()
+            voto.save()
+            return HttpResponseRedirect(url)
         else:
-            com.karma += 2
-            voto.value = True
-    voto.save()
-    return HttpResponseRedirect(reverse('publicacao', args=(grupo_id, pub_id)))
+            if voto.value:
+                com.karma -= 1
+                voto.delete()
+            else:
+                com.karma += 2
+                voto.value = True
+                voto.save()
+        com.save()
+        return HttpResponseRedirect(url)
+    except (KeyError, Resolver404):
+        return HttpResponseRedirect(reverse('menu'))
 
-def votarup(request, grupo_id, pub_id, com_id):
-    grupo = get_object_or_404(Grupo, pk=grupo_id)
-    pub = get_object_or_404(Publicacao, pk=pub_id)
+def votardowncom(request, grupo_id, pub_id, com_id):
     com = get_object_or_404(Comentario, pk=com_id)
-    com.karma += 1
-    com.save()
-    return HttpResponseRedirect(reverse('publicacao', args=(grupo_id, pub_id)))
+    url = request.GET.get("next")
+    try:
+        resolve(url)
+        try:
+            voto = get_object_or_404(VotoComentario, autor=request.user, Comentario=com)
+        except(KeyError, Http404):
+            voto = VotoComentario(autor=request.user, value=False, Comentario=com)
+            com.karma -= 1
+            com.save()
+            voto.save()
+            return HttpResponseRedirect(url)
+        else:
+            if voto.value:
+                com.karma -= 2
+                voto.value = False
+                voto.save()
+            else:
+                com.karma += 1
+                voto.delete()
+
+        com.save()
+        return HttpResponseRedirect(url)
+    except (KeyError, Resolver404):
+        return HttpResponseRedirect(reverse('menu'))
+
+# ----------------------------------------------------------------------
 
 
-def votardown(request, grupo_id, pub_id, com_id):
-    grupo = get_object_or_404(Grupo, pk=grupo_id)
+def votaruppub(request, grupo_id, pub_id):
+    url = request.GET.get("next")
     pub = get_object_or_404(Publicacao, pk=pub_id)
-    com = get_object_or_404(Comentario, pk=com_id)
-    com.karma -= 1
-    com.save()
-    return HttpResponseRedirect(reverse('publicacao', args=(grupo_id, pub_id)))
+
+    url = request.GET.get("next")
+    try:
+        resolve(url)
+        try:
+            voto = get_object_or_404(VotoPublicacao, autor=request.user, Publicacao=pub)
+        except(KeyError, Http404):
+            voto = VotoPublicacao(autor=request.user, value=True, Publicacao=pub)
+            pub.karma += 1
+            pub.save()
+            voto.save()
+            return HttpResponseRedirect(url)
+        else:
+            if voto.value:
+                pub.karma -= 1
+                voto.delete()
+            else:
+                pub.karma += 2
+                voto.value = True
+                voto.save()
+        pub.save()
+        return HttpResponseRedirect(url)
+    except (KeyError, Resolver404):
+        return HttpResponseRedirect(reverse('menu'))
+
+
+def votardownpub(request, grupo_id, pub_id):
+    pub = get_object_or_404(Publicacao, pk=pub_id)
+    url = request.GET.get("next")
+    try:
+        resolve(url)
+        try:
+            voto = get_object_or_404(VotoPublicacao, autor=request.user, Publicacao=pub)
+        except(KeyError, Http404):
+            voto = VotoPublicacao(autor=request.user, value=False, Publicacao=pub)
+            pub.karma -= 1
+            pub.save()
+            voto.save()
+            return HttpResponseRedirect(url)
+        else:
+            if voto.value:
+                pub.karma -= 2
+                voto.value = False
+                voto.save()
+            else:
+                pub.karma += 1
+                voto.delete()
+
+        pub.save()
+        return HttpResponseRedirect(url)
+    except (KeyError, Resolver404):
+        return HttpResponseRedirect(reverse('menu'))
+
+# ----------------------------------------------------------------------
+
+
+#def votarup(request, grupo_id, pub_id, com_id):
+#   grupo = get_object_or_404(Grupo, pk=grupo_id)
+#   pub = get_object_or_404(Publicacao, pk=pub_id)
+#   com = get_object_or_404(Comentario, pk=com_id)
+#   com.karma += 1
+#   com.save()
+#    return HttpResponseRedirect(reverse('publicacao', args=(grupo_id, pub_id)))
+
+
+#def votardown(request, grupo_id, pub_id, com_id):
+#    grupo = get_object_or_404(Grupo, pk=grupo_id)
+#    pub = get_object_or_404(Publicacao, pk=pub_id)
+#    com = get_object_or_404(Comentario, pk=com_id)
+#    com.karma -= 1
+#    com.save()
+#    return HttpResponseRedirect(reverse('publicacao', args=(grupo_id, pub_id)))

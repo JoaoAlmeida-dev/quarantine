@@ -23,6 +23,9 @@
                 {% for pub in grupo.publicacao_set.all  %}
                 <li>
                    <a href= "{% url 'publicacao' grupo.id pub.id %}"> {{ pub.titulo }} </a>
+                            <label>({{ pub.karma }})</label>
+                    <a href="{% url 'votaruppub' grupo.id pub.id %}?next={{ request.path }}"><i>Up</i></a>
+                    <a href="{% url 'votardownpub' grupo.id pub.id %}?next={{ request.path }}"><i>Down</i></a>
                 </li>
                 {% endfor %}
            </ul>

@@ -13,8 +13,13 @@
         <a href="{% url 'grupo_view' grupo.id %}"><h1>Grupo: {{ grupo.titulo }}</h1></a>
         <h1>Titulo: {{ pub.titulo }}</h1>
         <b>Criado por: {{ pub.autor }}({{ pub.pub_data }})</b>
-        <p>Descrição do grupo: {{ pub.conteudo }}</p>
+        <p>Conteudo: {{ pub.conteudo }}</p>
 
+        <li>
+        <label>({{ pub.karma }})</label>
+        <a href="{% url 'votaruppub' grupo.id pub.id %}?next={{ request.path }}"><i>Up</i></a>
+        <a href="{% url 'votardownpub' grupo.id pub.id %}?next={{ request.path }}"><i>Down</i></a>
+            </li>
 
         {% if error_message %}
             <p><strong>{{ error_message }}</strong></p>
@@ -33,8 +38,8 @@
                     <li>
                         <label>{{ comentario.autor }}({{ comentario.pub_data }}):  {{ comentario.conteudo }}</label>
                         <label>({{ comentario.karma }})</label>
-                        <a href="{% url 'votarupcom' grupo.id pub.id comentario.id %}"><i>Up</i></a>
-                        <a href="{% url 'votardown' grupo.id pub.id comentario.id %}"><i>Down</i></a>
+                        <a href="{% url 'votarupcom' grupo.id pub.id comentario.id %}?next={{ request.path }}"><i>Up</i></a>
+                        <a href="{% url 'votardowncom' grupo.id pub.id comentario.id %}?next={{ request.path }}"><i>Down</i></a>
                         {% if request.user.id == comentario.autor.id or isadmin %}
                             <a href="{% url 'apagarcomentario' grupo.id pub.id comentario.id %}"><i>Apagar</i></a>
                         {% endif %}
