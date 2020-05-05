@@ -19,22 +19,42 @@ class MembroGrupo(models.Model):
 
 
 class Publicacao(models.Model):
-    pub_data = models.DateTimeField('data de publicacao')
     titulo = models.CharField(max_length=1000)
     conteudo = models.CharField(max_length=10000)
-    autor = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+    pub_data = models.DateTimeField('data de publicacao')
+
     grupo = models.ForeignKey(Grupo, null=True, on_delete=models.CASCADE)
+
+    autor = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+    karma = models.IntegerField('votos', default=0)
+
 
     def __str__(self):
         return self.titulo
 
 
 class Comentario(models.Model):
-    conteudo = models.CharField(max_length=10000)
-    karma = models.IntegerField('votos', default=0)
-    pub_data = models.DateTimeField('data de comentario')
-    autor = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
     publicacao = models.ForeignKey(Publicacao, on_delete=models.CASCADE)
+    conteudo = models.CharField(max_length=10000)
+
+    pub_data = models.DateTimeField('data de comentario')
+
+    autor = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+    karma = models.IntegerField('votos', default=0)
+
+
+class VotoComentario(models.Model):
+    autor = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+    value = models.BooleanField(null=True)
+    Comentario = models.ForeignKey(Comentario, null=True, on_delete=models.SET_NULL)
+
+
+class VotoPublicacao(models.Model):
+    autor = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
+    value = models.BooleanField(null=True)
+    Publicacao = models.ForeignKey(Publicacao, null=True, on_delete=models.SET_NULL)
+
+
 
     def __str__(self):
         return self.conteudo

@@ -33,8 +33,8 @@
                     <li>
                         <label>{{ comentario.autor }}({{ comentario.pub_data }}):  {{ comentario.conteudo }}</label>
                         <label>({{ comentario.karma }})</label>
-                        <a href="{% url 'votarup' grupo.id pub.id comentario.id %}"><i>Up</i></a>
-                        <a href="{% url 'votardown' grupo.id pub.id comentario.id %}"><i>down</i></a>
+                        <a href="{% url 'votarupcom' grupo.id pub.id comentario.id %}"><i>Up</i></a>
+                        <a href="{% url 'votardown' grupo.id pub.id comentario.id %}"><i>Down</i></a>
                         {% if request.user.id == comentario.autor.id or isadmin %}
                             <a href="{% url 'apagarcomentario' grupo.id pub.id comentario.id %}"><i>Apagar</i></a>
                         {% endif %}

@@ -5,7 +5,7 @@ from django.utils import timezone
 from django.http import Http404
 from django.template import loader
 from django.shortcuts import get_object_or_404
-from .models import Grupo, Publicacao, Comentario, MembroGrupo
+from .models import Grupo, Publicacao, Comentario, MembroGrupo, VotoPublicacao, VotoComentario
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 
@@ -195,6 +195,43 @@ def apagarcomentario(request, grupo_id, pub_id, com_id):
 
     # ------------------------------------------Pode votar mais que uma vez
 
+def votaruppub(request, grupo_id, pub_id):
+    grupo = get_object_or_404(Grupo, pk=grupo_id)
+    pub = get_object_or_404(Publicacao, pk=pub_id)
+    try:
+        voto = get_object_or_404(VotoPublicacao, autor=request.user, Publicacao=pub)
+    except(KeyError, voto.DoesNotExist):
+        pub.karma+=1
+        voto.autor=request.user
+        voto.value=True
+        voto.Publicacao=pub_id
+
+    else:
+        if voto.value:
+            pub.karma-=1
+            voto=None
+        else:
+            pub.karma+=2
+            voto.value=True
+    voto.save()
+    return HttpResponseRedirect(reverse('publicacao', args=(grupo_id, pub_id)))
+
+def votarupcom(request, grupo_id, pub_id, com_id):
+    com = get_object_or_404(Comentario, pk=com_id)
+    try:
+        voto = get_object_or_404(VotoComentario, autor=request.user, Comentario=com)
+    except(KeyError, voto.DoesNotExist):
+        voto = VotoComentario(autor=request.user, value=True, Comentario=com_id)
+        com.karma += 1
+    else:
+        if voto.value:
+            com.karma -= 1
+            voto.delete()
+        else:
+            com.karma += 2
+            voto.value = True
+    voto.save()
+    return HttpResponseRedirect(reverse('publicacao', args=(grupo_id, pub_id)))
 
 def votarup(request, grupo_id, pub_id, com_id):
     grupo = get_object_or_404(Grupo, pk=grupo_id)
