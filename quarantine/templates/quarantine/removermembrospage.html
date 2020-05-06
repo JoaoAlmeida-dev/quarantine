@@ -11,8 +11,8 @@
     <a href="{% url 'grupo_view' grupo.id %}"><h1> Grupo: {{ grupo.titulo }}</h1></a>
         <p>Descrição: {{ grupo.descrição }}</p>
 
-        <br><h1>Adicionar membro</h1></br>
-        <form action="{% url 'adicionarmembros' grupo.id %}" method="post">
+        <br><h1>Remover membro</h1></br>
+        <form action="{% url 'removermembros' grupo.id %}" method="post">
             {% csrf_token %}
             {% for user in users %}
 
@@ -20,7 +20,7 @@
                 <label for="user{{ forloop.counter }}"> {{ user }}</label>
                 <br />
             {% endfor %}
-            <input type="submit" value="AdicionarMembros">
+            <input type="submit" value="RemoverMembros">
 
         </form>
 

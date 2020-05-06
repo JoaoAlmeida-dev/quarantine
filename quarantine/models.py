@@ -41,8 +41,6 @@ class Comentario(models.Model):
     autor = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
     karma = models.IntegerField('votos', default=0)
 
-    def __str__(self):
-        return self.titulo
 
 class VotoComentario(models.Model):
     autor = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)

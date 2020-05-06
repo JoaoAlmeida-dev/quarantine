@@ -115,7 +115,8 @@ def apagargrupo(request, grupo_id):
 def grupo_view(request, grupo_id):
     grupo = get_object_or_404(Grupo, pk=grupo_id)
     isadmin = MembroGrupo.objects.get(grupo_id=grupo_id, user_id=request.user.id).is_admin
-    return render(request, 'quarantine/grupo.html', {'grupo': grupo, 'isadmin': isadmin})
+    membrosgrupo = MembroGrupo.objects.filter(grupo_id=grupo_id)
+    return render(request, 'quarantine/grupo.html', {'grupo': grupo, 'membrosgrupo': membrosgrupo, 'isadmin': isadmin})
 
 
 def criarpublicacaopage(request, grupo_id):
@@ -144,11 +145,10 @@ def apagarpublicacao(request, grupo_id, pub_id):
     if candeletepub:
         pub.delete()
         return grupo_view(request, grupo_id)
-        #return HttpResponseRedirect(reverse('grupo_view', args=grupo_id))
-        #return render(request, 'quarantine/grupo.html', {'grupo': grupo, 'isadmin': isadmin})
+        # return HttpResponseRedirect(reverse('grupo_view', args=grupo_id))
+        # return render(request, 'quarantine/grupo.html', {'grupo': grupo, 'isadmin': isadmin})
     else:
-        return render(request, 'quarantine/publicacao.html', {'grupo': grupo,
-                                                              'pub': pub,
+        return render(request, 'quarantine/publicacao.html', {'grupo': grupo, 'pub': pub,
                                                               'error_message':
                                                                   "Não é admin do grupo ou autor da publicação!!"})
 
@@ -160,27 +160,42 @@ def adicionarmembrospage(request, grupo_id):
     for membro in membros:
         users = users.exclude(id=membro.user_id)
 
-#    url = request.GET.get("next")
+    #    url = request.GET.get("next")
     return render(request, 'quarantine/adicionarmembrospage.html', {'grupo': grupo, 'users': users,
-                                                                    #'next': url
+                                                                    # 'next': url
                                                                     })
 
 
 def adicionarmembros(request, grupo_id):
     grupo = get_object_or_404(Grupo, pk=grupo_id)
 
-#    url = request.GET.get("next")
-#    try:
-#        resolve(url)
+    #    url = request.GET.get("next")
+    #    try:
+    #        resolve(url)
     for username in request.POST.getlist('user'):
         mg = MembroGrupo(user=User.objects.get(username=username), grupo=grupo, is_admin=False)
         mg.save()
-    #return HttpResponseRedirect(reverse('grupo_view', args=grupo_id))
+    # return HttpResponseRedirect(reverse('grupo_view', args=grupo_id))
     return grupo_view(request, grupo_id)
-#        return HttpResponseRedirect(url)
 
-#    except (KeyError, Resolver404):
-#        return HttpResponseRedirect(reverse('menu'))
+
+def removermembrospage(request, grupo_id):
+    grupo = get_object_or_404(Grupo, pk=grupo_id)
+    users = grupo.membros.all()
+
+    #    url = request.GET.get("next")
+    return render(request, 'quarantine/removermembrospage.html', {'grupo': grupo, 'users': users,
+                                                                    # 'next': url
+                                                                    })
+
+
+def removermembros(request, grupo_id):
+    grupo = get_object_or_404(Grupo, pk=grupo_id)
+
+    for username in request.POST.getlist('user'):
+        mg = MembroGrupo.objects.get(user=User.objects.get(username=username), grupo=grupo)
+        mg.delete()
+    return grupo_view(request, grupo_id)
 
 # ----------------------------------------------------------------------
 
@@ -188,9 +203,9 @@ def adicionarmembros(request, grupo_id):
 def publicacao(request, grupo_id, pub_id):
     grupo = get_object_or_404(Grupo, pk=grupo_id)
     pub = get_object_or_404(Publicacao, pk=pub_id)
-    isadmin = MembroGrupo.objects.get(grupo_id=grupo_id, user_id=request.user.id).is_admin
-
-    return render(request, 'quarantine/publicacao.html', {'grupo': grupo, 'pub': pub, 'isadmin': isadmin})
+    candeletepub = MembroGrupo.objects.get(grupo_id=grupo_id, user_id=request.user.id).is_admin or \
+                   pub.autor.id == request.user.id
+    return render(request, 'quarantine/publicacao.html', {'grupo': grupo, 'pub': pub, 'candeletepub': candeletepub})
 
 
 def publicarcomentario(request, grupo_id, pub_id):
@@ -203,10 +218,11 @@ def publicarcomentario(request, grupo_id, pub_id):
         com = Comentario(conteudo=request.POST['conteudo'], pub_data=timezone.now(), karma=0, autor=request.user,
                          publicacao=pub)
         com.save()
-        #return HttpResponseRedirect(reverse('publicacao', args=(grupo_id, pub_id)))
+        # return HttpResponseRedirect(reverse('publicacao', args=(grupo_id, pub_id)))
         return HttpResponseRedirect(url)
     except (KeyError, Resolver404):
         return HttpResponseRedirect(reverse('menu'))
+
 
 def apagarcomentario(request, grupo_id, pub_id, com_id):
     grupo = get_object_or_404(Grupo, pk=grupo_id)
@@ -228,7 +244,9 @@ def apagarcomentario(request, grupo_id, pub_id, com_id):
                                                               'pub': pub, 'error_message': "Não é admin do grupo ou "
                                                                                            "autor do comentario!!"})
 
+
 # ----------------------------------------------------------------------
+
 
 def votarupcom(request, grupo_id, pub_id, com_id):
     com = get_object_or_404(Comentario, pk=com_id)
@@ -257,6 +275,7 @@ def votarupcom(request, grupo_id, pub_id, com_id):
     except (KeyError, Resolver404):
         return HttpResponseRedirect(reverse('menu'))
 
+
 def votardowncom(request, grupo_id, pub_id, com_id):
     com = get_object_or_404(Comentario, pk=com_id)
     url = request.GET.get("next")
@@ -283,6 +302,7 @@ def votardowncom(request, grupo_id, pub_id, com_id):
         return HttpResponseRedirect(url)
     except (KeyError, Resolver404):
         return HttpResponseRedirect(reverse('menu'))
+
 
 # ----------------------------------------------------------------------
 
@@ -344,4 +364,3 @@ def votardownpub(request, grupo_id, pub_id):
         return HttpResponseRedirect(reverse('menu'))
 
 # ----------------------------------------------------------------------
-

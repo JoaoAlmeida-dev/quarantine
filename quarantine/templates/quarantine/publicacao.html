@@ -15,11 +15,11 @@
         <b>Criado por: {{ pub.autor }}({{ pub.pub_data }})</b>
         <p>Conteudo: {{ pub.conteudo }}</p>
 
-        <li>
+        <p>
         <label>({{ pub.karma }})</label>
         <a href="{% url 'votaruppub' grupo.id pub.id %}?next={{ request.path }}"><i>Up</i></a>
         <a href="{% url 'votardownpub' grupo.id pub.id %}?next={{ request.path }}"><i>Down</i></a>
-            </li>
+            </p>
 
         {% if error_message %}
             <p><strong>{{ error_message }}</strong></p>
@@ -30,7 +30,7 @@
             <input type="submit" value="Apagar Publicação">
         </form>
             {% endif %}
-
+        <br>
         <b>Comentarios:</b>
         {% if pub.comentario_set.all %}
             <ul>

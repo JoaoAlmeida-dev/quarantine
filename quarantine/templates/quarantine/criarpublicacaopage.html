@@ -5,9 +5,11 @@
     <a href="{% url 'menu' %}"><h1>Quarantine</h1></a>
     <p>User: {{request.user.username}}</p>
 </head>
- <a href="{% url 'grupo_view' grupo.id %}"><h1>{{ grupo.titulo }}</h1></a>
-<p>{{ grupo.descrição }}</p>
-<html>
+<body>
+
+    <a href="{% url 'grupo_view' grupo.id %}"><h1> Grupo: {{ grupo.titulo }}</h1></a>
+    <p>{{ grupo.descrição }}</p>
+
     <form action="{% url 'criarpublicacao' grupo.id %}" method="post">
             {% csrf_token %}
             <label for="1"><b>Titulo :</b></label>
@@ -19,5 +21,6 @@
             <br>
             <input type="submit" value="Publicar">
     </form>
+</body>
 
 <html>
