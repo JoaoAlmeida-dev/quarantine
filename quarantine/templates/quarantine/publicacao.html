@@ -50,7 +50,7 @@
             <p>Nao ha comentarios.</p>
         {% endif %}
 
-        <form action="{% url 'publicarcomentario' grupo.id pub.id%}" method="post">
+        <form action="{% url 'publicarcomentario' grupo.id pub.id%}?next={{ request.path }}" method="post">
             {% csrf_token %}
             <textarea name="conteudo" rows="10" cols="50"></textarea>
             <br>

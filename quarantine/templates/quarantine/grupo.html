@@ -56,10 +56,10 @@
                 {% endfor %}
            </ul>
         {% else %}
-            <p>O grupo nao tem membros.</p>
+            <p>Não existem outros utilizadores... ;_;</p>
         {% endif %}
 
-            <form action= "" method="get">
+            <form action= "{% url 'adicionarmembrospage' grupo.id %}" method="get">
             <input type="submit" value="Adicionar membro">
         </form>
 

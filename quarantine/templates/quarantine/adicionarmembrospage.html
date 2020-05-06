@@ -5,25 +5,24 @@
     <a href="{% url 'menu' %}"><h1>Quarantine</h1></a>
     <p>User: {{request.user.username}}</p>
 </head>
- <h1>Criar Grupo</h1>
-<html>
-<body>
-    <form action="{% url 'criargrupo' %}" method="post">
+
+    <body>
+
+        <h1>Grupo: {{ grupo.titulo }}</h1>
+        <p>Descrição: {{ grupo.descrição }}</p>
+
+        <br><h1>Adicionar membro</h1></br>
+        <form action="{% url 'adicionarmembros' grupo.id %}" method="post">
             {% csrf_token %}
-            <label for="1"><b>Titulo:</b></label>
-                <input type="text" id="1" name="titulo">
-            <br>
-            <label for="2"><b>Descrição:</b></label>
-                <input type="text" id="2" name="desc">
-            <br>
-            <b>Adicionar utilizadores:</b>
-            <br>
             {% for user in users %}
+
                 <input type="checkbox" name="user" id="user{{ forloop.counter }}" value="{{ user }}" />
                 <label for="user{{ forloop.counter }}"> {{ user }}</label>
                 <br />
             {% endfor %}
-            <input type="submit" value="Criar Grupo">
+            <input type="submit" value="AdicionarMembros">
+
         </form>
-</body>
+
+    </body>
 </html>

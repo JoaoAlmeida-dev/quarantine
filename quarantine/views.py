@@ -153,6 +153,35 @@ def apagarpublicacao(request, grupo_id, pub_id):
                                                                   "Não é admin do grupo ou autor da publicação!!"})
 
 
+def adicionarmembrospage(request, grupo_id):
+    grupo = get_object_or_404(Grupo, pk=grupo_id)
+    membros = MembroGrupo.objects.filter(grupo_id=grupo_id)
+    users = User.objects.exclude(id=request.user.id)
+    for membro in membros:
+        users = users.exclude(id=membro.user_id)
+
+#    url = request.GET.get("next")
+    return render(request, 'quarantine/adicionarmembrospage.html', {'grupo': grupo, 'users': users,
+                                                                    #'next': url
+                                                                    })
+
+
+def adicionarmembros(request, grupo_id):
+    grupo = get_object_or_404(Grupo, pk=grupo_id)
+
+#    url = request.GET.get("next")
+#    try:
+#        resolve(url)
+    for username in request.POST.getlist('user'):
+        mg = MembroGrupo(user=User.objects.get(username=username), grupo=grupo, is_admin=False)
+        mg.save()
+    #return HttpResponseRedirect(reverse('grupo_view', args=grupo_id))
+    return grupo_view(request, grupo_id)
+#        return HttpResponseRedirect(url)
+
+#    except (KeyError, Resolver404):
+#        return HttpResponseRedirect(reverse('menu'))
+
 # ----------------------------------------------------------------------
 
 
@@ -167,11 +196,17 @@ def publicacao(request, grupo_id, pub_id):
 def publicarcomentario(request, grupo_id, pub_id):
     grupo = get_object_or_404(Grupo, pk=grupo_id)
     pub = get_object_or_404(Publicacao, pk=pub_id)
-    com = Comentario(conteudo=request.POST['conteudo'], pub_data=timezone.now(), karma=0, autor=request.user,
-                     publicacao=pub)
-    com.save()
-    return HttpResponseRedirect(reverse('publicacao', args=(grupo_id, pub_id)))
+    url = request.GET.get("next")
+    try:
+        resolve(url)
 
+        com = Comentario(conteudo=request.POST['conteudo'], pub_data=timezone.now(), karma=0, autor=request.user,
+                         publicacao=pub)
+        com.save()
+        #return HttpResponseRedirect(reverse('publicacao', args=(grupo_id, pub_id)))
+        return HttpResponseRedirect(url)
+    except (KeyError, Resolver404):
+        return HttpResponseRedirect(reverse('menu'))
 
 def apagarcomentario(request, grupo_id, pub_id, com_id):
     grupo = get_object_or_404(Grupo, pk=grupo_id)
@@ -310,20 +345,3 @@ def votardownpub(request, grupo_id, pub_id):
 
 # ----------------------------------------------------------------------
 
-
-#def votarup(request, grupo_id, pub_id, com_id):
-#   grupo = get_object_or_404(Grupo, pk=grupo_id)
-#   pub = get_object_or_404(Publicacao, pk=pub_id)
-#   com = get_object_or_404(Comentario, pk=com_id)
-#   com.karma += 1
-#   com.save()
-#    return HttpResponseRedirect(reverse('publicacao', args=(grupo_id, pub_id)))
-
-
-#def votardown(request, grupo_id, pub_id, com_id):
-#    grupo = get_object_or_404(Grupo, pk=grupo_id)
-#    pub = get_object_or_404(Publicacao, pk=pub_id)
-#    com = get_object_or_404(Comentario, pk=com_id)
-#    com.karma -= 1
-#    com.save()
-#    return HttpResponseRedirect(reverse('publicacao', args=(grupo_id, pub_id)))
