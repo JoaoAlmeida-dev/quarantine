@@ -46,6 +46,11 @@ urlpatterns = [
     url(r'^grupo_(?P<grupo_id>[0-9]+)/pub_(?P<pub_id>[0-9]+)/com_(?P<com_id>[0-9]+)/votarupcom/$', views.votarupcom, name='votarupcom'),
     url(r'^grupo_(?P<grupo_id>[0-9]+)/pub_(?P<pub_id>[0-9]+)/com_(?P<com_id>[0-9]+)/votardowncom/$', views.votardowncom, name='votardowncom'),
 
+# ----------------------------------------------------------------------Utilizador
+
+    url(r'^perfil/(?P<username>.*)/$', views.perfilutilizador, name='perfilutilizador'),
+    url(r'^perfil/(?P<username>.*)/definicoes$', views.defutilizador, name='defutilizador'),
+
 # ----------------------------------------------------------------------
 
     #url(r'^grupo_(?P<grupo_id>[0-9]+)/pub_(?P<pub_id>[0-9]+)/com_(?P<com_id>[0-9]+)/votarup/$', views.votarup, name='votarup'),

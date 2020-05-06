@@ -364,3 +364,20 @@ def votardownpub(request, grupo_id, pub_id):
         return HttpResponseRedirect(reverse('menu'))
 
 # ----------------------------------------------------------------------
+
+def perfilutilizador(request, username):
+    user = get_object_or_404(User, username=username)
+    return render(request, 'quarantine/perfil.html', {'user': user})
+
+def defutilizador(request, username):
+    user = get_object_or_404(User, username=username)
+    return render(request, 'quarantine/defutilizador.html', {'user': user})
+
+
+
+
+
+
+
+
+# ----------------------------------------------------------------------
