@@ -8,11 +8,24 @@
     <title>Title</title>
 </head>
 <body>
-    <h1>Perfil de {{'user.username'}}</h1>
-    {% if request.username == user.username %}
-    <form action= "{% url 'defutilizador' user.username %}" method="get">
+    <h1>Perfil de {{user.username}}</h1>
+    <ul>
+        <li><img src="https://i.gyazo.com/d91b505cf94d7049621158b7e9aefdba.png" alt = "profile pic"> </li>
+        <li>E-mail: {{user.email}}</li>
+        <li>First name: {{user.first_name}}</li>
+        <li>Last name: {{user.last_name}}</li>
+    </ul>
+
+    {% if request.user.id == user.id %}
+
+        <p>Insira a sua password antes de entrar nas definições</p>
+        <form action= "{% url 'defutilizador' user.username %}" method="post">
+            {% csrf_token %}
+            <label for="password"><b>Password :</b></label>
+            <input type="password" id="password" name="password" autocomplete="off">
             <input type="submit" value="Definições de utilizador">
         </form>
+
     {% endif %}
 
 </body>

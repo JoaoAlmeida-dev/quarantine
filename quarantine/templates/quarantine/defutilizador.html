@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <a href="{% url 'menu' %}"><h1>Quarantine</h1></a>
+    <p>User: {{request.user.username}}</p>
+
+    <title>Title</title>
+</head>
+<body>
+    <h1>Perfil de {{'user.username'}}</h1>
+
+        <form action="{% url 'atualizarperfil' user.username %}" method="post">
+            {% csrf_token %}
+            <label for="1"><b>Username :</b></label>
+                <input type="text" id="1" name="username" value={{user.username}}>
+            <br>
+            <label for="2"><b>Email :</b></label>
+                <input type="email" id="2" name="email" value={{user.email}}>
+            <br>
+            <label for="3"><b>Password :</b></label>
+                <input type="password" id="3" name="password" value={{user.username}}>
+            <br>
+            <input type="submit" value="Atualizar">
+        </form>
+
+</body>
+</html>

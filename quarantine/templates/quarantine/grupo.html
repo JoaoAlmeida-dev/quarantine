@@ -51,7 +51,8 @@
             <ul>
                 {% for membro in grupo.membros.all  %}
                 <li>
-                  {{ membro.username }}
+                    <a href= "{% url 'perfilutilizador' membro.username %}">{{ membro.username }}</a>
+
                 </li>
                 {% endfor %}
            </ul>

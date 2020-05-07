@@ -50,6 +50,7 @@ urlpatterns = [
 
     url(r'^perfil/(?P<username>.*)/$', views.perfilutilizador, name='perfilutilizador'),
     url(r'^perfil/(?P<username>.*)/definicoes$', views.defutilizador, name='defutilizador'),
+    url(r'^perfil/(?P<username>.*)/atualizarperfil', views.atualizarperfil, name='atualizarperfil'),
 
 # ----------------------------------------------------------------------
 

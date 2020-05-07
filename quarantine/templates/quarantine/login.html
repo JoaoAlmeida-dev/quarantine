@@ -17,11 +17,11 @@
 
             <form action="{% url 'loginview' %}" method="post">
             {% csrf_token %}
-            <label for="1"><b>Username :</b></label>
-            <input type="text" id="1" name="username">
+            <label for="username"><b>Username :</b></label>
+            <input type="text" id="username" name="username">
             <br>
-            <label for="2"><b>Password :</b></label>
-            <input type="password" id="2" name="password" >
+            <label for="password"><b>Password :</b></label>
+            <input type="password" id="password" name="password" autocomplete="off">
             <br>
             <input type="submit" value="Login">
         </form>

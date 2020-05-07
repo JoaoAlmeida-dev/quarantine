@@ -43,6 +43,7 @@ def loginview(request):
         return render(request, 'quarantine/login.html', {'error_message': "Password ou username errados!", })
 
 
+
 # ------------------------------------------------------------------------
 
 
@@ -114,9 +115,15 @@ def apagargrupo(request, grupo_id):
 
 def grupo_view(request, grupo_id):
     grupo = get_object_or_404(Grupo, pk=grupo_id)
-    isadmin = MembroGrupo.objects.get(grupo_id=grupo_id, user_id=request.user.id).is_admin
-    membrosgrupo = MembroGrupo.objects.filter(grupo_id=grupo_id)
-    return render(request, 'quarantine/grupo.html', {'grupo': grupo, 'membrosgrupo': membrosgrupo, 'isadmin': isadmin})
+    membro = None
+    try:
+        membro = MembroGrupo.objects.get(grupo_id=grupo_id, user_id=request.user.id)
+    except:
+        #membro.DoesNotExist:
+        return HttpResponseRedirect(reverse('menu'))
+    else:
+        membrosgrupo = MembroGrupo.objects.filter(grupo_id=grupo_id)
+        return render(request, 'quarantine/grupo.html', {'grupo': grupo, 'membrosgrupo': membrosgrupo, 'isadmin': membro.is_admin})
 
 
 def criarpublicacaopage(request, grupo_id):
@@ -363,20 +370,33 @@ def votardownpub(request, grupo_id, pub_id):
     except (KeyError, Resolver404):
         return HttpResponseRedirect(reverse('menu'))
 
+
 # ----------------------------------------------------------------------
+
 
 def perfilutilizador(request, username):
     user = get_object_or_404(User, username=username)
     return render(request, 'quarantine/perfil.html', {'user': user})
 
+
 def defutilizador(request, username):
     user = get_object_or_404(User, username=username)
-    return render(request, 'quarantine/defutilizador.html', {'user': user})
+    if request.user.check_password(request.POST['password']):
+        return render(request, 'quarantine/defutilizador.html')
+    else:
+        return render(request, 'quarantine/perfil.html', {'user': user, 'error_message': "Password errada!", })
 
 
-
-
-
+def atualizarperfil(request, username):
+    user = get_object_or_404(User, username=username)
+    if user.id == request.user.id:
+        user.set_password(request.POST['password'])
+        user.email = request.POST['email']
+        user.username = request.POST['username']
+        user.save()
+        return logout_view(request)
+    else:
+        return render(request, 'quarantine/perfil.html', {'username': user.usernamem, 'error_message': "Nao pode alterar as definições de outro user"})
 
 
 

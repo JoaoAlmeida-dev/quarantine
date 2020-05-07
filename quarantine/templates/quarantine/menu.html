@@ -14,28 +14,32 @@
 
 
         {% if not request.user.is_authenticated %}
-        <form action= "{% url 'loginpage' %}" method="get">
-            <input type="submit" value="Login">
-        </form>
+            <form action= "{% url 'loginpage' %}" method="get">
+                <input type="submit" value="Login">
+            </form>
 
-        <form action= "{% url 'registopage' %}" method="get">
-            <input type="submit" value="Registo">
-        </form>
+            <form action= "{% url 'registopage' %}" method="get">
+                <input type="submit" value="Registo">
+            </form>
         {% else %}
-                <h1>Grupos:</h1>
-                   {% if grupos %}
-                    <ul>
-                        {% for grupo in grupos %}
-                        <li>
-                            <a href= "{% url 'grupo_view' grupo.id %}">
-                        {{ grupo.titulo }}
-                        </a>
-                        </li>
-                        {% endfor %}
-                    </ul>
-                    {% else %}
-                       <p>Nao participa em nenhum grupo.</p>
-                   {% endif %}
+            <form action= "{% url 'perfilutilizador' request.user.username %}" method="get">
+            <input type="submit" value="Perfil">
+            </form>
+
+            <h1>Grupos:</h1>
+               {% if grupos %}
+                <ul>
+                    {% for grupo in grupos %}
+                    <li>
+                        <a href= "{% url 'grupo_view' grupo.id %}">
+                    {{ grupo.titulo }}
+                    </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                   <p>Nao participa em nenhum grupo.</p>
+               {% endif %}
             <form action= "{% url 'criargrupopage' %}" method="get">
                 <input type="submit" value="Criar Grupo">
             </form>
