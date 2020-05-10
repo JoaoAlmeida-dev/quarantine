@@ -1,13 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <a href="{% url 'menu' %}"><h1>Quarantine</h1></a>
-    <p>User: {{request.user.username}}</p>
-</head>
+{% extends 'base.html' %}
+
+
+{% block content %}
  <h1>Criar Grupo</h1>
-<html>
-<body>
     <form action="{% url 'criargrupo' %}" method="post">
             {% csrf_token %}
             <label for="1"><b>Titulo:</b></label>
@@ -26,5 +21,4 @@
             {% endfor %}
             <input type="submit" value="Criar Grupo">
         </form>
-</body>
-</html>
+{% endblock content %}

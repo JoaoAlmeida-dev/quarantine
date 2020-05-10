@@ -1,16 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-   <a href="{% url 'menu' %}"><h1>Quarantine</h1></a>
-   <p>User: {{request.user.username}}</p>
+{% extends 'base.html' %}
+
+
+{% block content %}
 
     <title>{{ pub.titulo }}</title>
-
-</head>
-
-<html>
-    <body>
 
         <a href="{% url 'grupo_view' grupo.id %}"><h1>Grupo: {{ grupo.titulo }}</h1></a>
         <h1>Titulo: {{ pub.titulo }}</h1>
@@ -58,6 +51,4 @@
             <br>
             <input type="submit" value="Publicar comentario">
         </form>
-
-    </body>
-</html>
+{% endblock content %}

@@ -8,7 +8,7 @@ from django.shortcuts import get_object_or_404
 from .models import Grupo, Publicacao, Comentario, MembroGrupo, VotoPublicacao, VotoComentario
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
-
+from quarantine.forms import RegistrationForm
 
 # Create your views here.
 # ------------------------------------------------------------------------
@@ -25,27 +25,21 @@ def menu(request):
 # ------------------------------------------------------------------------
 
 
-def loginpage(request):
-    return render(request, 'quarantine/login.html')
-
-
-def loginview(request):
-    username = request.POST['username']
-    password = request.POST['password']
-    user = authenticate(request, username=username, password=password)
-    if user is not None:
-        # existe na BD
-        login(request, user)
-        return menu(request)
-    #    return render(request, 'quarantine/menu.html')
+def login_view(request):
+    if request.POST:
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            # existe na BD
+            login(request, user)
+            return menu(request)
+        #    return render(request, 'quarantine/menu.html')
+        else:
+            # nao existe na BD
+            return render(request, 'quarantine/login.html', {'error_message': "Password ou username errados!", })
     else:
-        # nao existe na BD
-        return render(request, 'quarantine/login.html', {'error_message': "Password ou username errados!", })
-
-
-
-# ------------------------------------------------------------------------
-
+        return render(request, 'quarantine/login.html')
 
 def logout_view(request):
     logout(request)
@@ -56,23 +50,50 @@ def logout_view(request):
 # ------------------------------------------------------------------------
 
 
-def registopage(request):
-    return render(request, 'quarantine/registo.html')
-
-
-def registview(request):
-    username = request.POST['username']
-    password = request.POST['password']
-    email = request.POST['email']
-
-    user = authenticate(username=username, password=password)
-    if user is not None:
-        # existe na BD
-        return render(request, 'quarantine/registo.html', {'error_message': "User já existe!"})
+def registo_view(request):
+    context = {}
+    if request.POST:
+        form = RegistrationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password1')
+            email = form.cleaned_data.get('email')
+            user = authenticate(email=email, password=password)
+            login(request, user)
+            return redirect('menu')
+        else:
+            context['registration_form'] = form
     else:
-        # nao existe na BD
-        User.objects.create_user(username, email, password)
-        return menu(request)
+        form = RegistrationForm()
+        context['registration_form'] = form
+    return render(request, 'quarantine/registo.html', context)
+
+# ----------------------------------------------------------------------
+
+def perfilutilizador(request, username):
+    user = get_object_or_404(User, username=username)
+    return render(request, 'quarantine/perfil.html', {'user': user})
+
+
+def defutilizador(request, username):
+    user = get_object_or_404(User, username=username)
+    if request.user.check_password(request.POST['password']):
+        return render(request, 'quarantine/defutilizador.html')
+    else:
+        return render(request, 'quarantine/perfil.html', {'user': user, 'error_message': "Password errada!", })
+
+
+def atualizarperfil(request, username):
+    user = get_object_or_404(User, username=username)
+    if user.id == request.user.id:
+        user.set_password(request.POST['password'])
+        user.email = request.POST['email']
+        user.username = request.POST['username']
+        user.save()
+        return logout(request)
+    else:
+        return render(request, 'quarantine/perfil.html', {'username': user.usernamem, 'error_message': "Nao pode alterar as definições de outro user"})
 
 
 # ----------------------------------------------------------------------
@@ -147,7 +168,7 @@ def apagarpublicacao(request, grupo_id, pub_id):
 
     candeletepub = MembroGrupo.objects.get(grupo_id=grupo_id,
                                            user_id=request.user.id).is_admin or pub.autor.id == request.user.id
-    isadmin = MembroGrupo.objects.get(grupo_id=grupo_id, user_id=request.user.id).is_admin
+    #isadmin = MembroGrupo.objects.get(grupo_id=grupo_id, user_id=request.user.id).is_admin
 
     if candeletepub:
         pub.delete()
@@ -236,8 +257,8 @@ def apagarcomentario(request, grupo_id, pub_id, com_id):
     pub = get_object_or_404(Publicacao, pk=pub_id)
     com = get_object_or_404(Comentario, pk=com_id)
 
-    candeletepub = MembroGrupo.objects.get(grupo_id=grupo_id, user_id=request.user.id).is_admin or \
-                   pub.autor.id == request.user.id
+    #candeletepub = MembroGrupo.objects.get(grupo_id=grupo_id, user_id=request.user.id).is_admin or \
+    #              pub.autor.id == request.user.id
     candeletecom = MembroGrupo.objects.get(grupo_id=grupo_id, user_id=request.user.id).is_admin or \
                    com.autor.id == request.user.id
 
@@ -369,35 +390,6 @@ def votardownpub(request, grupo_id, pub_id):
         return HttpResponseRedirect(url)
     except (KeyError, Resolver404):
         return HttpResponseRedirect(reverse('menu'))
-
-
-# ----------------------------------------------------------------------
-
-
-def perfilutilizador(request, username):
-    user = get_object_or_404(User, username=username)
-    return render(request, 'quarantine/perfil.html', {'user': user})
-
-
-def defutilizador(request, username):
-    user = get_object_or_404(User, username=username)
-    if request.user.check_password(request.POST['password']):
-        return render(request, 'quarantine/defutilizador.html')
-    else:
-        return render(request, 'quarantine/perfil.html', {'user': user, 'error_message': "Password errada!", })
-
-
-def atualizarperfil(request, username):
-    user = get_object_or_404(User, username=username)
-    if user.id == request.user.id:
-        user.set_password(request.POST['password'])
-        user.email = request.POST['email']
-        user.username = request.POST['username']
-        user.save()
-        return logout_view(request)
-    else:
-        return render(request, 'quarantine/perfil.html', {'username': user.usernamem, 'error_message': "Nao pode alterar as definições de outro user"})
-
 
 
 # ----------------------------------------------------------------------

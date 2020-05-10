@@ -1,32 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <h1>Quarantine</h1>
-    <p>User: {{request.user.username}}</p>
-</head>
-<html>
+{% extends 'base.html' %}
 
-    <body>
+
+{% block content %}
+
         {% if error_message %}
                 <p><strong>{{ error_message }}</strong></p>
             {% endif %}
 
 
         {% if not request.user.is_authenticated %}
-            <form action= "{% url 'loginpage' %}" method="get">
-                <input type="submit" value="Login">
-            </form>
+            <img src="https://www.dinheirovivo.pt/wp-content/uploads/2020/03/coronavirus-2.jpg" alt = "profile pic">
 
-            <form action= "{% url 'registopage' %}" method="get">
-                <input type="submit" value="Registo">
-            </form>
         {% else %}
-            <form action= "{% url 'perfilutilizador' request.user.username %}" method="get">
-            <input type="submit" value="Perfil">
-            </form>
 
-            <h1>Grupos:</h1>
+        <div>
+            <h2>Grupos:</h2>
                {% if grupos %}
                 <ul>
                     {% for grupo in grupos %}
@@ -43,11 +31,8 @@
             <form action= "{% url 'criargrupopage' %}" method="get">
                 <input type="submit" value="Criar Grupo">
             </form>
+        </div>
 
-            <form action= "{% url 'logout_view' %}" method="get">
-                    <input type="submit" value="logout">
-             </form>
         {%  endif %}
-    </body>
 
-</html>
+{% endblock content %}

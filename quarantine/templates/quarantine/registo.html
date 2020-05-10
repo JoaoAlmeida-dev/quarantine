@@ -1,35 +1,52 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <a href="{% url 'menu' %}"><h1>Quarantine</h1></a>
-</head>
-
-<h1>REGISTO</h1>
-<html>
-    <body>
-        {% if error_message %}
-            <p><strong>{{ error_message }}</strong></p>
-        {% endif %}
-
-        <form action="{% url 'registview' %}" method="post">
-            {% csrf_token %}
-            <label for="1"><b>Username :</b></label>
-                <input type="text" id="1" name="username">
-            <br>
-            <label for="2"><b>Email :</b></label>
-                <input type="email" id="2" name="email">
-            <br>
-            <label for="3"><b>Password :</b></label>
-                <input type="password" id="3" name="password">
-            <br>
-            <input type="submit" value="Registo">
-        </form>
-
-    </body>
-      <form action= "{% url 'loginpage' %}" method="get">
-            <input type="submit" value="Ir para Login">
-     </form>
-</html>
+{% extends 'base.html' %}
 
 
+{% block content %}
+
+    <h2>REGISTO</h2>
+    {% if error_message %}
+        <p><strong>{{ error_message }}</strong></p>
+    {% endif %}
+
+    <form method = "post">
+        {% csrf_token %}
+
+        {% for field in registration_form %}
+            <p>
+                {{field.label_tag}}
+                {{field}}
+                {% if field.help_text %}
+                    <small style="color: grey;">{{field.help_text}}</small>
+                {% endif %}
+
+                {% for error in field.errors %}
+                    <small style="color: red;">{{error}}</small>
+                {% endfor %}
+            </p>
+        {% endfor %}
+            <button type = "submit">Register</button>
+
+    </form>
+
+    <form action= "{% url 'login_view' %}" method="get">
+        <input type="submit" value="Ir para Login">
+    </form>
+    <!--
+    <form action="{% url 'registo_view' %}" method="post">
+        {% csrf_token %}
+        <label for="1"><b>Username :</b></label>
+            <input type="text" id="1" name="username">
+        <br>
+        <label for="2"><b>Email :</b></label>
+            <input type="email" id="2" name="email">
+        <br>
+        <label for="3"><b>Password :</b></label>
+            <input type="password" id="3" name="password">
+        <br>
+        <input type="submit" value="Registo">
+    </form>
+    -->
+
+
+
+{% endblock content %}

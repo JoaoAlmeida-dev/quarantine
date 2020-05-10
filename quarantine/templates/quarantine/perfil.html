@@ -1,16 +1,12 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <a href="{% url 'menu' %}"><h1>Quarantine</h1></a>
-    <p>User: {{request.user.username}}</p>
+{% extends 'base.html' %}
 
-    <title>Title</title>
-</head>
-<body>
+
+{% block content %}
+
     <h1>Perfil de {{user.username}}</h1>
     <ul>
-        <li><img src="https://i.gyazo.com/d91b505cf94d7049621158b7e9aefdba.png" alt = "profile pic"> </li>
+        <li><img src="https://twistedsifter.files.wordpress.com/2016/12/mongolian-throat-singing-on-top-of-mountain.jpg" alt = "profile pic"> </li>
+
         <li>E-mail: {{user.email}}</li>
         <li>First name: {{user.first_name}}</li>
         <li>Last name: {{user.last_name}}</li>
@@ -28,5 +24,4 @@
 
     {% endif %}
 
-</body>
-</html>
+{% endblock content %}

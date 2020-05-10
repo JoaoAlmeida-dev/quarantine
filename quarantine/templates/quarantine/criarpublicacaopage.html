@@ -1,11 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <a href="{% url 'menu' %}"><h1>Quarantine</h1></a>
-    <p>User: {{request.user.username}}</p>
-</head>
-<body>
+{% extends 'base.html' %}
+
+
+{% block content %}
 
     <a href="{% url 'grupo_view' grupo.id %}"><h1> Grupo: {{ grupo.titulo }}</h1></a>
     <p>{{ grupo.descrição }}</p>
@@ -21,6 +17,5 @@
             <br>
             <input type="submit" value="Publicar">
     </form>
-</body>
 
-<html>
+{% endblock content %}

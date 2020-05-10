@@ -1,13 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <a href="{% url 'menu' %}"><h1>Quarantine</h1></a>
-</head>
+{% extends 'base.html' %}
 
 
-<html>
-    <body>
+{% block content %}
 
         <h1>LOGIN</h1>
 
@@ -15,7 +9,7 @@
             <p><strong>{{ error_message }}</strong></p>
         {% endif %}
 
-            <form action="{% url 'loginview' %}" method="post">
+            <form action="{% url 'login_view' %}" method="post">
             {% csrf_token %}
             <label for="username"><b>Username :</b></label>
             <input type="text" id="username" name="username">
@@ -25,10 +19,9 @@
             <br>
             <input type="submit" value="Login">
         </form>
-            <form action= "{% url 'registopage' %}" method="get">
+            <form action= "{% url 'registo_view' %}" method="get">
             <input type="submit" value="Ir para Registo">
         </form>
 
-    </body>
-</html>
+{% endblock content %}
 

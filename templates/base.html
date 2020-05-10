@@ -1,0 +1,119 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+
+    body {
+        margin:0;
+        padding-top: 65px;
+    }
+
+    .topnav {
+        margin: 0;
+        padding: 0;
+        top:0;
+        width: 100%;
+
+        overflow: visible;
+        background-color: #333;
+        position: fixed;
+    }
+
+    .topnav > a {
+        float: left;
+        color: #f2f2f2;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+        font-size: 17px;
+    }
+
+    .topnav a:hover:not(.active) {
+        background-color: #ddd;
+        color: black;
+    }
+
+    .topnav a.active {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    .dropdown {
+        position: relative;
+        display: inline-block;
+    }
+
+    .dropdown .dropbtn{
+        font-size: 16px;
+        border: none;
+        outline: none;
+        color: white;
+        padding: 14px 16px;
+        background-color: inherit;
+        font-family: inherit;
+        margin: 0;
+     }
+
+    /* Dropdown Content (Hidden by Default) */
+    .dropdown-content {
+        display:none;
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 100%;
+        box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+        z-index: 1;
+    }
+
+    /* Links inside the dropdown */
+    .dropdown-content a {
+        float: none;
+        color: black;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        text-align: left;
+    }
+
+    .dropdown-content a:hover {background-color: #f1f1f1}
+
+    .dropdown:hover .dropdown-content {display: block;}
+
+    .dropdown:hover .dropbtn {background-color: #3e8e41;}
+
+</style>
+
+    <meta charset="UTF-8">
+    <div class="topnav">
+        <a class="active" href="{% url 'menu' %}"> Quarantine</a>
+        {% if request.user.is_authenticated %}
+        <div style="float:right" class="dropdown">
+            <button  class="dropbtn">{{request.user.username}}
+                <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+                    <a href="{% url 'perfilutilizador' request.user.username %}">Profile</a>
+                    <a href="{% url 'logout_view' %}"> Logout</a>
+            </div>
+        </div>
+        {% else %}
+            <a style="float:right" href="{% url 'login_view' %}"> Login</a>
+            <a style="float:right" href="{% url 'registo_view' %}"> Registo</a>
+        {% endif %}
+    </div>
+</head>
+
+<body>
+
+{% block content %}
+
+{% endblock content %}
+
+</body>
+
+<footer>
+    <h2>This is the footer</h2>
+
+</footer>
+
+</html>

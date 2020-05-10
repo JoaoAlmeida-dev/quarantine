@@ -6,11 +6,9 @@ urlpatterns = [
     url(r'^$', views.menu, name='menu'),
 # ----------------------------------------------------------------------Login
 
-    url(r'^login/$', views.loginpage, name='loginpage'),
-    url(r'^loginview/$', views.loginview, name='loginview'),
+    url(r'^login/$', views.login_view, name='login_view'),
 
-    url(r'^registo/$', views.registopage, name='registopage'),
-    url(r'^registview/$', views.registview, name='registview'),
+    url(r'^registo/$', views.registo_view, name='registo_view'),
 
     url(r'^logout/$', views.logout_view, name='logout_view'),
 # ----------------------------------------------------------------------Grupo
@@ -49,9 +47,16 @@ urlpatterns = [
 # ----------------------------------------------------------------------Utilizador
 
     url(r'^perfil/(?P<username>.*)/$', views.perfilutilizador, name='perfilutilizador'),
-    url(r'^perfil/(?P<username>.*)/definicoes$', views.defutilizador, name='defutilizador'),
-    url(r'^perfil/(?P<username>.*)/atualizarperfil', views.atualizarperfil, name='atualizarperfil'),
+    url(r'^perfil/(?P<username>.*)/definicoes/$', views.defutilizador, name='defutilizador'),
+    url(r'^perfil/(?P<username>.*)/atualizarperfil/$', views.atualizarperfil, name='atualizarperfil'),
 
+    #url(r'^perfil/(?P<username>.*)/password_change/'
+    #url(r'^perfil/(?P<username>.*)/
+
+    #url(r'^perfil/(?P<username>.*)/
+    #url(r'^perfil/(?P<username>.*)/
+    #url(r'^perfil/(?P<username>.*)/
+    #url(r'^perfil/(?P<username>.*)/
 # ----------------------------------------------------------------------
 
     #url(r'^grupo_(?P<grupo_id>[0-9]+)/pub_(?P<pub_id>[0-9]+)/com_(?P<com_id>[0-9]+)/votarup/$', views.votarup, name='votarup'),
