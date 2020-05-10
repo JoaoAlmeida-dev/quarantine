@@ -6,7 +6,7 @@
 
     body {
         margin:0;
-        padding-top: 65px;
+        padding-top: 48px;
     }
 
     .topnav {
@@ -81,6 +81,34 @@
 
     .dropdown:hover .dropbtn {background-color: #3e8e41;}
 
+    .sidesite {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      width: 20%;
+      background-color: #f1f1f1;
+      position: fixed;
+      height: 100%;
+      overflow: auto;
+    }
+
+    .opside a {
+      display: block;
+      color: #000;
+      padding: 8px 16px;
+      text-decoration: none;
+    }
+
+    .opside a.active {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    .opside a:hover:not(.active) {
+      background-color: #555;
+      color: white;
+    }
+
 </style>
 
     <meta charset="UTF-8">
@@ -104,16 +132,40 @@
 </head>
 
 <body>
+     <div class="sidesite">
+         <div class="opside"><a>Noticia1</a></div>
+         <div class="opside"><a>Noticia2</a></div>
+         <div class="opside"><a>Noticia3</a></div>
+         <div class="opside"><a>Noticia4</a></div>
+         <div class="opside"><a>Noticia5</a></div>
+         <div class="opside"><a>Noticia6</a></div>
+         <div class="opside"><a>Noticia7</a></div>
+         <div class="opside"><a>Noticia8</a></div>
+         <div class="opside"><a>Noticia9</a></div>
+         <div class="opside"><a>Noticia10</a></div>
+         <div class="opside"><a>Noticia11</a></div>
+         <div class="opside"><a>Noticia12</a></div>
+         <div class="opside"><a>Noticia13</a></div>
+         <div class="opside"><a>Noticia14</a></div>
+         <div class="opside"><a>Noticia15</a></div>
+         <!--Manter isto preso no final -->
+        <div class="opside"><a class="active" href="contactos">Contactos</a></div>
+        <div class="opside"><a class="active" href="sobre">Sobre</a></div>
+    </div>
 
-{% block content %}
+<div style="margin-left:20%;padding:1px 16px;height:1000px;">
+     {% block content %}
 
-{% endblock content %}
+     {% endblock content %}
+</div>
+
 
 </body>
 
 <footer>
+   <div style="margin-left:25%;padding:1px 16px;height:1000px;">
     <h2>This is the footer</h2>
-
+    </div>
 </footer>
 
 </html>
