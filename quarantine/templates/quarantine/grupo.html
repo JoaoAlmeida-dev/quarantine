@@ -2,65 +2,80 @@
 
 
 {% block content %}
+    <div>
+        <title>Grupo: {{ grupo.titulo }}</title>
 
-    <title>Grupo: {{ grupo.titulo }}</title>
-
-    <h1>Grupo: {{ grupo.titulo }}</h1>
-    <p>Descrição: {{ grupo.descrição }}</p>
-
-    {% if error_message %}
+        <div >
+            <h1><a style=" text-decoration:none " href="{% url 'grupo_view' grupo.id %}">Grupo: {{ grupo.titulo }}</a></h1>
+            <p>Descrição: {{ grupo.descrição }}</p>
+        </div>
+    </div>
+    <div>
+        {% if error_message %}
             <p><strong>{{ error_message }}</strong></p>
         {% endif %}
+    </div>
 
-        <b>Publicações:</b>
-        {% if grupo.publicacao_set.all %}
-            <ul>
-                {% for pub in grupo.publicacao_set.all  %}
-                <li>
-                   <a href= "{% url 'publicacao' grupo.id pub.id %}"> {{ pub.titulo }} </a>
-                            <label>({{ pub.karma }})</label>
-                    <a href="{% url 'votaruppub' grupo.id pub.id %}?next={{ request.path }}"><i>Up</i></a>
-                    <a href="{% url 'votardownpub' grupo.id pub.id %}?next={{ request.path }}"><i>Down</i></a>
-                </li>
-                {% endfor %}
-           </ul>
-        {% else %}
-            <p>Nao ha publicações.</p>
-        {% endif %}
+    <div>
+        <div>
+            <b>Publicações:</b>
+            {% if grupo.publicacao_set.all %}
+                <ul>
+                    {% for pub in grupo.publicacao_set.all  %}
+                    <li>
+                       <a href= "{% url 'publicacao' grupo.id pub.id %}"> {{ pub.titulo }} </a>
+                                <label>({{ pub.karma }})</label>
+                        <a href="{% url 'votaruppub' grupo.id pub.id %}?next={{ request.path }}"><i>Up</i></a>
+                        <a href="{% url 'votardownpub' grupo.id pub.id %}?next={{ request.path }}"><i>Down</i></a>
+                    </li>
+                    {% endfor %}
+               </ul>
+            {% else %}
+                <p>Nao ha publicações.</p>
+            {% endif %}
+        </div>
 
         <form action= "{% url 'criarpublicacao' grupo.id %}" method="get">
             <input type="submit" value="Criar publicação">
         </form>
+    </div>
 
-    <b></b>
 
+        <div>
+            <div>
+                <b>Membros:</b>
+                {% if grupo.membros.all %}
+                    <ul>
+                        {% for membro in grupo.membros.all  %}
+                        <li>
+                            <a href= "{% url 'perfilutilizador' membro.username %}">{{ membro.username }}</a>
 
-        {% if isadmin %}
-            <form action= "{% url 'apagargrupo' grupo.id %}" method="get">
-            <input type="submit" value="Apagar Grupo">
-        </form>
+                        </li>
+                        {% endfor %}
+                   </ul>
+                {% else %}
+                    <p>Não existem outros utilizadores... ;_;</p>
+                {% endif %}
+            </div>
+            <div>
+                <form action= "{% url 'adicionarmembros' grupo.id %}" method="get">
+                    <input type="submit" value="Adicionar membro">
+                </form>
+            </div>
+            <div>
+                <form action= "{% url 'removermembros' grupo.id %}" method="get">
+                    <input type="submit" value="Remover membro">
+                </form>
+            </div>
+
+        </div>
+
+        <div>
+            {% if isadmin %}
+                <form action= "{% url 'apagargrupo' grupo.id %}" method="get">
+                    <input type="submit" value="Apagar Grupo">
+                </form>
+                <button type="submit" formmethod="get" formaction="{% url 'apagargrupo' grupo.id %}">Apagar Grupo</button>
             {% endif %}
-
-        <b>Membros:</b>
-        {% if grupo.membros.all %}
-            <ul>
-                {% for membro in grupo.membros.all  %}
-                <li>
-                    <a href= "{% url 'perfilutilizador' membro.username %}">{{ membro.username }}</a>
-
-                </li>
-                {% endfor %}
-           </ul>
-        {% else %}
-            <p>Não existem outros utilizadores... ;_;</p>
-        {% endif %}
-
-            <form action= "{% url 'adicionarmembros' grupo.id %}" method="get">
-            <input type="submit" value="Adicionar membro">
-        </form>
-
-         <form action= "{% url 'removermembros' grupo.id %}" method="get">
-                <input type="submit" value="Remover membro">
-            </form>
-
+        </div>
 {% endblock content %}
