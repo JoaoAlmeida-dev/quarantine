@@ -4,7 +4,7 @@
 {% block content %}
     <title>Registo</title>
 
-    <h2>REGISTO</h2>
+    <h2>Registo</h2>
     {% if error_message %}
         <p><strong>{{ error_message }}</strong></p>
     {% endif %}
@@ -27,10 +27,6 @@
         {% endfor %}
             <button type = "submit">Register</button>
 
-    </form>
-
-    <form action= "{% url 'login_view' %}" method="get">
-        <input type="submit" value="Ir para Login">
     </form>
 
 

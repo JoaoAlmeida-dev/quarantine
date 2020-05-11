@@ -6,16 +6,15 @@
 
     <h1>Perfil de {{user.username}}</h1>
     <ul>
-        <li><img src="https://twistedsifter.files.wordpress.com/2016/12/mongolian-throat-singing-on-top-of-mountain.jpg" alt = "profile pic"> </li>
-
+        <li><img src={{user.fotoPerfil}} alt = "profile pic"> </li>
         <li>E-mail: {{user.email}}</li>
         <li>First name: {{user.first_name}}</li>
         <li>Last name: {{user.last_name}}</li>
     </ul>
-
+<!--
     {% if request.user.id == user.id %}
 
-        <p>Insira a sua password antes de entrar nas definições</p>
+       <p>Insira a sua password antes de entrar nas definições</p>
         <form action= "{% url 'defutilizador' user.username %}" method="post">
             {% csrf_token %}
             <label for="password"><b>Password :</b></label>
@@ -24,5 +23,5 @@
         </form>
 
     {% endif %}
-
+-->
 {% endblock content %}

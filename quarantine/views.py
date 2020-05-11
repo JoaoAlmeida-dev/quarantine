@@ -1,14 +1,14 @@
-from django.http import HttpResponse, HttpResponseRedirect
-from django.shortcuts import render, redirect
+from django.http import HttpResponseRedirect
+from django.shortcuts import render
 from django.urls import reverse, Resolver404, resolve
 from django.utils import timezone
 from django.http import Http404
-from django.template import loader
 from django.shortcuts import get_object_or_404
 from .models import Grupo, Publicacao, Comentario, MembroGrupo, VotoPublicacao, VotoComentario
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login, logout
-from quarantine.forms import RegistrationForm
+from django.contrib.auth import logout
+
+from account.models import Account
 
 
 # Create your views here.
@@ -25,79 +25,30 @@ def menu(request):
 
 # ------------------------------------------------------------------------
 
-
-def login_view(request):
-    if request.POST:
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            # existe na BD
-            login(request, user)
-            return redirect('menu')
-        #    return render(request, 'quarantine/menu.html')
-        else:
-            # nao existe na BD
-            return render(request, 'quarantine/login.html', {'error_message': "Password ou username errados!", })
-    else:
-        return render(request, 'quarantine/login.html')
-
-
-def logout_view(request):
-    logout(request)
-    # Redirect to a success page.
-    return redirect('menu')
-
-
-# ------------------------------------------------------------------------
-
-
-def registo_view(request):
-    context = {}
-    if request.POST:
-        form = RegistrationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password1')
-            email = form.cleaned_data.get('email')
-            user = authenticate(email=email, password=password)
-            login(request, user)
-            return redirect('menu')
-        else:
-            context['registration_form'] = form
-    else:
-        form = RegistrationForm()
-        context['registration_form'] = form
-        return render(request, 'quarantine/registo.html', context)
-
-
-# ----------------------------------------------------------------------
-
 def perfilutilizador(request, username):
-    user = get_object_or_404(UserExtended, username=username)
+    user = get_object_or_404(Account, username=username)
     return render(request, 'quarantine/perfil.html', {'user': user})
 
 
 def defutilizador(request, username):
-    user = get_object_or_404(UserExtended, username=username)
+    user = get_object_or_404(Account, username=username)
     if request.user.check_password(request.POST['password']):
         return render(request, 'quarantine/defutilizador.html')
     else:
         return render(request, 'quarantine/perfil.html', {'user': user, 'error_message': "Password errada!", })
 
 
-def atualizarperfil(request, username):
-    user = get_object_or_404(UserExtended, username=username)
-    if user.id == request.user.id:
-        user.set_password(request.POST['password'])
-        user.email = request.POST['email']
-        user.username = request.POST['username']
-        user.save()
-        return logout(request)
-    else:
-        return render(request, 'quarantine/perfil.html',
-                      {'username': user.usernamem, 'error_message': "Nao pode alterar as definições de outro user"})
+# def atualizarperfil(request, username):
+#     user = get_object_or_404(Account, username=username)
+#     if user.id == request.user.id:
+#         user.set_password(request.POST['password'])
+#         user.email = request.POST['email']
+#         user.username = request.POST['username']
+#         user.save()
+#         return logout(request)
+#     else:
+#         return render(request, 'quarantine/perfil.html',
+#                       {'username': user.usernamem, 'error_message': "Nao pode alterar as definições de outro user"})
 
 
 # ----------------------------------------------------------------------
@@ -116,12 +67,12 @@ def criargrupo(request):
         mg = MembroGrupo(user=request.user, grupo=g, is_admin=True)
         mg.save()
         for username in request.POST.getlist('user'):
-            mg = MembroGrupo(user=User.objects.get(username=username), grupo=g, is_admin=False)
+            mg = MembroGrupo(user=Account.objects.get(username=username), grupo=g, is_admin=False)
             mg.save()
         g.save()
         return HttpResponseRedirect(reverse('menu', args=()))
     else:
-        users = User.objects.exclude(username=request.user.username)
+        users = Account.objects.exclude(username=request.user.username)
         return render(request, 'quarantine/criargrupo.html', {'users': users})
 
 def apagargrupo(request, grupo_id):
@@ -217,7 +168,7 @@ def adicionarmembros(request, grupo_id):
         return HttpResponseRedirect(reverse('grupo_view', kwargs={"grupo_id": grupo_id}))
     else:
         membros = MembroGrupo.objects.filter(grupo_id=grupo_id)
-        users = User.objects.exclude(id=request.user.id)
+        users = Account.objects.exclude(id=request.user.id)
         for membro in membros:
             users = users.exclude(id=membro.user_id)
 
