@@ -50,6 +50,7 @@ urlpatterns = [
     url(r'^perfil/(?P<username>.*)/atualizarperfil/$', views.atualizarperfil, name='atualizarperfil'),
 
     #url(r'^perfil/(?P<username>.*)/password_change/'
+    #url(r'^perfil/(?P<username>.*)/password_change/done'
     #url(r'^perfil/(?P<username>.*)/
 
     #url(r'^perfil/(?P<username>.*)/
