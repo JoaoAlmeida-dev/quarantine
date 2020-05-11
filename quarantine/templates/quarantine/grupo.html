@@ -3,6 +3,7 @@
 
 {% block content %}
 
+    <title>Grupo: {{ grupo.titulo }}</title>
 
     <h1>Grupo: {{ grupo.titulo }}</h1>
     <p>Descrição: {{ grupo.descrição }}</p>
@@ -27,7 +28,7 @@
             <p>Nao ha publicações.</p>
         {% endif %}
 
-        <form action= "{% url 'criarpublicacaopage' grupo.id %}" method="get">
+        <form action= "{% url 'criarpublicacao' grupo.id %}" method="get">
             <input type="submit" value="Criar publicação">
         </form>
 

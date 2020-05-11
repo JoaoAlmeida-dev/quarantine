@@ -27,7 +27,6 @@ urlpatterns = [
 
 # ----------------------------------------------------------------------Publicação
 
-    url(r'^grupo_(?P<grupo_id>[0-9]+)/criarpublicacaopage/$', views.criarpublicacaopage, name='criarpublicacaopage'),
     url(r'^grupo_(?P<grupo_id>[0-9]+)/criarpublicacao/$', views.criarpublicacao, name='criarpublicacao'),
     url(r'^grupo_(?P<grupo_id>[0-9]+)/pub_(?P<pub_id>[0-9]+)/apagarpublicacao/$', views.apagarpublicacao, name='apagarpublicacao'),
 

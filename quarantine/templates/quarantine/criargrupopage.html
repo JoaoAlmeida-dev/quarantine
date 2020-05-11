@@ -2,8 +2,9 @@
 
 
 {% block content %}
- <h1>Criar Grupo</h1>
-    <form action="{% url 'criargrupo' %}" method="post">
+    <title>Criar Grupo</title>
+    <h1>Criar Grupo</h1>
+        <form action="{% url 'criargrupo' %}" method="post">
             {% csrf_token %}
             <label for="1"><b>Titulo:</b></label>
                 <input type="text" id="1" name="titulo">

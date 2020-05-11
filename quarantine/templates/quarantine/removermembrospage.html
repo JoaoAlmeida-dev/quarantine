@@ -2,6 +2,7 @@
 
 
 {% block content %}
+    <title>Remover Membro Grupo: {{ grupo.titulo }}</title>
 
     <a href="{% url 'grupo_view' grupo.id %}"><h1> Grupo: {{ grupo.titulo }}</h1></a>
         <p>Descrição: {{ grupo.descrição }}</p>

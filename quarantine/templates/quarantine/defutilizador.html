@@ -2,6 +2,7 @@
 
 
 {% block content %}
+    <title>Def Perfil: {{user.username}}  </title>
     <h1>Perfil de {{user.username}}</h1>
 
         <form action="{% url 'atualizarperfil' user.username %}" method="post">

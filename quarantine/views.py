@@ -10,6 +10,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from quarantine.forms import RegistrationForm
 
+
 # Create your views here.
 # ------------------------------------------------------------------------
 
@@ -41,6 +42,7 @@ def login_view(request):
     else:
         return render(request, 'quarantine/login.html')
 
+
 def logout_view(request):
     logout(request)
     # Redirect to a success page.
@@ -69,6 +71,7 @@ def registo_view(request):
         context['registration_form'] = form
     return render(request, 'quarantine/registo.html', context)
 
+
 # ----------------------------------------------------------------------
 
 def perfilutilizador(request, username):
@@ -93,7 +96,8 @@ def atualizarperfil(request, username):
         user.save()
         return logout(request)
     else:
-        return render(request, 'quarantine/perfil.html', {'username': user.usernamem, 'error_message': "Nao pode alterar as definições de outro user"})
+        return render(request, 'quarantine/perfil.html',
+                      {'username': user.usernamem, 'error_message': "Nao pode alterar as definições de outro user"})
 
 
 # ----------------------------------------------------------------------
@@ -140,26 +144,30 @@ def grupo_view(request, grupo_id):
     try:
         membro = MembroGrupo.objects.get(grupo_id=grupo_id, user_id=request.user.id)
     except:
-        #membro.DoesNotExist:
+        # membro.DoesNotExist:
         return HttpResponseRedirect(reverse('menu'))
     else:
         membrosgrupo = MembroGrupo.objects.filter(grupo_id=grupo_id)
-        return render(request, 'quarantine/grupo.html', {'grupo': grupo, 'membrosgrupo': membrosgrupo, 'isadmin': membro.is_admin})
-
-
-def criarpublicacaopage(request, grupo_id):
-    grupo = get_object_or_404(Grupo, pk=grupo_id)
-    return render(request, 'quarantine/criarpublicacaopage.html', {'grupo': grupo})
+        return render(request, 'quarantine/grupo.html',
+                      {'grupo': grupo, 'membrosgrupo': membrosgrupo, 'isadmin': membro.is_admin})
 
 
 def criarpublicacao(request, grupo_id):
     grupo = get_object_or_404(Grupo, pk=grupo_id)
-    pub = Publicacao(pub_data=timezone.now(), titulo=request.POST['titulo'], conteudo=request.POST['conteudo'],
-                     autor=request.user, grupo=grupo)
-    pub.save()
-    candeletepub = MembroGrupo.objects.get(grupo_id=grupo_id,
-                                           user_id=request.user.id).is_admin or pub.autor.id == request.user.id
-    return render(request, 'quarantine/publicacao.html', {'grupo': grupo, 'pub': pub, 'candeletepub': candeletepub})
+    context = {}
+    context['grupo'] = grupo
+    if request.POST:
+        pub = Publicacao(pub_data=timezone.now(), titulo=request.POST['titulo'], conteudo=request.POST['conteudo'],
+                         autor=request.user, grupo=grupo)
+        pub.save()
+        candeletepub = MembroGrupo.objects.get(grupo_id=grupo_id,
+                                               user_id=request.user.id).is_admin or pub.autor.id == request.user.id
+        context['pub'] = pub
+        context['candeletepub'] = candeletepub
+        return render(request, 'quarantine/publicacao.html', context)
+        #return HttpResponseRedirect(reverse('publicacao', args=(grupo.id, pub.id)))
+    else:
+        return render(request, 'quarantine/criarpublicacaopage.html', {'grupo': grupo})
 
 
 def apagarpublicacao(request, grupo_id, pub_id):
@@ -168,7 +176,7 @@ def apagarpublicacao(request, grupo_id, pub_id):
 
     candeletepub = MembroGrupo.objects.get(grupo_id=grupo_id,
                                            user_id=request.user.id).is_admin or pub.autor.id == request.user.id
-    #isadmin = MembroGrupo.objects.get(grupo_id=grupo_id, user_id=request.user.id).is_admin
+    # isadmin = MembroGrupo.objects.get(grupo_id=grupo_id, user_id=request.user.id).is_admin
 
     if candeletepub:
         pub.delete()
@@ -176,9 +184,8 @@ def apagarpublicacao(request, grupo_id, pub_id):
         # return HttpResponseRedirect(reverse('grupo_view', args=grupo_id))
         # return render(request, 'quarantine/grupo.html', {'grupo': grupo, 'isadmin': isadmin})
     else:
-        return render(request, 'quarantine/publicacao.html', {'grupo': grupo, 'pub': pub,
-                                                              'error_message':
-                                                                  "Não é admin do grupo ou autor da publicação!!"})
+        return render(request, 'quarantine/publicacao.html', {'grupo': grupo, 'pub': pub, 'error_message':
+            "Não é admin do grupo ou autor da publicação!!"})
 
 
 def adicionarmembrospage(request, grupo_id):
@@ -213,8 +220,8 @@ def removermembrospage(request, grupo_id):
 
     #    url = request.GET.get("next")
     return render(request, 'quarantine/removermembrospage.html', {'grupo': grupo, 'users': users,
-                                                                    # 'next': url
-                                                                    })
+                                                                  # 'next': url
+                                                                  })
 
 
 def removermembros(request, grupo_id):
@@ -224,6 +231,7 @@ def removermembros(request, grupo_id):
         mg = MembroGrupo.objects.get(user=User.objects.get(username=username), grupo=grupo)
         mg.delete()
     return grupo_view(request, grupo_id)
+
 
 # ----------------------------------------------------------------------
 
@@ -257,7 +265,7 @@ def apagarcomentario(request, grupo_id, pub_id, com_id):
     pub = get_object_or_404(Publicacao, pk=pub_id)
     com = get_object_or_404(Comentario, pk=com_id)
 
-    #candeletepub = MembroGrupo.objects.get(grupo_id=grupo_id, user_id=request.user.id).is_admin or \
+    # candeletepub = MembroGrupo.objects.get(grupo_id=grupo_id, user_id=request.user.id).is_admin or \
     #              pub.autor.id == request.user.id
     candeletecom = MembroGrupo.objects.get(grupo_id=grupo_id, user_id=request.user.id).is_admin or \
                    com.autor.id == request.user.id
@@ -390,6 +398,5 @@ def votardownpub(request, grupo_id, pub_id):
         return HttpResponseRedirect(url)
     except (KeyError, Resolver404):
         return HttpResponseRedirect(reverse('menu'))
-
 
 # ----------------------------------------------------------------------
