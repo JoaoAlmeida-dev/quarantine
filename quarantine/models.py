@@ -2,6 +2,15 @@
 from django.contrib.auth.models import User
 from django.db import models
 
+class UserExtended(User):
+    class Meta:
+        proxy = True
+
+    fotoPerfil = "https://cdn.discordapp.com/attachments/492452799876038657/709433440218513438/default-profile.png"
+
+    def mudarfoto(self, link_foto):
+        fotoPerfil = foto
+
 
 class Grupo(models.Model):
     titulo = models.CharField(max_length=1000)

@@ -75,12 +75,12 @@ def registo_view(request):
 # ----------------------------------------------------------------------
 
 def perfilutilizador(request, username):
-    user = get_object_or_404(User, username=username)
+    user = get_object_or_404(UserExtended, username=username)
     return render(request, 'quarantine/perfil.html', {'user': user})
 
 
 def defutilizador(request, username):
-    user = get_object_or_404(User, username=username)
+    user = get_object_or_404(UserExtended, username=username)
     if request.user.check_password(request.POST['password']):
         return render(request, 'quarantine/defutilizador.html')
     else:
@@ -88,7 +88,7 @@ def defutilizador(request, username):
 
 
 def atualizarperfil(request, username):
-    user = get_object_or_404(User, username=username)
+    user = get_object_or_404(UserExtended, username=username)
     if user.id == request.user.id:
         user.set_password(request.POST['password'])
         user.email = request.POST['email']
