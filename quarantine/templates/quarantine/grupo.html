@@ -55,11 +55,11 @@
             <p>Não existem outros utilizadores... ;_;</p>
         {% endif %}
 
-            <form action= "{% url 'adicionarmembrospage' grupo.id %}" method="get">
+            <form action= "{% url 'adicionarmembros' grupo.id %}" method="get">
             <input type="submit" value="Adicionar membro">
         </form>
 
-         <form action= "{% url 'removermembrospage' grupo.id %}" method="get">
+         <form action= "{% url 'removermembros' grupo.id %}" method="get">
                 <input type="submit" value="Remover membro">
             </form>
 

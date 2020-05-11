@@ -13,16 +13,16 @@ urlpatterns = [
     url(r'^logout/$', views.logout_view, name='logout_view'),
 # ----------------------------------------------------------------------Grupo
 
-    url(r'^criar_grupo/$', views.criargrupopage, name='criargrupopage'),
+    #url(r'^criar_grupo/$', views.criargrupopage, name='criargrupopage'),
     url(r'^criargrupo/$', views.criargrupo, name='criargrupo'),
     url(r'^grupo_(?P<grupo_id>[0-9]+)/apagargrupo/$', views.apagargrupo, name='apagargrupo'),
 
     url(r'^grupo_(?P<grupo_id>[0-9]+)/$', views.grupo_view, name='grupo_view'),
 
-    url(r'^grupo_(?P<grupo_id>[0-9]+)/adicionarmembrospage/$', views.adicionarmembrospage, name='adicionarmembrospage'),
+    #url(r'^grupo_(?P<grupo_id>[0-9]+)/adicionarmembrospage/$', views.adicionarmembrospage, name='adicionarmembrospage'),
     url(r'^grupo_(?P<grupo_id>[0-9]+)/adicionarmembros/$', views.adicionarmembros, name='adicionarmembros'),
 
-    url(r'^grupo_(?P<grupo_id>[0-9]+)/removermembrospage/$', views.removermembrospage, name='removermembrospage'),
+    #url(r'^grupo_(?P<grupo_id>[0-9]+)/removermembrospage/$', views.removermembrospage, name='removermembrospage'),
     url(r'^grupo_(?P<grupo_id>[0-9]+)/removermembros/$', views.removermembros, name='removermembros'),
 
 # ----------------------------------------------------------------------Publicação
