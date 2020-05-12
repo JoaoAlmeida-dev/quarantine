@@ -13,6 +13,8 @@ from account.views import (
 urlpatterns = [
 
     url(r'^$', views.menu, name='menu'),
+    url(r'^grupospublicos/$', views.grupospublicos, name='grupospublicos'),
+    url(r'^gruposutilizador/$', views.gruposutilizador, name='gruposutilizador'),
 
     # ----------------------------------------------------------------------Account
 
