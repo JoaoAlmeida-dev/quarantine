@@ -3,12 +3,10 @@
 
 {% block content %}
 
-    <title>Publicação: {{ pub.titulo }}</title>
-
-        <a href="{% url 'grupo_view' grupo.id %}"><h1>Grupo: {{ grupo.titulo }}</h1></a>
-        <h1>Titulo: {{ pub.titulo }}</h1>
-        <b>Criado por: {{ pub.autor }}({{ pub.pub_data }})</b>
-        <p>Conteudo: {{ pub.conteudo }}</p>
+        <a href="{% url 'grupo_view' grupo.id %}"><h1>{{ grupo.titulo }}</h1></a>
+        <h1>{{ pub.titulo }}</h1>
+        <b>{{ pub.autor }}({{ pub.pub_data }})</b>
+        <p>{{ pub.conteudo }}</p>
 
         <p>
         <label>({{ pub.karma }})</label>
@@ -22,7 +20,7 @@
 
         {% if candeletepub %}
             <form action= "{% url 'apagarpublicacao' grupo.id pub.id %}" method="get">
-            <input type="submit" value="Apagar Publicação">
+            <input class="submit" type="submit" value="Apagar Publicação">
         </form>
             {% endif %}
         <br>
@@ -31,12 +29,12 @@
             <ul>
                 {% for comentario in pub.comentario_set.all  %}
                     <li>
-                        <label>{{ comentario.autor }}({{ comentario.pub_data }}):  {{ comentario.conteudo }}</label>
-                        <label>({{ comentario.karma }})</label>
-                        <a href="{% url 'votarupcom' grupo.id pub.id comentario.id %}?next={{ request.path }}"><i>Up</i></a>
-                        <a href="{% url 'votardowncom' grupo.id pub.id comentario.id %}?next={{ request.path }}"><i>Down</i></a>
+                        <label>{{ comentario.autor }}({{ comentario.pub_data }}):  {{ comentario.conteudo }} ({{ comentario.karma }})</label>
+
+                        <a href="{% url 'votarupcom' grupo.id pub.id comentario.id %}?next={{ request.path }}"><label>Up</label></a>
+                        <a href="{% url 'votardowncom' grupo.id pub.id comentario.id %}?next={{ request.path }}"><label>Down</label></a>
                         {% if request.user.id == comentario.autor.id or isadmin %}
-                            <a href="{% url 'apagarcomentario' grupo.id pub.id comentario.id %}"><i>Apagar</i></a>
+                            <a href="{% url 'apagarcomentario' grupo.id pub.id comentario.id %}"><label>Apagar</label></a>
                         {% endif %}
                     </li>
                 {% endfor %}
@@ -49,6 +47,6 @@
             {% csrf_token %}
             <textarea name="conteudo" rows="10" cols="50"></textarea>
             <br>
-            <input type="submit" value="Publicar comentario">
+            <input class="submit" type="submit" value="Publicar comentario">
         </form>
 {% endblock content %}

@@ -34,7 +34,7 @@ if DEBUG:
 
 INSTALLED_APPS = [
     'quarantine.apps.QuarantineConfig',
-    'account',
+    'account.apps.AccountConfig',
 
     'django.contrib.admin',
     'django.contrib.auth',

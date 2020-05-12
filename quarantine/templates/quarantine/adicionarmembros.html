@@ -12,8 +12,8 @@
             {% csrf_token %}
             {% for user in users %}
 
-                <input type="checkbox" name="user" id="user{{ forloop.counter }}" value="{{ user }}" />
-                <label for="user{{ forloop.counter }}"> {{ user }}</label>
+                <input type="checkbox" name="user" id="user{{ forloop.counter }}" value="{{ user.username }}" />
+                <label for="user{{ forloop.counter }}"> {{ user.username }}</label>
                 <br />
             {% endfor %}
             <input type="submit" value="AdicionarMembros">

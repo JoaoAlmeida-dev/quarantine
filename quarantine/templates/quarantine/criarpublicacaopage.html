@@ -10,11 +10,11 @@
     <form action="{% url 'criarpublicacao' grupo.id %}" method="post">
             {% csrf_token %}
             <label for="titulo"><b>Titulo :</b></label>
-                <input type="text" id="titulo" name="titulo">
+                <input type="text" id="titulo" name="titulo" required>
             <br>
             <label for="conteudo"><b>Conteudo :</b></label>
         <br>
-            <textarea id="conteudo" name="conteudo" rows="10" cols="50"></textarea>
+            <textarea id="conteudo" name="conteudo" rows="10" cols="50" required></textarea>
             <br>
             <input type="submit" value="Publicar">
     </form>

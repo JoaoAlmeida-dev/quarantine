@@ -51,7 +51,7 @@ class Account(AbstractBaseUser):
     objects = AccountManager()
 
     def __str__(self):
-        return self.email
+        return self.username
 
     def mudarfoto(self, link_foto):
         fotoPerfil = link_foto

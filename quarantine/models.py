@@ -17,7 +17,7 @@ class Grupo(models.Model):
 
 
 class MembroGrupo(models.Model):
-    user = models.ForeignKey(Account, on_delete=models.CASCADE)
+    Account = models.ForeignKey(Account, on_delete=models.CASCADE)
     grupo = models.ForeignKey(Grupo, on_delete=models.CASCADE)
     is_admin = models.BooleanField(default=False)
 

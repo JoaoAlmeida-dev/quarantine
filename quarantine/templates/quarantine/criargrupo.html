@@ -16,10 +16,10 @@
             <b>Adicionar utilizadores:</b>
             <br>
             {% for user in users %}
-                <input type="checkbox" name="user" id="user{{ forloop.counter }}" value="{{ user }}" />
-                <label for="user{{ forloop.counter }}"> {{ user }}</label>
+                <input type="checkbox" name="user" id="user{{ forloop.counter }}" value="{{ user.username }}" />
+                <label for="user{{ forloop.counter }}"> {{ user.username }}</label>
                 <br />
             {% endfor %}
-            <input type="submit" value="Criar Grupo">
+            <input class="submit" type="submit" value="Criar Grupo">
         </form>
 {% endblock content %}

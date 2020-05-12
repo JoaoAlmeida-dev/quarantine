@@ -8,7 +8,62 @@
         margin:0;
         padding-top: 48px;
         padding-bottom: 20px;
+
     }
+    body p{
+         font-family: Arial, Helvetica, sans-serif;
+     /*   text-align: center;*/
+
+    }
+    body title{
+        font-family: Arial, Helvetica, sans-serif;
+       /*   text-align: center;*/
+
+    }
+    body h1{
+        font-family: Arial, Helvetica, sans-serif;
+          /*   text-align: center;*/
+
+    }
+    body .lista {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      width: 200px;
+      background-color: #f1f1f1;
+
+
+    }
+    body input.submit{
+        background-color: #333;
+          border: none;
+        color: white;
+        width: 200px;
+
+        text-decoration: none;
+        display: inline-block;
+         padding: 15px 32px;
+        margin: 0;
+        cursor: pointer;
+    }
+    body input.submit:hover{
+      background-color: #4CAF50;
+        color: white;
+    }
+    body .lista li a {
+      display: block;
+      color: #000;
+      padding: 8px 16px;
+      text-decoration: none;
+        text-align: center;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body .lista li a:hover {
+      background-color: #555;
+      color: white;
+    }
+
 
     .topnav {
         margin: 0;
@@ -28,6 +83,7 @@
         padding: 14px 16px;
         text-decoration: none;
         font-size: 17px;
+        font-family: Arial, Helvetica, sans-serif;
     }
 
     .topnav a:hover:not(.active) {
@@ -54,6 +110,7 @@
         background-color: inherit;
         font-family: inherit;
         margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
      }
 
     /* Dropdown Content (Hidden by Default) */
@@ -64,6 +121,7 @@
         min-width: 100%;
         box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
         z-index: 1;
+        font-family: Arial, Helvetica, sans-serif;
     }
 
     /* Links inside the dropdown */
@@ -74,6 +132,7 @@
         text-decoration: none;
         display: block;
         text-align: left;
+        font-family: Arial, Helvetica, sans-serif;
     }
 
     .dropdown-content a:hover {background-color: #f1f1f1}
@@ -97,6 +156,7 @@
       color: #000;
       padding: 8px 16px;
       text-decoration: none;
+        font-family: Arial, Helvetica, sans-serif;
     }
 
     .sidenews a:hover {
@@ -122,9 +182,10 @@
         padding: 3px 16px;
         text-decoration: none;
         font-size: 17px;
+        font-family: Arial, Helvetica, sans-serif;
     }
 
-    .footer a:hover {background-color: #3e8e41;}
+    .footer a:hover { background-color: #4CAF50;}
 
 </style>
 
@@ -139,6 +200,7 @@
             <div class="dropdown-content">
                     <a href="{% url 'perfilutilizador' request.user.username %}">Profile</a>
                     <a href="{% url 'logout_view' %}"> Logout</a>
+                    <a href="{% url 'account_settings' request.user.username %}"> settings</a>
             </div>
         </div>
         {% else %}
@@ -192,7 +254,7 @@
 
     </div>
 
-<div style="margin-left:15%;padding:1px 16px;">
+<div style="margin-left:15%;padding:1px 16px;  ">
 
      {% block content %}
 

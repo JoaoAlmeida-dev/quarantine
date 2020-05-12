@@ -1,9 +1,10 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 
-
 # Create your views here.
-from account.forms import RegistrationForm, LoginForm
+from account.forms import RegistrationForm, LoginForm, AccountUpdateForm
+from account.models import Account
+
 
 # ----------------------------------------------------------------------
 
@@ -37,13 +38,12 @@ def login_view(request):
     if request.POST:
         form = LoginForm(request.POST)
         if form.is_valid():
-            password = form.cleaned_data.get('password1')
+            password = form.cleaned_data.get('password')
             email = form.cleaned_data.get('email')
             user = authenticate(email=email, password=password)
-
             if user:
                 login(request, user)
-                return redirect('perfil', user)
+                return redirect('menu')
     else:
         form = LoginForm()
 
@@ -59,3 +59,33 @@ def logout_view(request):
 # ------------------------------------------------------------------------
 
 
+def perfilutilizador(request, username):
+    if not request.user.is_authenticated:
+        return redirect('login')
+
+    # account = get_object_or_404(Account, username=username)
+    #account = Account.objects.get(username="admin")
+    account = request.user
+
+    return render(request, 'account/perfil.html', {'account': account})
+
+
+def account_settings(request, username):
+    if not request.user.is_authenticated:
+        return redirect('login')
+
+    context = {}
+    if request.POST:
+        form = AccountUpdateForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+    else:
+            form = AccountUpdateForm(
+                initial={"email": request.user.email,
+                         "username": request.user.username,
+                         "fotoPerfil": request.user.fotoPerfil
+                         }
+            )
+    context['account_form'] = form
+    context['username'] = request.user.username
+    return render(request, 'account/account.html', context)

@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+
+{% block content %}
+    <title>Perfil: {{account.username}}</title>
+
+    <h1>Perfil de {{account.username}}</h1>
+    <div>
+        <img style="width: 100px; max-height: 100px;float: left;" src={{account.fotoPerfil}} alt = "profile pic">
+    </div>
+            <p >Username: {{account.username}}</p>
+            <p >E-mail: {{account.email}}</p>
+
+
+            {% if request.user.id == account.id %}
+            <p>
+                <form action= "{% url 'account_settings' request.user.username %}" method="get">
+                    <input class="submit" type="submit" value="Atualizar conta">
+                </form>
+            </p>
+
+            {% endif %}
+
+{% endblock content %}

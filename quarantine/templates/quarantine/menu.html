@@ -2,7 +2,6 @@
 
 
 {% block content %}
-    <title>Quarantine</title>
 
 
         {% if error_message %}
@@ -16,9 +15,9 @@
         {% else %}
 
         <div>
-            <h2>Grupos:</h2>
+            <h1 >GRUPOS</h1>
                {% if grupos %}
-                <ul>
+                <div class="lista">
                     {% for grupo in grupos %}
                     <li>
                         <a href= "{% url 'grupo_view' grupo.id %}">
@@ -26,12 +25,12 @@
                     </a>
                     </li>
                     {% endfor %}
-                </ul>
+                </div>
                 {% else %}
                    <p>Nao participa em nenhum grupo.</p>
                {% endif %}
             <form action= "{% url 'criargrupo' %}" method="get">
-                <input type="submit" value="Criar Grupo">
+                <input class="submit" type="submit" value="Criar Grupo">
             </form>
         </div>
 
