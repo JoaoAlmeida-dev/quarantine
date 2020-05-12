@@ -60,17 +60,7 @@
                             <p>Não existem outros utilizadores... ;_;</p>
                         {% endif %}
 
-                    <div>
-                        <form action= "{% url 'adicionarmembros' grupo.id %}" method="get">
-                            <input class="submit" type="submit" value="Adicionar membro">
-                        </form>
-                    </div>
 
-                    <div>
-                        <form action= "{% url 'removermembros' grupo.id %}" method="get">
-                            <input class= "submit" type="submit" value="Remover membro">
-                        </form>
-                    </div>
 
                     <div>
                         <form action= "{% url 'sairgrupo' grupo.id %}" method="get">
@@ -82,6 +72,17 @@
             </div>
             <div>
                 {% if isadmin %}
+                    <div>
+                        <form action= "{% url 'adicionarmembros' grupo.id %}" method="get">
+                            <input class="submit" type="submit" value="Adicionar membro">
+                        </form>
+                    </div>
+
+                    <div>
+                        <form action= "{% url 'removermembros' grupo.id %}" method="get">
+                            <input class= "submit" type="submit" value="Remover membro">
+                        </form>
+                    </div>
                     <form action= "{% url 'apagargrupo' grupo.id %}" method="get">
                         <input class= "submit" type="submit" value="Apagar Grupo">
                     </form>
