@@ -9,7 +9,7 @@
 
         <div style="height:200px; position:relative;">
             <div style="float: left;">
-                <img style="width: 200px; height:auto; max-height: 200px;" src={{account.fotoPerfil}} alt="profile pic">
+                <img style="width: auto; height:auto; max-height: 200px; max-width: 200px;" src={{account.fotoPerfil}} alt="profile pic">
             </div>
             <div style="float: left;">
                 <p >Username: {{account.username}}</p>
@@ -24,6 +24,12 @@
                     <input class="submit" type="submit" value="Atualizar conta">
                 </form>
             </p>
+            <p>
+                <form action="{% url 'password_change' request.user.username %}" method="get">
+                    <input class="submit" type="submit" value="Alterar Password">
+                </form>
+            </p>
+
 
             {% endif %}
         </div>

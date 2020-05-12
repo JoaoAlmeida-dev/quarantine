@@ -61,7 +61,7 @@ def logout_view(request):
 
 def perfilutilizador(request, username):
     if not request.user.is_authenticated:
-        return redirect('login')
+        return redirect('login_view')
 
     # account = get_object_or_404(Account, username=username)
     account = Account.objects.get(username=username)
@@ -72,7 +72,7 @@ def perfilutilizador(request, username):
 
 def account_settings(request, username):
     if not request.user.is_authenticated:
-        return redirect('login')
+        return redirect('login_view')
 
     context = {}
     if request.POST:

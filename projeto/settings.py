@@ -28,7 +28,7 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 if DEBUG:
-    EMAIL_BACKEND = 'django.core.email.backends.console.EmailBackend' #Development Only
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend' #Development Only
 
 # Application definition
 
@@ -126,3 +126,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]

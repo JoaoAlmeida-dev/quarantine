@@ -1,6 +1,7 @@
 from django.conf.urls import url
-# (. significa que importa views da mesma directoria)
+from django.contrib.auth import views as auth_views
 
+# . significa que importa views da mesma directoria)
 from . import views
 from account.views import (
     login_view,
@@ -25,12 +26,27 @@ urlpatterns = [
     url(r'^perfil/(?P<username>[a-zA-Z0-9_]+)/$', perfilutilizador, name='perfilutilizador'),
     url(r'^perfil/(?P<username>[a-zA-Z0-9_]+)/account_settings/$', account_settings, name='account_settings'),
 
-    # url(r'^perfil/(?P<username>.*)/definicoes/$', defutilizador, name='defutilizador'),
-    # url(r'^perfil/(?P<username>.*)/atualizarperfil/$', views.atualizarperfil, name='atualizarperfil'),
+# https://github.com/django/django/blob/master/django/contrib/auth/views.py
+    url(r'^perfil/password_change/done/',
+        auth_views.PasswordChangeDoneView.as_view(template_name='registration/password_change_done.html'),
+        name='password_change_done'),
 
-    # url(r'^perfil/(?P<username>.*)/password_change/$'
-    # url(r'^perfil/(?P<username>.*)/password_change/done/$'
-    # url(r'^perfil/(?P<username>.*)/
+    url(r'^perfil/(?P<username>[a-zA-Z0-9_]+)/password_change/', auth_views.PasswordChangeView.as_view(
+        template_name='registration/password_change.html'),
+        name='password_change'),
+
+    url(r'^password_reset/', auth_views.PasswordResetView.as_view(),
+        name='password_reset'),
+
+
+    url(r'^password_reset/done/',
+        auth_views.PasswordResetCompleteView.as_view(template_name='registration/password_reset_done.html'),
+        name='password_reset_done'),
+    url(r'^reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(),
+        name='password_reset_confirm'),
+    url(r'^reset/done/',
+        auth_views.PasswordResetCompleteView.as_view(template_name='registration/password_reset_complete.html'),
+        name='password_reset_complete'),
 
     # ----------------------------------------------------------------------Grupo
 

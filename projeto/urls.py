@@ -19,5 +19,6 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^quarantine/', include('quarantine.urls')),
+    url(r'^quarantine/', include('django.contrib.auth.urls')),
     url(r'^admin/', admin.site.urls),
 ]
