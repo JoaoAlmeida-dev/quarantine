@@ -11,31 +11,56 @@
     {% endif %}
 
     <form method="post">{% csrf_token %}
-	    {% for field in login_form %}
-            <p>
-                {{field.label_tag}}
-                {{field}}
 
-                {% if field.help_text %}
-                    <small style="color: grey;">{{field.help_text}}</small>
-                {% endif %}
 
-            </p>
-	    {% endfor %}
+        <table>
+            {% for field in login_form %}
+            <tbody>
+                    <tr>
+                        <td>
+                            {{field.label_tag}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            {{field}}
+                        </td>
+                    </tr>
 
-        {% for field in login_form %}
-            {% for error in field.errors %}
-                <p style="color: red;">{{error}}</p>
+                    {% if field.help_text %}
+                        <tr>
+                            <td>
+                                <small style="color: grey;">{{field.help_text}}</small>
+                            </td>
+                        </tr>
+                    {% endif %}
+
+
             {% endfor %}
-        {% endfor %}
 
-        {% if login_form.non_field_errors %}
-            <div style="color:red;">
-                <p>{{login_form.non_field_errors}}</p>
-            </div>
-        {% endif %}
+            {% for field in login_form %}
+                {% for error in field.errors %}
+                    <tr>
+                        <td>
+                            <small style="color: red;">{{error}}</small>
+                        </td>
+                    </tr>
+                {% endfor %}
+            {% endfor %}
 
-        <button type="submit">Log in</button>
+            {% if login_form.non_field_errors %}
+            <tr>
+                <td>
+                    <p style="color:red;">{{login_form.non_field_errors}}</p>
+                </td>
+            </tr>
+            {% endif %}
+            <tr>
+                <td>
+                    <input class="submit" type="submit" value="Log in"></input>
+                </td>
+            </tr>
+        </table>
 
     </form>
 

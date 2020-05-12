@@ -11,18 +11,20 @@ from account.views import (
 )
 
 urlpatterns = [
+
     url(r'^$', views.menu, name='menu'),
+
     # ----------------------------------------------------------------------Account
 
     url(r'^login/$', login_view, name='login_view'),
-
     url(r'^registo/$', registo_view, name='registo_view'),
-
     url(r'^logout/$', logout_view, name='logout_view'),
+
     # ----------------------------------------------------------------------Utilizador
 
-    url(r'^perfil/(?P<username>.*)/$', perfilutilizador, name='perfilutilizador'),
-    url(r'^perfil/(?P<username>.*)/account_settings/$', account_settings, name='account_settings'),
+    url(r'^perfil/(?P<username>[a-zA-Z0-9_]+)/$', perfilutilizador, name='perfilutilizador'),
+    url(r'^perfil/(?P<username>[a-zA-Z0-9_]+)/account_settings/$', account_settings, name='account_settings'),
+
     # url(r'^perfil/(?P<username>.*)/definicoes/$', defutilizador, name='defutilizador'),
     # url(r'^perfil/(?P<username>.*)/atualizarperfil/$', views.atualizarperfil, name='atualizarperfil'),
 

@@ -64,8 +64,8 @@ def perfilutilizador(request, username):
         return redirect('login')
 
     # account = get_object_or_404(Account, username=username)
-    #account = Account.objects.get(username="admin")
-    account = request.user
+    account = Account.objects.get(username=username)
+    # account = request.user
 
     return render(request, 'account/perfil.html', {'account': account})
 
@@ -80,12 +80,13 @@ def account_settings(request, username):
         if form.is_valid():
             form.save()
     else:
-            form = AccountUpdateForm(
-                initial={"email": request.user.email,
-                         "username": request.user.username,
-                         "fotoPerfil": request.user.fotoPerfil
-                         }
-            )
+        form = AccountUpdateForm(
+            initial={"email": request.user.email,
+                     "username": request.user.username,
+                     "fotoPerfil": request.user.fotoPerfil,
+                     }
+        )
+
     context['account_form'] = form
     context['username'] = request.user.username
     return render(request, 'account/account.html', context)

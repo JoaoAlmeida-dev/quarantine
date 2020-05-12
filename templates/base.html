@@ -18,8 +18,8 @@
     body title{
         font-family: Arial, Helvetica, sans-serif;
        /*   text-align: center;*/
-
     }
+
     body h1{
         font-family: Arial, Helvetica, sans-serif;
           /*   text-align: center;*/
@@ -119,9 +119,11 @@
         position: absolute;
         background-color: #f9f9f9;
         min-width: 100%;
+        right: 0;
+
         box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
         z-index: 1;
-        font-family: Arial, Helvetica, sans-serif;
+        font-family: inherit;
     }
 
     /* Links inside the dropdown */
@@ -191,6 +193,9 @@
 
     <meta charset="UTF-8">
     <div class="topnav">
+        <a class="active" href="{% url 'menu' %}" style="padding:0px">
+            <img style="max-height:20px;" src = "https://cdn.discordapp.com/attachments/705409255414431806/709720071265583175/coronavirus-2.jpg">
+        </a>
         <a class="active" href="{% url 'menu' %}"> Quarantine</a>
         {% if request.user.is_authenticated %}
         <div style="float:right" class="dropdown">
@@ -200,7 +205,7 @@
             <div class="dropdown-content">
                     <a href="{% url 'perfilutilizador' request.user.username %}">Profile</a>
                     <a href="{% url 'logout_view' %}"> Logout</a>
-                    <a href="{% url 'account_settings' request.user.username %}"> settings</a>
+                    <a href="{% url 'account_settings' request.user.username %}"> Settings</a>
             </div>
         </div>
         {% else %}

@@ -4,20 +4,30 @@
 {% block content %}
     <title>Adicionar Membro Grupo: {{ grupo.titulo }}</title>
 
-    <a href="{% url 'grupo_view' grupo.id %}"><h1> Grupo: {{ grupo.titulo }}</h1></a>
+<div  >
+    <a style="text-decoration:none;" href="{% url 'grupo_view' grupo.id %}">
+        <h1 > Grupo: {{ grupo.titulo }}</h1>
+    </a>
+</div>
         <p>Descrição: {{ grupo.descrição }}</p>
 
         <br><h1>Adicionar membro</h1></br>
+
         <form action="{% url 'adicionarmembros' grupo.id %}" method="post">
             {% csrf_token %}
-            {% for user in users %}
-
-                <input type="checkbox" name="user" id="user{{ forloop.counter }}" value="{{ user.username }}" />
-                <label for="user{{ forloop.counter }}"> {{ user.username }}</label>
-                <br />
-            {% endfor %}
-            <input type="submit" value="AdicionarMembros">
-
+            <table>
+                {% for user in users %}
+                    <tr>
+                        <td>
+                            <input type="checkbox" name="user" id="user{{ forloop.counter }}" value="{{ user.username }}"/>
+                            <label for="user{{ forloop.counter }}"> {{ user.username }}</label>
+                        </td>
+                    </tr>
+                {% endfor %}
+                <tr>
+                    <td><input class="submit" type="submit" value="AdicionarMembros"></td>
+                </tr>
+            </table>
         </form>
 
 {% endblock content %}
