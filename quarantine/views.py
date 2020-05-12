@@ -48,7 +48,12 @@ def menu(request):
 
 def criargrupo(request):
     if request.POST:
-        g = Grupo(titulo=request.POST['titulo'], descrição=request.POST['desc'])
+        visibilidade = request.POST['visibilidade']
+        if visibilidade == 'publico':
+            g = Grupo(titulo=request.POST['titulo'], descrição=request.POST['desc'],publico=True)
+        if visibilidade == 'privado':
+            g = Grupo(titulo=request.POST['titulo'], descrição=request.POST['desc'],publico=False)
+
         g.save()
 
         mg = MembroGrupo(Account=request.user, grupo=g, is_admin=True)
@@ -86,7 +91,11 @@ def grupo_view(request, grupo_id):
     try:
         membro = MembroGrupo.objects.get(grupo_id=grupo_id, Account_id=request.user.id)
     except:
-        # membro.DoesNotExist:
+        #
+        if grupo.publico:
+            membrosgrupo = MembroGrupo.objects.filter(grupo_id=grupo_id)
+            return render(request, 'quarantine/grupo.html',
+                          {'grupo': grupo, 'membrosgrupo': membrosgrupo, 'isadmin': membro.is_admin})
         return HttpResponseRedirect(reverse('menu'))
     else:
         membrosgrupo = MembroGrupo.objects.filter(grupo_id=grupo_id)
@@ -188,6 +197,14 @@ def removermembros(request, grupo_id):
         return render(request, 'quarantine/removermembros.html', {'grupo': grupo, 'users': users,
                                                                       # 'next': url
                                                                       })
+
+def sairgrupo(request, grupo_id):
+    grupo = get_object_or_404(Grupo, pk=grupo_id)
+    user = request.user
+    grupo.membros.remove(user)
+
+    return HttpResponseRedirect(reverse('menu'))
+
 # ----------------------------------------------------------------------
 
 

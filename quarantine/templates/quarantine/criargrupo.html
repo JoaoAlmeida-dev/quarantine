@@ -20,6 +20,13 @@
                 <label for="user{{ forloop.counter }}"> {{ user.username }}</label>
                 <br />
             {% endfor %}
+            <p>
+                <label for="visibilidade">Visibilidade:</label>
+                <select id="visibilidade" name="visibilidade">
+                    <option value="publico">Público</option>
+                    <option value="privado">Privado</option>
+                </select>
+            </p>
             <input class="submit" type="submit" value="Criar Grupo">
         </form>
 {% endblock content %}

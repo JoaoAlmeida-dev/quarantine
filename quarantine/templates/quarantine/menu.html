@@ -27,7 +27,7 @@
                     {% endfor %}
                 </div>
                 {% else %}
-                   <p>Nao participa em nenhum grupo.</p>
+                   <p>Nao participa em nenhum grupo, mas pode aceder aos seguintes grupos públicos:</p>
                {% endif %}
             <form action= "{% url 'criargrupo' %}" method="get">
                 <input class="submit" type="submit" value="Criar Grupo">

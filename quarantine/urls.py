@@ -43,6 +43,7 @@ urlpatterns = [
 
     # url(r'^grupo_(?P<grupo_id>[0-9]+)/removermembrospage/$', views.removermembrospage, name='removermembrospage'),
     url(r'^grupo_(?P<grupo_id>[0-9]+)/removermembros/$', views.removermembros, name='removermembros'),
+    url(r'^grupo_(?P<grupo_id>[0-9]+)/sairgrupo/$', views.sairgrupo, name='sairgrupo'),
 
     # ----------------------------------------------------------------------Publicação
 

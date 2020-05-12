@@ -8,9 +8,10 @@ from account.models import Account
 
 
 class Grupo(models.Model):
-    titulo = models.CharField(max_length=1000)
+    titulo = models.CharField(max_length=1000, unique=True)
     descrição = models.CharField(max_length=10000)
     membros = models.ManyToManyField(Account, through='MembroGrupo')
+    publico = models.BooleanField(default=True)
 
     def __str__(self):
         return self.titulo
