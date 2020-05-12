@@ -7,6 +7,8 @@ from django.shortcuts import get_object_or_404
 from .models import Grupo, Publicacao, Comentario, MembroGrupo, VotoPublicacao, VotoComentario
 from django.contrib.auth.models import User
 from django.contrib.auth import logout
+from django.db.models import Q
+
 
 from account.models import Account
 
@@ -19,9 +21,16 @@ def menu(request):
     # if request.user.is_authenticated:
     #     return HttpResponseRedirect(reverse('logged', args=()))
     # else:
-    grupos = Grupo.objects.filter(membros__id=request.user.id)
+    grupos = Grupo.objects.filter(Q(membros__id=request.user.id) | Q(publico=True)).distinct().order_by('titulo')
     return render(request, 'quarantine/menu.html', {'grupos': grupos})
 
+def grupospublicos(request):
+    grupos = Grupo.objects.filter(publico=True).order_by('titulo')
+    return render(request, 'quarantine/menu.html', {'grupos': grupos})
+
+def gruposutilizador(request):
+    grupos = Grupo.objects.filter(membros__id=request.user.id).order_by('titulo')
+    return render(request, 'quarantine/menu.html', {'grupos': grupos})
 
 # ------------------------------------------------------------------------
 
@@ -86,20 +95,28 @@ def apagargrupo(request, grupo_id):
 
 
 def grupo_view(request, grupo_id):
-    grupo = get_object_or_404(Grupo, pk=grupo_id)
     membro = None
+    print("start")
     try:
-        membro = MembroGrupo.objects.get(grupo_id=grupo_id, Account_id=request.user.id)
+        grupo = get_object_or_404(Grupo, pk=grupo_id)
     except:
-        #
-        if grupo.publico:
-            membrosgrupo = MembroGrupo.objects.filter(grupo_id=grupo_id)
-            return render(request, 'quarantine/grupo.html',
-                          {'grupo': grupo, 'membrosgrupo': membrosgrupo, 'isadmin': membro.is_admin})
+        #Não existe grupo com esse id
         return HttpResponseRedirect(reverse('menu'))
     else:
-        membrosgrupo = MembroGrupo.objects.filter(grupo_id=grupo_id)
-        return render(request, 'quarantine/grupo.html',
+        if grupo.publico:
+            membrosgrupo = MembroGrupo.objects.filter(grupo_id=grupo_id)
+            try:
+                membro = membrosgrupo.get(grupo_id=grupo_id, Account=request.user)
+            except:
+                isadmin = False
+            else:
+                isadmin = membro.is_admin
+            return render(request, 'quarantine/grupo.html',
+                          {'grupo': grupo, 'membrosgrupo': membrosgrupo, 'isadmin': isadmin})
+        else:
+            membrosgrupo = MembroGrupo.objects.filter(grupo_id=grupo_id, Account_id=request.user.id)
+            membro = membrosgrupo.get(grupo_id=grupo_id, Account=request.user)
+            return render(request, 'quarantine/grupo.html',
                       {'grupo': grupo, 'membrosgrupo': membrosgrupo, 'isadmin': membro.is_admin})
 
 
@@ -214,6 +231,14 @@ def publicacao(request, grupo_id, pub_id):
     candeletepub = MembroGrupo.objects.get(grupo_id=grupo_id, Account_id=request.user.id).is_admin or \
                    pub.autor.id == request.user.id
     return render(request, 'quarantine/publicacao.html', {'grupo': grupo, 'pub': pub, 'candeletepub': candeletepub})
+
+# def publicacoesgrupo(request, grupo_id):
+#     grupo = get_object_or_404(Grupo, pk=grupo_id)
+#     if(request.user.is_admin | request.user is in grupo.membros | grupo.publico):
+#         pubs = Publicacao.Objects.filter(grupo=grupo)
+#
+#     return render(request, 'quarantine/grupo.html', {'grupo': grupo, 'pubs': pubs, 'candeletepub': candeletepub})
+
 
 
 def publicarcomentario(request, grupo_id, pub_id):
