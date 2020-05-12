@@ -21,15 +21,15 @@ def menu(request):
     # if request.user.is_authenticated:
     #     return HttpResponseRedirect(reverse('logged', args=()))
     # else:
-    grupos = Grupo.objects.filter(Q(membros__id=request.user.id) | Q(publico=True)).distinct()
+    grupos = Grupo.objects.filter(Q(membros__id=request.user.id) | Q(publico=True)).distinct().order_by('titulo')
     return render(request, 'quarantine/menu.html', {'grupos': grupos})
 
 def grupospublicos(request):
-    grupos = Grupo.objects.filter(publico=True)
+    grupos = Grupo.objects.filter(publico=True).order_by('titulo')
     return render(request, 'quarantine/menu.html', {'grupos': grupos})
 
 def gruposutilizador(request):
-    grupos = Grupo.objects.filter(membros__id=request.user.id)
+    grupos = Grupo.objects.filter(membros__id=request.user.id).order_by('titulo')
     return render(request, 'quarantine/menu.html', {'grupos': grupos})
 
 # ------------------------------------------------------------------------
@@ -231,6 +231,14 @@ def publicacao(request, grupo_id, pub_id):
     candeletepub = MembroGrupo.objects.get(grupo_id=grupo_id, Account_id=request.user.id).is_admin or \
                    pub.autor.id == request.user.id
     return render(request, 'quarantine/publicacao.html', {'grupo': grupo, 'pub': pub, 'candeletepub': candeletepub})
+
+# def publicacoesgrupo(request, grupo_id):
+#     grupo = get_object_or_404(Grupo, pk=grupo_id)
+#     if(request.user.is_admin | request.user is in grupo.membros | grupo.publico):
+#         pubs = Publicacao.Objects.filter(grupo=grupo)
+#
+#     return render(request, 'quarantine/grupo.html', {'grupo': grupo, 'pubs': pubs, 'candeletepub': candeletepub})
+
 
 
 def publicarcomentario(request, grupo_id, pub_id):
