@@ -6,7 +6,8 @@ from account.models import Account
 
 
 class RegistrationForm(UserCreationForm):
-    email = forms.EmailField(max_length=60, help_text='Obrigatório, Adicione um email valido', widget=forms.EmailInput(attrs={'class': 'input'}))
+    email = forms.EmailField(max_length=60, help_text='Obrigatório, Adicione um email valido',
+                             widget=forms.EmailInput(attrs={'class': 'input'}))
 
     class Meta:
         model = Account
@@ -46,6 +47,10 @@ class AccountUpdateForm(forms.ModelForm):
             'email': forms.EmailInput(attrs={'class': 'input'}),
             'username': forms.TextInput(attrs={'class': 'input'}),
             'fotoPerfil': forms.TextInput(attrs={'class': 'input'}),
+        }
+        help_texts = {
+            'fotoPerfil': 'Nós nao guardamos as fotos de perfil no nosso site. Para definir a sua insira abaixo o link direto para a imagem que quer utilizar como perfil',
+
         }
 
         def clean_email(self):

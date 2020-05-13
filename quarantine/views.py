@@ -241,7 +241,8 @@ def juntaragrupo(request, grupo_id):
         except(KeyError, Http404):
             membro = MembroGrupo(grupo=grupo, Account=user)
             membro.save()
-            grupo_view(request, grupo_id)
+
+            return redirect(grupo_view, {'grupo_id': grupo_id})
         else:
             return HttpResponseRedirect(reverse('menu'))
 

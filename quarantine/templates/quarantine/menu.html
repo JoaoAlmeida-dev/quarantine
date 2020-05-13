@@ -4,41 +4,39 @@
 {% block content %}
 
 
-        {% if error_message %}
-                <p><strong>{{ error_message }}</strong></p>
-            {% endif %}
+{% if error_message %}
+<p><strong>{{ error_message }}</strong></p>
+{% endif %}
 
 
-        {% if not request.user.is_authenticated %}
-            <img style="width:100%; height:auto;" src="https://www.dinheirovivo.pt/wp-content/uploads/2020/03/coronavirus-2.jpg" alt = "profile pic">
+{% if not request.user.is_authenticated %}
+<img style="width:100%; height:auto;" src="https://www.dinheirovivo.pt/wp-content/uploads/2020/03/coronavirus-2.jpg"
+     alt="profile pic">
 
-        {% else %}
+{% else %}
 
 
+<div>
+    <h1>GRUPOS</h1>
+    {% if grupos %}
+    <div class="lista">
+        {% for grupo in grupos %}
+        <li>
+            <a href="{% url 'grupo_view' grupo.id %}">
+                {{ grupo.titulo }}
+            </a>
+        </li>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p>Nao participa em nenhum grupo, mas pode aceder aos seguintes grupos públicos:</p>
+    {% endif %}
+    <form action="{% url 'criargrupo' %}" method="get">
+        <input class="submit greenback-hover" type="submit" value="Criar Grupo">
+    </form>
+</div>
 
-
-        <div>
-            <h1 >GRUPOS</h1>
-               {% if grupos %}
-                <div class="lista">
-                    {% for grupo in grupos %}
-                    <li>
-                        <a href= "{% url 'grupo_view' grupo.id %}">
-                    {{ grupo.titulo }}
-                    </a>
-                    </li>
-                    {% endfor %}
-                </div>
-                {% else %}
-                   <p>Nao participa em nenhum grupo, mas pode aceder aos seguintes grupos públicos:</p>
-               {% endif %}
-            <form action= "{% url 'criargrupo' %}" method="get">
-                <input class="submit greenback-hover" type="submit" value="Criar Grupo">
-            </form>
-        </div>
-
-        {%  endif %}
-
+{%  endif %}
 
 
 {% endblock content %}
