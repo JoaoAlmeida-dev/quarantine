@@ -232,6 +232,8 @@ def publicacao(request, grupo_id, pub_id):
                    pub.autor.id == request.user.id
     return render(request, 'quarantine/publicacao.html', {'grupo': grupo, 'pub': pub, 'candeletepub': candeletepub})
 
+#def
+
 # def publicacoesgrupo(request, grupo_id):
 #     grupo = get_object_or_404(Grupo, pk=grupo_id)
 #     if(request.user.is_admin | request.user is in grupo.membros | grupo.publico):
