@@ -7,8 +7,7 @@ from django.shortcuts import get_object_or_404
 from .models import Grupo, Publicacao, Comentario, MembroGrupo, VotoPublicacao, VotoComentario
 from django.contrib.auth.models import User
 from django.contrib.auth import logout
-from django.db.models import Q
-
+from django.db.models import Q, Exists
 
 from account.models import Account
 
@@ -22,6 +21,7 @@ def menu(request):
     #     return HttpResponseRedirect(reverse('logged', args=()))
     # else:
     grupos = Grupo.objects.filter(Q(membros__id=request.user.id) | Q(publico=True)).distinct().order_by('titulo')
+
     return render(request, 'quarantine/menu.html', {'grupos': grupos})
 
 def grupospublicos(request):

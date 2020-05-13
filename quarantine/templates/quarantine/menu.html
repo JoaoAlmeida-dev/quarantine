@@ -14,8 +14,7 @@
 
         {% else %}
 
-            <a href= "{% url 'gruposutilizador' %}">Seus grupos</a><br>
-            <a href= "{% url 'grupospublicos' %}">Grupos públicos</a>
+
 
 
         <div>
@@ -34,7 +33,7 @@
                    <p>Nao participa em nenhum grupo, mas pode aceder aos seguintes grupos públicos:</p>
                {% endif %}
             <form action= "{% url 'criargrupo' %}" method="get">
-                <input class="submit" type="submit" value="Criar Grupo">
+                <input class="submit green_hover_background" type="submit" value="Criar Grupo">
             </form>
         </div>
 

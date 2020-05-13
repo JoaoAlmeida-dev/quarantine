@@ -1,8 +1,19 @@
+/*    body, html{
+        height:100%;
+
+    }*/
+
     body {
-        margin:0;
+        margin:0px;
+        margin-bottom:15px;
         padding-top: 48px;
         padding-bottom: 20px;
+        background-color: #d1d1d1;
 
+        background-attachment: fixed;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
     }
     body p{
          font-family: Arial, Helvetica, sans-serif;
@@ -14,28 +25,48 @@
        /*   text-align: center;*/
     }
 
-    body h1{
-        font-family: Arial, Helvetica, sans-serif;
-          /*   text-align: center;*/
-
+     a:link {
+      text-decoration: none;
     }
+
+    a:visited {
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: none;
+    }
+
+    a:active {
+      text-decoration: none;
+    }
+
+    h1,h2,h3,h4,h5,h6{
+        font-family: Arial, Helvetica, sans-serif;
+        color: black;
+          /*   text-align: center;*/
+    }
+
     body .lista {
       list-style-type: none;
-      margin: 0;
-      padding: 0;
+      margin: 0px;
+      padding: 0px;
       width: 200px;
       background-color: #f1f1f1;
-
+      border-style:solid;
+      border-width:0px;
+      border-radius:3px;
 
     }
 
     body .lista li a {
       display: block;
+      margin: 10px 0px;
       color: #000;
       padding: 8px 16px;
       text-decoration: none;
-        text-align: center;
-        font-family: Arial, Helvetica, sans-serif;
+      text-align: center;
+      font-family: Arial, Helvetica, sans-serif;
     }
 
     body .lista li a:hover {
@@ -43,37 +74,16 @@
       color: white;
     }
 
-
-    form.form{
-        vertical-align:middle;
-        horizontal-align:middle;
-        max-width: 330px;
-        padding: 15px;
-        margin: auto;
-        border: 1px solid black;
-    }
-
-    form.form .form_title{
-        position: relative;
-        font-family: 50px, Arial, Helvetica, sans-serif;
-        text-align:center;
-        border: 1px solid black;
-    }
-
-    .form .form_row{
-        position: relative;
-        box-sizing: border-box;
-        height: auto;
-        padding: 10px;
-        font-size: 16px;
-        border: 1px solid black;
-    }
-
-    .form submit{
+    body input.submit{
         background-color: #333;
         border: none;
         color: white;
         width: 200px;
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.3);
+        transition: 0.3s;
+        border-style:solid;
+        border-width:0px;
+        border-radius: 3px;
 
         text-decoration: none;
         display: inline-block;
@@ -82,13 +92,14 @@
         cursor: pointer;
     }
 
-    .form submit:hover{
-        background-color: #4CAF50;
+    body input.submit.green:hover{
+      background-color: #4CAF50;
         color: white;
-        }
-
-
-
+    }
+     body input.submit.red:hover{
+      background-color: #d41313;
+        color: white;
+    }
 
     .topnav {
         margin: 0;
@@ -101,29 +112,35 @@
         position: fixed;
     }
 
-    .topnav > a {
+    .topbar-logo{
+        width: 46px;
+        height: 39px;
+        overflow: hidden;
+    }
+
+    .topnav a {
         float: left;
         color: #f2f2f2;
         text-align: center;
-        padding: 14px 16px;
+        padding: 12px 14px;
         text-decoration: none;
-        font-size: 17px;
+        font-size: 25px;
         font-family: Arial, Helvetica, sans-serif;
     }
 
     .topnav a:hover:not(.active) {
-        background-color: #ddd;
-        color: black;
+        background-color: #001705;
+        color: white;
+    }
+    .topnav a:hover.red:not(.active) {
+        background-color: #d41313;
+        color: white;
     }
 
     .topnav a.active {
         background-color: #4CAF50;
         color: white;
     }
-
-
-
-
 
     .dropdown {
         position: relative;
@@ -152,7 +169,7 @@
 
         box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
         z-index: 1;
-        font-family: inherit;
+        font-family: 10px Arial, Helvetica, sans-serif;
     }
 
     /* Links inside the dropdown */
@@ -173,17 +190,15 @@
     .dropdown:hover .dropbtn {background-color: #3e8e41;}
 
 
-
-
-
     .sidenews {
         list-style-type: none;
         width: 15%;
         background-color: #f1f1f1;
         position: fixed;
         overflow-y: scroll;
-        top: 48px;
+        top: 53px;
         bottom: 25px;
+        background-color: rgba(255,255,255,0.85);
     }
 
     .sidenews a {
@@ -198,6 +213,68 @@
       background-color: #555;
       color: white;
     }
+
+/*https://www.w3schools.com/howto/howto_css_two_columns.asp*/
+
+    .flexrow {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .flexside{
+        flex:40%
+        background-color: #adadad;
+        padding: 20px;
+    }
+
+    .flexmain {
+        flex: 60%;
+        padding: 20px;
+    }
+
+
+    .card {
+        background-color:#f1f1f1;
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.3);
+        transition: 0.3s;
+
+        max-width: 40%;
+
+        padding:10px;
+        margin:10px;
+        border-style:solid;
+        border-width:0px;
+        border-radius: 9px;
+    }
+
+    .card:hover {
+        box-shadow: 0 10px 20px 0 rgba(0,0,0,0.8);
+    }
+
+    .container {
+        padding: 2px 16px;
+    }
+
+    .card title{
+        width:inherit;
+        overflow:hidden;
+        text-overflow:ellipsis;
+    }
+
+    .vote{
+
+    }
+    .vote img{
+        width:10px;
+        height:10px;
+    }
+
+    .vote:hover {
+        box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);
+    }
+
+
+
 
 
 
