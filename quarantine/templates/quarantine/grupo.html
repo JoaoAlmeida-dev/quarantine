@@ -23,6 +23,11 @@
                     </form>
                 </div>
                 <div>
+                    <form action= "{% url 'juntaragrupo' grupo.id %}" method="get">
+                        <input class="submit green" type="submit" value="Juntar ao grupo">
+                    </form>
+                </div>
+                <div>
                     <form action= "{% url 'sairgrupo' grupo.id %}" method="get">
                         <input class="submit red" type="submit" value="Sair do grupo">
                     </form>

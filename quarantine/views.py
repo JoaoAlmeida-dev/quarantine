@@ -232,7 +232,19 @@ def publicacao(request, grupo_id, pub_id):
                    pub.autor.id == request.user.id
     return render(request, 'quarantine/publicacao.html', {'grupo': grupo, 'pub': pub, 'candeletepub': candeletepub})
 
-#def
+def juntaragrupo(request, grupo_id):
+    grupo = get_object_or_404(Grupo, pk=grupo_id)
+    user = request.user
+    if grupo.publico:
+        try:
+            membro = get_object_or_404(MembroGrupo, grupo_id=grupo_id, Account_id=user.id)
+        except(KeyError, Http404):
+            membro = MembroGrupo(grupo=grupo, Account=user)
+            membro.save()
+            grupo_view(request, grupo_id)
+        else:
+            return HttpResponseRedirect(reverse('menu'))
+
 
 # def publicacoesgrupo(request, grupo_id):
 #     grupo = get_object_or_404(Grupo, pk=grupo_id)
