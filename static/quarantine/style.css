@@ -3,16 +3,28 @@
 
     }*/
 
+    img.profilepic{
+        width: auto;
+        height:auto;
+
+        margin:auto;
+
+        max-height: 200px;
+        max-width: 200px;
+        border: 1px solid black;
+        border-radius: 4px;
+    }
+
 
     .center {
         margin: auto;
     }
 
     .left-align{
-        text-align:left;
+        text-align:left !important;
     }
     .center-align{
-        text-align:center;
+        text-align:center !important;
     }
 
     .padding-hover:hover{
@@ -43,6 +55,10 @@
         background-color: #d41313 !important;
         color: white;
     }
+    .greyback{
+        background-color: #919191 !important;
+        color: white;
+    }
 
     .shadow-border:hover{
         box-shadow: 0 6px 10px 0 rgba(0,0,0,0.8);
@@ -69,7 +85,6 @@
     }
     body p{
          font-family: Arial, Helvetica, sans-serif;
-       text-align: center;
 
     }
 
@@ -340,7 +355,7 @@
         box-shadow: 0 4px 8px 0 rgba(0,0,0,0.3);
         transition: 0.3s;
 
-        max-width: 40%;
+
 
         padding:10px;
         margin:10px;

@@ -2,7 +2,7 @@
 from django.contrib.auth.models import User
 from django.db import models
 
-from account.models import Account
+from account.models import account
 
 
 
@@ -10,7 +10,7 @@ from account.models import Account
 class Grupo(models.Model):
     titulo = models.CharField(max_length=1000, unique=True)
     descrição = models.CharField(max_length=10000)
-    membros = models.ManyToManyField(Account, through='MembroGrupo')
+    membros = models.ManyToManyField(account, through='MembroGrupo')
     publico = models.BooleanField(default=True)
 
     def __str__(self):
@@ -18,9 +18,12 @@ class Grupo(models.Model):
 
 
 class MembroGrupo(models.Model):
-    Account = models.ForeignKey(Account, on_delete=models.CASCADE)
+    account = models.ForeignKey(account, on_delete=models.CASCADE)
     grupo = models.ForeignKey(Grupo, on_delete=models.CASCADE)
     is_admin = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.account + self.grupo
 
 
 class Publicacao(models.Model):
@@ -30,7 +33,7 @@ class Publicacao(models.Model):
 
     grupo = models.ForeignKey(Grupo, null=True, on_delete=models.CASCADE)
 
-    autor = models.ForeignKey(Account, null=True, on_delete=models.SET_NULL)
+    autor = models.ForeignKey(account, null=True, on_delete=models.SET_NULL)
     karma = models.IntegerField('votos', default=0)
 
     def __str__(self):
@@ -43,17 +46,21 @@ class Comentario(models.Model):
 
     pub_data = models.DateTimeField('data de comentario')
 
-    autor = models.ForeignKey(Account, null=True, on_delete=models.SET_NULL)
+    autor = models.ForeignKey(account, null=True, on_delete=models.SET_NULL)
     karma = models.IntegerField('votos', default=0)
-
+    def __str__(self):
+        return self.titulo
 
 class VotoComentario(models.Model):
-    autor = models.ForeignKey(Account, null=True, on_delete=models.SET_NULL)
+    autor = models.ForeignKey(account, null=True, on_delete=models.SET_NULL)
     value = models.BooleanField(null=True)
     Comentario = models.ForeignKey(Comentario, null=True, on_delete=models.SET_NULL)
-
+    def __str__(self):
+        return self.autor + self.value+ self.Comentario
 
 class VotoPublicacao(models.Model):
-    autor = models.ForeignKey(Account, null=True, on_delete=models.SET_NULL)
+    autor = models.ForeignKey(account, null=True, on_delete=models.SET_NULL)
     value = models.BooleanField(null=True)
     Publicacao = models.ForeignKey(Publicacao, null=True, on_delete=models.SET_NULL)
+    def __str__(self):
+        return self.autor+ self.value +self.Publicacao
