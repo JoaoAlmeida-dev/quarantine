@@ -20,28 +20,38 @@
         padding-left: 30px;
     }
     .greyback-hover:hover{
-        background-color: #919191;
+        background-color: #919191 !important;
         color: black;
         transition: 0.2s;
     }
     .greenback-hover:hover{
-        background-color: #4CAF50;
+        background-color: #4CAF50 !important;
         color: white;
         transition: 0.2s;
     }
     .redback-hover:hover{
-        background-color: #d41313;
+        background-color: #d41313 !important;
         color: white;
         transition: 0.2s;
     }
 
     .greenback{
-        background-color: #4CAF50;
+        background-color: #4CAF50 !important;
         color: white;
     }
     .redback{
-        background-color: #d41313;
+        background-color: #d41313 !important;
         color: white;
+    }
+
+    .shadow-border:hover{
+        box-shadow: 0 6px 10px 0 rgba(0,0,0,0.8);
+        border:1px solid black;
+        border-radius:15px;
+    }
+    .shadow-border{
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.3);
+
     }
 
 
@@ -89,7 +99,7 @@
       list-style-type: none;
       margin: 0px;
       padding: 0px;
-      width: 200px;
+      width: 100%;
       background-color: #f1f1f1;
 
       border-style:solid;
@@ -130,7 +140,8 @@
         border-radius: 4px;
         box-sizing: border-box;
 
-        transition:0.3s;
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.3);
+        transition: 0.3s;
     }
 
     input[type=text]:focus, input[type=email]:focus, input[type=password]:focus {
@@ -144,34 +155,26 @@
       box-shadow: 0 6px 10px 0 rgba(0,0,0,0.8);
     }
 
-    input[type=submit]:hover{
-        color: white;
-        box-shadow: 0 6px 10px 0 rgba(0,0,0,0.8);
-        border:2px solid black;
-        border-radius:15px;
-    }
-
-
-
 
     input[type=submit] {
-        width: 100%;
         background-color: #333;
         color: white;
         padding: 15px 32px;
-        margin: 0;
 
         cursor: pointer;
         text-decoration: none;
         display: inline-block;
 
-        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.3);
-        transition: 0.3s;
-
         border-style:solid;
         border-width:0px;
         border-radius: 4px;
         cursor: pointer;
+    }
+    input[type=submit]:hover{
+        color: white;
+        box-shadow: 0 6px 10px 0 rgba(0,0,0,0.8);
+        border:1px solid black;
+        border-radius:15px;
     }
 
 
@@ -184,7 +187,7 @@
         padding: 0;
         top:0;
         width: 100%;
-
+        font-size: 25px;
 
         overflow: visible;
         background-color: #333;
@@ -204,7 +207,7 @@
         text-align: center;
         padding: 12px 14px;
         text-decoration: none;
-        font-size: 25px;
+
         font-family: Arial, Helvetica, sans-serif;
     }
 
@@ -218,11 +221,12 @@
     }
 
     .dropdown .dropbtn{
-        font-size: 20px;
+        font-size: inherit;
         border: none;
         outline: none;
+        background-color:inherit;
         color: white;
-        padding: 12px 16px;
+        padding: 12px 14px;
         font-family: inherit;
         margin: 0;
      }
@@ -311,19 +315,23 @@
 
     .flexrow {
         display: flex;
-        flex-wrap: wrap;
         align-content: center;
+        flex-direction:row;
+        border-bottom:1px dotted;
     }
 
     .flexside{
-        flex:40%;
+        flex:30%;
         background-color: #adadad;
-        padding: 20px;
+        margin: 10px;
+        padding: 10px;
+        flex-direction:column;
     }
 
     .flexmain {
-        flex: 60%;
+        flex: 70%;
         padding: 20px;
+        flex-direction:column;
     }
 
 
