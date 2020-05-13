@@ -4,7 +4,7 @@
 {% block content %}
     <title>Registo</title>
 
-    <h2>Registo</h2>
+    <h2 class="center-align">Registo</h2>
     {% if error_message %}
         <p><strong>{{ error_message }}</strong></p>
     {% endif %}
@@ -12,7 +12,7 @@
     <form class="form" method = "post">
         {% csrf_token %}
 
-        <table>
+        <table class="center left-align">
             {% for field in registration_form %}
                 <tbody>
                     <tr>
@@ -34,12 +34,12 @@
                         </tr>
                     {% endfor %}
 
-                {% endfor %}
-                <tr>
-                    <td><button type="submit">Register</button></td>
-                </tr>
+                </tbody>
+            {% endfor %}
+            <tr>
+                <td><input class=" greenback-hover shadow-onhover" type="submit" value="Register"></input></td>
+            </tr>
 
-            </tbody>
         </table>
 
     </form>

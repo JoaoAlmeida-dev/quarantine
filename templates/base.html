@@ -7,24 +7,22 @@
     <link rel="stylesheet" type="text/css" href="{% static 'quarantine/style.css' %}">
 
     <div class="topnav">
-        <a class="active" style="padding:0px" href="{% url 'menu' %}" >
-            <img style="max-height:20px;" src = "{% static 'quarantine/images/Quarantine-logo.jpg' %}">
-        </a>
-        <a class="active" style="padding:0px font-size:40px" href="{% url 'menu' %}"> Quarantine</a>
+
+        <a class="greenback padding-hover"  href="{% url 'menu' %}"> Quarantine</a>
         {% if request.user.is_authenticated %}
-        <a href= "{% url 'gruposutilizador' %}">Seus grupos</a>
-        <a href= "{% url 'grupospublicos' %}">Grupos públicos</a>
+        <a class="padding-hover redback-hover" href= "{% url 'gruposutilizador' %}">Seus grupos</a>
+        <a class="padding-hover redback-hover" href= "{% url 'grupospublicos' %}">Grupos públicos</a>
         <div style="float:right" class="dropdown">
-            <button  class="dropbtn a">{{request.user.username}}
+            <button  class="greenback-hover dropbtn a">{{request.user.username}}
             </button>
             <div class="dropdown-content">
-                    <a href="{% url 'perfilutilizador' request.user.username %}">Profile</a>
-                    <a class="red" href="{% url 'logout_view' %}"> Logout</a>
+                    <a class="greenback-hover" href="{% url 'perfilutilizador' request.user.username %}">Profile</a>
+                    <a class="redback-hover" href="{% url 'logout_view' %}"> Logout</a>
             </div>
         </div>
         {% else %}
-            <a style="float:right" href="{% url 'login_view' %}"> Login</a>
-            <a style="float:right" href="{% url 'registo_view' %}"> Registo</a>
+            <a class="greenback-hover" style="float:right" href="{% url 'login_view' %}"> Login</a>
+            <a class="greenback-hover" style="float:right" href="{% url 'registo_view' %}"> Registo</a>
         {% endif %}
     </div>
 
@@ -42,25 +40,19 @@
 {% if request.user.is_authenticated %}
     <div style="margin-left:15%;padding:1px 16px;  ">
 {% else %}
-    <div style="padding:1px 16px;  ">
+    <div style="padding:0px 0px;  ">
 {% endif %}
          {% block content %}
          {% endblock content %}
     </div>
 
 
-
-
-
-
-
-
 </body>
 
 <footer>
     <div class="footer">
-        <a class="active" href="contactos">Contactos</a>
-        <a class="active" href="sobre">Sobre</a>
+        <a class="greenback-hover" href="contactos">Contactos</a>
+        <a class="greenback-hover" href="sobre">Sobre</a>
     </div>
 </footer>
 

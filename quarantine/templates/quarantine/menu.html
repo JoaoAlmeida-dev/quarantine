@@ -10,7 +10,7 @@
 
 
         {% if not request.user.is_authenticated %}
-            <img src="https://www.dinheirovivo.pt/wp-content/uploads/2020/03/coronavirus-2.jpg" alt = "profile pic">
+            <img style="width:100%; height:auto;" src="https://www.dinheirovivo.pt/wp-content/uploads/2020/03/coronavirus-2.jpg" alt = "profile pic">
 
         {% else %}
 
@@ -33,7 +33,7 @@
                    <p>Nao participa em nenhum grupo, mas pode aceder aos seguintes grupos públicos:</p>
                {% endif %}
             <form action= "{% url 'criargrupo' %}" method="get">
-                <input class="submit green_hover_background" type="submit" value="Criar Grupo">
+                <input class="submit greenback-hover" type="submit" value="Criar Grupo">
             </form>
         </div>
 

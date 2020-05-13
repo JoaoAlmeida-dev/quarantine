@@ -6,11 +6,17 @@ from account.models import Account
 
 
 class RegistrationForm(UserCreationForm):
-    email = forms.EmailField(max_length=60, help_text='Obrigatório, Adicione um email valido')
+    email = forms.EmailField(max_length=60, help_text='Obrigatório, Adicione um email valido', widget=forms.EmailInput(attrs={'class': 'input'}))
 
     class Meta:
         model = Account
         fields = ("email", "username", "password1", "password2")
+        widgets = {
+            'email': forms.EmailInput(attrs={'class': 'input'}),
+            'username': forms.TextInput(attrs={'class': 'input'}),
+            'password1': forms.PasswordInput(attrs={'class': 'input'}),
+            'password2': forms.PasswordInput(attrs={'class': 'input'}),
+        }
 
 
 class LoginForm(forms.ModelForm):
@@ -19,6 +25,10 @@ class LoginForm(forms.ModelForm):
     class Meta:
         model = Account
         fields = ('email', 'password')
+        widgets = {
+            'email': forms.EmailInput(attrs={'class': 'input'}),
+            'password': forms.PasswordInput(attrs={'class': 'input'}),
+        }
 
     def clean(self):
         if self.is_valid():
@@ -32,6 +42,11 @@ class AccountUpdateForm(forms.ModelForm):
     class Meta:
         model = Account
         fields = ('email', 'username', 'fotoPerfil')
+        widgets = {
+            'email': forms.EmailInput(attrs={'class': 'input'}),
+            'username': forms.TextInput(attrs={'class': 'input'}),
+            'fotoPerfil': forms.TextInput(attrs={'class': 'input'}),
+        }
 
         def clean_email(self):
             if self.is_valid():
