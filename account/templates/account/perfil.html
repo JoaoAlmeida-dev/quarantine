@@ -2,37 +2,27 @@
 
 
 {% block content %}
-    <title>Perfil: {{account.username}}</title>
+<title>Perfil: {{account.username}}</title>
 
-    <h1>Perfil de {{account.username}}</h1>
-    <div>
-
-        <div style="height:200px; position:relative;">
-            <div style="float: left;">
-                <img style="width: auto; height:auto; max-height: 200px; max-width: 200px;" src={{account.fotoPerfil}} alt="profile pic">
-            </div>
-            <div style="float: left;">
-                <p >Username: {{account.username}}</p>
-                <p >E-mail: {{account.email}}</p>
-            </div>
-        </div>
-
-        <div style="position:relative;">
-            {% if request.user.id == account.id %}
-            <p>
-                <form action="{% url 'account_settings' request.user.username %}" method="get">
-                    <input class="submit" type="submit" value="Atualizar conta">
-                </form>
-            </p>
-            <p>
-                <form action="{% url 'password_change' request.user.username %}" method="get">
-                    <input class="submit" type="submit" value="Alterar Password">
-                </form>
-            </p>
+<div class="center" style="width:50%;">
+    <div class="card center" >
+        <h1 class="center-align">{{account.username}}</h1>
+        <img class="profilepic " src={{account.fotoPerfil}} alt="profile pic">
+        <p style="font-size:25px">Username: {{account.username}}</p>
+        <p style="font-size:25px">E-mail: {{account.email}}</p>
 
 
-            {% endif %}
-        </div>
+        {% if request.user.id == account.id %}
+        <form action="{% url 'account_settings' request.user.username %}" method="get">
+            <input class="greenback-hover" type="submit" value="Atualizar conta">
+        </form>
+        <form action="{% url 'password_change' request.user.username %}" method="get">
+            <input class="greenback-hover" type="submit" value="Alterar Password">
+        </form>
+
+        {% endif %}
+
     </div>
+</div>
 
 {% endblock content %}
