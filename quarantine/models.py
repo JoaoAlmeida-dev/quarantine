@@ -26,6 +26,7 @@ class MembroGrupo(models.Model):
 class Publicacao(models.Model):
     titulo = models.CharField(max_length=1000)
     conteudo = models.CharField(max_length=10000)
+
     pub_data = models.DateTimeField('data de publicacao')
 
     grupo = models.ForeignKey(Grupo, null=True, on_delete=models.CASCADE)
