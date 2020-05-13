@@ -16,6 +16,7 @@ urlpatterns = [
     url(r'^$', views.menu, name='menu'),
     url(r'^grupospublicos/$', views.grupospublicos, name='grupospublicos'),
     url(r'^gruposutilizador/$', views.gruposutilizador, name='gruposutilizador'),
+    url(r'^gruposprivados/$', views.gruposprivados, name='gruposprivados'),
 
     # ----------------------------------------------------------------------Account
 

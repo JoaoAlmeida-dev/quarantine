@@ -12,6 +12,7 @@
         {% if request.user.is_authenticated %}
         <a class="padding-hover greyback-hover" href= "{% url 'gruposutilizador' %}">Seus grupos</a>
         <a class="padding-hover greyback-hover" href= "{% url 'grupospublicos' %}">Grupos públicos</a>
+        <a class="padding-hover greyback-hover" href= "{% url 'gruposprivados' %}">Grupos privados</a>
         <div style="float:right" class="dropdown">
             <button  class="greenback-hover dropbtn" style="font-size:">{{request.user.username}}
             </button>
