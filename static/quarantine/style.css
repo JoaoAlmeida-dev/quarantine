@@ -154,6 +154,9 @@
         border:0px solid black;
     }
 
+    label{
+        font-weight: bold ;
+    }
 
     input, select, textarea {
         width: 100%;
@@ -319,6 +322,7 @@
         flex-direction:row;
         border-bottom:1px solid black;
         transition:0.2s;
+        padding: 10px 0px;
     }
 
     .flexside{
@@ -327,15 +331,17 @@
         margin: 10px;
         flex-direction:column;
         border-radius:2px;
+        padding: 10px;
     }
+
     .flexside .background{
         background-color: #adadad;
-        padding: 10px;
+        padding: 0px 10px;
     }
 
     .flexmain {
         flex: 70%;
-        padding: 20px;
+        padding: 10px;
         flex-direction:column;
     }
 
@@ -361,7 +367,8 @@
         overflow:hidden;
         text-overflow:ellipsis;
         font-size:20px;
-        border-bottom:1px solid black;
+        vertical-align: middle;
+
     }
 
     .card .content{

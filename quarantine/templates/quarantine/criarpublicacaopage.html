@@ -2,21 +2,44 @@
 
 
 {% block content %}
-    <title>Criar Publicação</title>
-
-    <a href="{% url 'grupo_view' grupo.id %}"><h1> Grupo: {{ grupo.titulo }}</h1></a>
-    <p>{{ grupo.descrição }}</p>
+<title>Criar Publicação</title>
+<table class="center left-align">
+    <a class="center center-align" href="{% url 'grupo_view' grupo.id %}"><h1> Grupo: {{ grupo.titulo }}</h1></a>
 
     <form action="{% url 'criarpublicacao' grupo.id %}" method="post">
-            {% csrf_token %}
-            <label for="titulo"><b>Titulo :</b></label>
-                <input type="text" id="titulo" name="titulo" required>
-            <br>
-            <label for="conteudo"><b>Conteudo :</b></label>
-        <br>
-            <textarea id="conteudo" name="conteudo" rows="10" cols="50" required></textarea>
-            <br>
-            <input type="submit" value="Publicar">
-    </form>
+        {% csrf_token %}
 
+        <tbody>
+        <tr>
+            <td><label for="titulo">Titulo :</label></td>
+        </tr>
+        </tbody>
+
+        <tbody>
+        <tr>
+            <td><input type="text" id="titulo" name="titulo" required></td>
+        </tr>
+        </tbody>
+
+        <tbody>
+        <tr>
+            <td><label for="conteudo">Conteudo :</label></td>
+        </tr>
+        </tbody>
+
+        <tbody>
+        <tr>
+        <tr>
+            <td><textarea id="conteudo" name="conteudo" rows="10" cols="50" required></textarea></td>
+        </tr>
+        </tbody>
+
+        <tbody>
+        <tr>
+            <td><input class="greenback-hover" type="submit" value="Publicar"></td>
+        </tr>
+        </tbody>
+
+    </form>
+</table>
 {% endblock content %}

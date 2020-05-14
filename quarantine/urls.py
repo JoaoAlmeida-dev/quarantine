@@ -18,6 +18,11 @@ urlpatterns = [
     url(r'^gruposutilizador/$', views.gruposutilizador, name='gruposutilizador'),
     url(r'^gruposprivados/$', views.gruposprivados, name='gruposprivados'),
 
+    # ----------------------------------------------------------------------Footer
+    url(r'^sobre/$', views.sobre, name='sobre'),
+    url(r'^/contactos$', views.contactos, name='contactos'),
+
+
     # ----------------------------------------------------------------------Account
 
     url(r'^login/$', login_view, name='login_view'),
@@ -91,5 +96,8 @@ urlpatterns = [
 
     # url(r'^grupo_(?P<grupo_id>[0-9]+)/pub_(?P<pub_id>[0-9]+)/com_(?P<com_id>[0-9]+)/votarup/$', views.votarup, name='votarup'),
     # url(r'^grupo_(?P<grupo_id>[0-9]+)/pub_(?P<pub_id>[0-9]+)/com_(?P<com_id>[0-9]+)/votardown/$', views.votardown, name='votardown'),
+
+
+
 
 ]
