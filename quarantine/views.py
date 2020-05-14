@@ -32,6 +32,13 @@ def gruposutilizador(request):
     grupos = Grupo.objects.filter(membros__id=request.user.id).order_by('titulo')
     return render(request, 'quarantine/menu.html', {'grupos': grupos})
 
+def gruposprivados(request):
+    if request.user.is_admin:
+        grupos = Grupo.objects.filter(publico=False).order_by('titulo')
+    else:
+        grupos = Grupo.objects.filter(publico=False, membros__id=request.user.id).order_by('titulo')
+    return render(request, 'quarantine/menu.html', {'grupos': grupos})
+
 # ------------------------------------------------------------------------
 
 # def atualizarperfil(request, username):
@@ -96,6 +103,7 @@ def apagargrupo(request, grupo_id):
 
 def grupo_view(request, grupo_id):
     membro = None
+    admin = isadmin(request, grupo_id)
     try:
         grupo = get_object_or_404(Grupo, pk=grupo_id)
     except:
@@ -104,23 +112,15 @@ def grupo_view(request, grupo_id):
     else:
         if grupo.publico:
             membrosgrupo = MembroGrupo.objects.filter(grupo_id=grupo_id).order_by('MembroGrupo_account__username')
-            try:
-                membro = membrosgrupo.get(grupo_id=grupo_id, account=request.user)
-            except:
-                isadmin = False
-                isingroup = False
-            else:
-                isadmin = membro.is_admin
-                isingrou = True
             return render(request, 'quarantine/grupo.html',
-                          {'grupo': grupo, 'membrosgrupo': membrosgrupo, 'isadmin': isadmin})
+                          {'grupo': grupo, 'membrosgrupo': membrosgrupo, 'isadmin': admin})
         else:
             membrosgrupo = MembroGrupo.objects.filter(grupo_id=grupo_id, account_id=request.user.id)\
                 .order_by('MembroGrupo_account__username')
-
-            membro = membrosgrupo.get(grupo_id=grupo_id, account=request.user)
+            if not admin:
+                membro = membrosgrupo.get(grupo_id=grupo_id, account=request.user)
             return render(request, 'quarantine/grupo.html',
-                      {'grupo': grupo, 'membrosgrupo': membrosgrupo, 'isadmin': membro.is_admin})
+                      {'grupo': grupo, 'membrosgrupo': membrosgrupo, 'isadmin': admin})
 
 
 def criarpublicacao(request, grupo_id):
@@ -145,8 +145,7 @@ def apagarpublicacao(request, grupo_id, pub_id):
     grupo = get_object_or_404(Grupo, pk=grupo_id)
     pub = get_object_or_404(Publicacao, pk=pub_id)
 
-    candeletepub = MembroGrupo.objects.get(grupo_id=grupo_id,
-                                           account_id=request.user.id).is_admin or pub.autor.id == request.user.id
+    candeletepub = isadmin(request,grupo_id) or pub.autor.id == request.user.id
     # isadmin = MembroGrupo.objects.get(grupo_id=grupo_id, Account_id=request.user.id).is_admin
 
     if candeletepub:
@@ -218,14 +217,19 @@ def removermembros(request, grupo_id):
                                                                       # 'next': url
                                                                       })
 
+def isadmin(request, grupo_id):
+    if request.user.is_admin or MembroGrupo.objects.get(grupo_id=grupo, account=request.user).is_admin:
+        return True
+    else:
+        return False
+
 def sairgrupo(request, grupo_id):
     grupo = get_object_or_404(Grupo, pk=grupo_id)
     user = request.user
     grupo.membros.remove(user)
-    if MembroGrupo.objects.filter(grupo_id=grupo_id) is None:
-        print(cocó)
+    print(isadmin(request, grupo_id))
+    if not MembroGrupo.objects.filter(grupo_id=grupo):
         grupo.delete()
-
     return HttpResponseRedirect(reverse('menu'))
 
 # ----------------------------------------------------------------------
@@ -234,14 +238,13 @@ def sairgrupo(request, grupo_id):
 def publicacao(request, grupo_id, pub_id):
     grupo = get_object_or_404(Grupo, pk=grupo_id)
     pub = get_object_or_404(Publicacao, pk=pub_id)
-    candeletepub = MembroGrupo.objects.get(grupo_id=grupo_id, account_id=request.user.id).is_admin or \
-                   pub.autor.id == request.user.id
+    candeletepub = isadmin(request, grupo_id) or pub.autor.id == request.user.id
     return render(request, 'quarantine/publicacao.html', {'grupo': grupo, 'pub': pub, 'candeletepub': candeletepub})
 
 def juntaragrupo(request, grupo_id):
     grupo = get_object_or_404(Grupo, pk=grupo_id)
     user = request.user
-    if grupo.publico:
+    if grupo.publico or request.user.is_admin:
         try:
             membro = get_object_or_404(MembroGrupo, grupo_id=grupo_id, account_id=user.id)
         except(KeyError, Http404):
