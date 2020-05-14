@@ -2,23 +2,24 @@
 
 
 {% block content %}
+{% load static %}
 
-    <div>
-        <div class="flexrow">
+<div>
+    <div class="flexrow">
 
-            <div class="flexmain">
-                <h1>{{ grupo.titulo }}</h1>
-                <p>{{ grupo.descrição }}</p>
+        <div class="flexmain">
+            <h1>{{ grupo.titulo }}</h1>
+            <p>{{ grupo.descrição }}</p>
 
-                <div>
-                    {% if error_message %}
-                        <p><strong>{{ error_message }}</strong></p>
-                    {% endif %}
-                </div>
+            <div>
+                {% if error_message %}
+                <p><strong>{{ error_message }}</strong></p>
+                {% endif %}
             </div>
+        </div>
 
-            <div class="flexside">
-
+        <div class="flexside">
+            <div class="background shadow-border">
                 <div>
                     <form action="{% url 'criarpublicacao' grupo.id %}" method="get">
                         <input class="submit greenback-hover" type="submit" value="Criar publicação">
@@ -26,88 +27,90 @@
                 </div>
 
                 <div>
-                    <form action= "{% url 'juntaragrupo' grupo.id %}" method="get">
+                    <form action="{% url 'juntaragrupo' grupo.id %}" method="get">
                         <input class="submit greenback-hover shadow-border" type="submit" value="Juntar ao grupo">
                     </form>
                 </div>
 
                 <div>
-                    <form action= "{% url 'sairgrupo' grupo.id %}" method="get">
+                    <form action="{% url 'sairgrupo' grupo.id %}" method="get">
                         <input class="submit redback-hover shadow-border" type="submit" value="Sair do grupo">
                     </form>
                 </div>
-
             </div>
+
+        </div>
+    </div>
+
+    <div class="flexrow">
+        <div class="flexmain">
+            <h2 style="margin:10px;">Publicações</h2>
+            {% if grupo.publicacao_set.all %}
+            <div>
+                {% for pub in grupo.publicacao_set.all %}
+
+                <div class="card clicable shadow-border"
+                     onclick="location.href='{% url 'publicacao' grupo.id pub.id %}'">
+                    <div class="top">
+                        <a> {{ pub.titulo }} </a>
+                    </div>
+
+
+                    <a class="vote" href="{% url 'votaruppub' grupo.id pub.id %}?next={{ request.path }}">
+                        {% load static %}
+                        <img src="{% static 'quarantine/images/upvote.png' %}" alt="upvote">
+                    </a>({{ pub.karma}})
+                    <a class="vote" href="{% url 'votardownpub' grupo.id pub.id %}?next={{ request.path }}">
+                        <img src="{% static 'quarantine/images/downvote.png' %}" alt="upvote">
+                    </a>
+
+                </div>
+
+                {% endfor %}
+            </div>
+            {% else %}
+            <p>Nao ha publicações.</p>
+            {% endif %}
         </div>
 
-        <div class="flexrow">
-            <div class="flexmain">
-                <h2 style="margin:10px;">Publicações</h2>
-                {% if grupo.publicacao_set.all %}
-                    <div>
-                        {% for pub in grupo.publicacao_set.all  %}
 
-                        <div class="card">
-                            <div class="title">
-                                <a href="{% url 'publicacao' grupo.id pub.id %}"> {{ pub.titulo }}  </a>
-                            </div>
-
-
-                            <a class="vote" href="{% url 'votaruppub' grupo.id pub.id %}?next={{ request.path }}">
-                                {% load static %}
-                                <img src="{% static 'quarantine/images/upvote.png' %}" alt="upvote">
-                            </a>({{ pub.karma}})
-                            <a class="vote"  href="{% url 'votardownpub' grupo.id pub.id %}?next={{ request.path }}">
-                                <img src="{% static 'quarantine/images/downvote.png' %}" alt="upvote">
-                            </a>
-
-                        </div>
-
-                        {% endfor %}
-                     </div>
-                {% else %}
-                    <p>Nao ha publicações.</p>
-                {% endif %}
-            </div>
-
-
-            <div class="flexside">
-
+        <div class="flexside">
+            <div class="background shadow-border">
 
                 <h2 class="center-align">Membros</h2>
                 {% if grupo.membros.all %}
-                    <ul class="lista center-align ">
-                        {% for membro in grupo.membros.all  %}
-                        <li>
-                            <a href="{% url 'perfilutilizador' membro.username %}">{{ membro.username }}</a>
-                        </li>
-                        {% endfor %}
-                   </ul>
+                <ul class="lista center-align ">
+                    {% for membro in grupo.membros.all %}
+                    <li>
+                        <a href="{% url 'perfilutilizador' membro.username %}">{{ membro.username }}</a>
+                    </li>
+                    {% endfor %}
+                </ul>
                 {% else %}
-                    <p>Não existem outros utilizadores... ;_;</p>
+                <p>Não existem outros utilizadores... ;_;</p>
                 {% endif %}
 
                 {% if isadmin %}
-                    <div>
-                        <form action= "{% url 'adicionarmembros' grupo.id %}" method="get">
-                            <input class="submit greenback-hover" type="submit" value="Adicionar membro">
-                        </form>
-                    </div>
-                    <div>
-                        <form action="{% url 'apagargrupo' grupo.id %}" method="get">
-                            <input class="submit redback-hover" type="submit" value="Apagar Grupo">
-                        </form>
-                    </div>
+                <div>
+                    <form action="{% url 'adicionarmembros' grupo.id %}" method="get">
+                        <input class="submit greenback-hover" type="submit" value="Adicionar membro">
+                    </form>
+                </div>
+                <div>
+                    <form action="{% url 'apagargrupo' grupo.id %}" method="get">
+                        <input class="submit redback-hover" type="submit" value="Apagar Grupo">
+                    </form>
+                </div>
 
-                    <div>
-                        <form action= "{% url 'removermembros' grupo.id %}" method="get">
-                            <input class= "submit redback-hover" type="submit" value="Remover membro">
-                        </form>
-                    </div>
+                <div>
+                    <form action="{% url 'removermembros' grupo.id %}" method="get">
+                        <input class="submit redback-hover" type="submit" value="Remover membro">
+                    </form>
+                </div>
                 {% endif %}
-
             </div>
         </div>
     </div>
+</div>
 
 {% endblock content %}

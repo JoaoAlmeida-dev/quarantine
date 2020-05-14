@@ -49,7 +49,7 @@ class AccountUpdateForm(forms.ModelForm):
             'fotoPerfil': forms.TextInput(attrs={'class': 'input'}),
         }
         help_texts = {
-            'fotoPerfil': 'Nós nao guardamos as fotos de perfil no nosso site. Para definir a sua insira abaixo o link direto para a imagem que quer utilizar como perfil',
+            'fotoPerfil': 'Nós nao guardamos as fotos de perfil no nosso site. Para definir a sua insira acima o link direto para a imagem que quer utilizar como perfil',
 
         }
 

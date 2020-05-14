@@ -2,51 +2,90 @@
 
 
 {% block content %}
-
+{% load static %}
+<div class="flexrow">
+    <div class="flexmain ">
         <a href="{% url 'grupo_view' grupo.id %}"><h1>{{ grupo.titulo }}</h1></a>
         <h1>{{ pub.titulo }}</h1>
         <b>{{ pub.autor }}({{ pub.pub_data }})</b>
         <p>{{ pub.conteudo }}</p>
-
-        <p>
+        <a class="vote" href="{% url 'votaruppub' grupo.id pub.id %}?next={{ request.path }}">
+            <img src="{% static 'quarantine/images/upvote.png' %}" alt="upvote">
+        </a>
         <label>({{ pub.karma }})</label>
-        <a href="{% url 'votaruppub' grupo.id pub.id %}?next={{ request.path }}"><i>Up</i></a>
-        <a href="{% url 'votardownpub' grupo.id pub.id %}?next={{ request.path }}"><i>Down</i></a>
-            </p>
-
-        {% if error_message %}
-            <p><strong>{{ error_message }}</strong></p>
-        {% endif %}
-
-        {% if candeletepub %}
-            <form action= "{% url 'apagarpublicacao' grupo.id pub.id %}" method="get">
-            <input class="submit" type="submit" value="Apagar Publicação">
-        </form>
+        <a class="vote" href="{% url 'votardownpub' grupo.id pub.id %}?next={{ request.path }}">
+            <img src="{% static 'quarantine/images/downvote.png' %}" alt="downvote">
+        </a>
+    </div>
+    <div class="flexside ">
+        <div class="background shadow-border">{% if candeletepub %}
+            <form action="{% url 'apagarpublicacao' grupo.id pub.id %}" method="get">
+                <input class="submit redback-hover" type="submit" value="Apagar Publicação">
+            </form>
             {% endif %}
-        <br>
-        <b>Comentarios:</b>
-        {% if pub.comentario_set.all %}
-            <ul>
-                {% for comentario in pub.comentario_set.all  %}
-                    <li>
-                        <label>{{ comentario.autor }}({{ comentario.pub_data }}):  {{ comentario.conteudo }} ({{ comentario.karma }})</label>
+            {% if error_message %}
+            <strong>{{ error_message }}</strong>
+            {% endif %}
+        </div>
 
-                        <a href="{% url 'votarupcom' grupo.id pub.id comentario.id %}?next={{ request.path }}"><label>Up</label></a>
-                        <a href="{% url 'votardowncom' grupo.id pub.id comentario.id %}?next={{ request.path }}"><label>Down</label></a>
-                        {% if request.user.id == comentario.autor.id or isadmin %}
-                            <a href="{% url 'apagarcomentario' grupo.id pub.id comentario.id %}"><label>Apagar</label></a>
-                        {% endif %}
-                    </li>
-                {% endfor %}
-            </ul>
+    </div>
+
+</div>
+
+<div class="flexrow">
+    <div class="flexmain ">
+        <h2>Comentarios:</h2>
+        {% if pub.comentario_set.all %}
+        {% for comentario in pub.comentario_set.all %}
+
+        <div class="card shadow-border">
+            <div class="top">
+                <label>{{ comentario.autor }} <label>
+                    <label style="float:right;">({{ comentario.pub_data }})</label>
+                    <div class="vote">
+                        <a href="{% url 'votaruppub' grupo.id pub.id %}?next={{ request.path }}">
+                            <img src="{% static 'quarantine/images/upvote.png' %}" alt="upvote">
+                        </a>
+                        <label>({{ pub.karma }})</label>
+                        <a href="{% url 'votardownpub' grupo.id pub.id %}?next={{ request.path }}">
+                            <img src="{% static 'quarantine/images/downvote.png' %}" alt="downvote">
+                        </a>
+                    </div>
+            </div>
+
+            <div class="content">{{ comentario.conteudo }}</div>
+            {% if request.user.id == comentario.autor.id or isadmin %}
+            <a href="{% url 'apagarcomentario' grupo.id pub.id comentario.id %}"><label>Apagar</label></a>
+            <form action="{% url 'apagarcomentario' grupo.id pub.id comentario.id %}"
+                  method="get">
+
+                <input class="submit redback-hover shadow-border" style="" type="submit" value="Apagar">
+            </form>
+
+
+            {% endif %}
+        </div>
+        {% endfor %}
         {% else %}
-            <p>Nao ha comentarios.</p>
+        <p>Nao ha comentarios.</p>
         {% endif %}
 
-        <form action="{% url 'publicarcomentario' grupo.id pub.id%}?next={{ request.path }}" method="post">
-            {% csrf_token %}
-            <textarea name="conteudo" rows="10" cols="50"></textarea>
-            <br>
-            <input class="submit" type="submit" value="Publicar comentario">
-        </form>
+
+    </div>
+
+    <div class="flexside">
+        <div class="background shadow-border">
+            <form action="{% url 'publicarcomentario' grupo.id pub.id%}?next={{ request.path }}" method="post">
+                {% csrf_token %}
+                <textarea name="conteudo" rows="10" cols="50"></textarea>
+                <br>
+                <input class="submit greenback-hover" type="submit" value="Publicar comentario">
+            </form>
+        </div>
+
+
+    </div>
+</div>
+
+
 {% endblock content %}

@@ -23,13 +23,16 @@
     .left-align{
         text-align:left !important;
     }
+    .right-align{
+        text-align:left !important;
+    }
     .center-align{
         text-align:center !important;
     }
 
     .padding-hover:hover{
-        padding-right: 30px;
-        padding-left: 30px;
+        padding-right: 20px !important;
+        padding-left: 20px !important;
     }
     .greyback-hover:hover{
         background-color: #919191 !important;
@@ -60,14 +63,19 @@
         color: white;
     }
 
+    .shadow-border{
+        box-shadow: 0px 0px 0px 2px rgba(0,0,0,0.8), 0 4px 8px 0 rgba(0,0,0,0.3);
+        transition:0.2s;
+    }
+
     .shadow-border:hover{
-        box-shadow: 0 6px 10px 0 rgba(0,0,0,0.8);
-        border:1px solid black;
+        box-shadow: 0px 0px 0px 2px rgba(0,0,0,0.8),0 6px 10px 0 rgba(0,0,0,0.8);
         border-radius:15px;
     }
-    .shadow-border{
-        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.3);
 
+
+    .clicable{
+        cursor:pointer;
     }
 
 
@@ -90,18 +98,22 @@
 
     a:link {
       text-decoration: none;
+      color:black;
     }
 
     a:visited {
       text-decoration: none;
+      color:black;
     }
 
     a:hover {
       text-decoration: none;
+      color:black;
     }
 
     a:active {
       text-decoration: none;
+      color:black;
     }
 
     h1,h2,h3,h4,h5,h6{
@@ -143,7 +155,7 @@
     }
 
 
-    input, select {
+    input, select, textarea {
         width: 100%;
         padding: 12px 20px;
         margin: 8px 0;
@@ -157,12 +169,12 @@
         transition: 0.3s;
     }
 
-    input[type=text]:focus, input[type=email]:focus, input[type=password]:focus, select:focus  {
+    input[type=text]:focus, input[type=email]:focus, input[type=password]:focus, select:focus, textarea:focus  {
       background-color: lightgreen;
       box-shadow: 0px 0px 0px 2px rgba(0,0,0,0.8) , 0 6px 10px 1px rgba(0,0,0,0.8);
     }
 
-     input[type=text]:hover, input[type=email]:hover, input[type=password]:hover , select:hover {
+     input[type=text]:hover, input[type=email]:hover, input[type=password]:hover , select:hover, textarea:hover {
       box-shadow: 0px 0px 0px 2px rgba(0,0,0,0.8) , 0 6px 10px 1px rgba(0,0,0,0.8);
     }
 
@@ -299,36 +311,26 @@
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /*https://www.w3schools.com/howto/howto_css_two_columns.asp*/
 
     .flexrow {
         display: flex;
         align-content: center;
         flex-direction:row;
-        border-bottom:1px dotted;
+        border-bottom:1px solid black;
+        transition:0.2s;
     }
 
     .flexside{
         flex:30%;
-        background-color: #adadad;
+
         margin: 10px;
-        padding: 10px;
         flex-direction:column;
+        border-radius:2px;
+    }
+    .flexside .background{
+        background-color: #adadad;
+        padding: 10px;
     }
 
     .flexmain {
@@ -340,44 +342,43 @@
 
     .card {
         background-color:#f1f1f1;
-        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.3);
-        transition: 0.3s;
-
-
+        transition: 0.2s;
+        text-decoration:none;
 
         padding:10px;
         margin:10px;
-        border-style:solid;
-        border-width:0px;
-        border-radius: 9px;
-    }
-
-    .card:hover {
-        box-shadow: 0 10px 20px 0 rgba(0,0,0,0.8);
+        border:0px solid black;
+        border-radius: 4px;
     }
 
     .container {
         padding: 2px 16px;
     }
 
-    .card title{
+    .card .top{
+        display: flex;
         width:inherit;
         overflow:hidden;
         text-overflow:ellipsis;
+        font-size:20px;
+        border-bottom:1px solid black;
+    }
+
+    .card .content{
+        font-size:20px
     }
 
     .vote{
-
+        font-size:20px;
     }
     .vote img{
-        width:10px;
-        height:10px;
+        width: 35px;
+        height:20px;
     }
 
-    .vote:hover {
-        box-shadow: 0 0 2px 1px rgba(0, 140, 186, 0.5);
-    }
+    .comment{
 
+    }
 
 
 
