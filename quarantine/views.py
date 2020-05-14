@@ -141,7 +141,7 @@ def criarpublicacao(request, grupo_id):
     context['grupo'] = grupo
     if request.POST:
         try:
-            canpub = MembroGrupo.objects.get(grupo_id=grupo_id, account_id=request.user.id)
+            MembroGrupo.objects.get(grupo_id=grupo_id, account_id=request.user.id)
         except (KeyError, ObjectDoesNotExist):
             #Nao pode publicar neste grupo
             return HttpResponseRedirect(reverse('grupo_view', kwargs={'grupo_id': grupo_id , 'error_message': 'Nao pode publicar num grupo onde nao pertence'}))
