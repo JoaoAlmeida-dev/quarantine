@@ -84,7 +84,7 @@
 
                 <h2 class="center-align center">Membros</h2>
                 {% if grupo.membros.all %}
-                <ul class="lista center-align ">
+                <ul class="lista center-align " style="padding:10px">
                     {% for membro in grupo.membros.all %}
                     <li>
                         <a href="{% url 'perfilutilizador' membro.username %}">{{ membro.username }}</a>

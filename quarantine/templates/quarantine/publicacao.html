@@ -12,28 +12,33 @@
                 <b>{{ pub.autor }}({{ pub.pub_data }})</b>
                 <p>{{ pub.conteudo }}</p>
             </div>
-        <div class="flexside">
-            <div style="float:right"><a class="vote" href="{% url 'votaruppub' grupo.id pub.id %}?next={{ request.path }}">
-                <img src="{% static 'quarantine/images/upvote.png' %}" alt="upvote">
-            </a>
-                <label>({{ pub.karma }})</label>
-                <a class="vote" href="{% url 'votardownpub' grupo.id pub.id %}?next={{ request.path }}">
-                    <img src="{% static 'quarantine/images/downvote.png' %}" alt="downvote">
-                </a></div>
 
-        </div>
         </div>
     </div>
 
     {% if candeletepub %}
     <div class="flexside ">
-        <div class="background shadow-border">
-            <form action="{% url 'apagarpublicacao' grupo.id pub.id %}" method="get">
-                <input class="submit redback-hover" type="submit" value="Apagar Publicação">
-            </form>
-            {% if error_message %}
-            <strong>{{ error_message }}</strong>
-            {% endif %}
+        <div class="flexrow background shadow-border">
+            <div class="smallflexside center center-align" style="flex-direction:column;">
+
+                <a class="vote" href="{% url 'votaruppub' grupo.id pub.id %}?next={{ request.path }}">
+                    <img src="{% static 'quarantine/images/upvote.png' %}" alt="upvote">
+                </a>
+
+                <div><label>({{ pub.karma }})</label></div>
+
+                <a class="vote" href="{% url 'votardownpub' grupo.id pub.id %}?next={{ request.path }}">
+                    <img src="{% static 'quarantine/images/downvote.png' %}" alt="downvote">
+                </a>
+
+            </div>
+            <div class="flexmain">
+                <form action="{% url 'apagarpublicacao' grupo.id pub.id %}" method="get">
+                    <input class="submit redback-hover" type="submit" value="Apagar Publicação">
+                </form>
+                {% if error_message %}
+                <strong>{{ error_message }}</strong>
+                {% endif %}</div>
         </div>
 
     </div>

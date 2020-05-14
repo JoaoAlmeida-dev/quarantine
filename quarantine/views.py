@@ -17,7 +17,7 @@ from account.models import Account
 # ------------------------------------------------------------------------
 
 def is_admin(request, grupo_id):
-    if is_membro(request, grupo_id):
+    if request.user.is_admin or is_membro(request, grupo_id):
         if request.user.is_admin or MembroGrupo.objects.get(grupo_id=grupo_id, account=request.user).is_admin:
             return True
         else:
@@ -141,6 +141,7 @@ def apagargrupo(request, grupo_id):
 def grupo_view(request, grupo_id):
     membro = None
     admin = is_admin(request, grupo_id)
+
     try:
         grupo = get_object_or_404(Grupo, pk=grupo_id)
     except (KeyError, ObjectDoesNotExist):

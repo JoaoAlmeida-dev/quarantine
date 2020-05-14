@@ -2,19 +2,71 @@
 
 
 {% block content %}
-{% load static %}
+
+<style>
+    table{
+        border-collapse: collapse;
+        padding:10px;
+    }
+
+    th {
+        height: 50px;
+        background-color: #4CAF50;
+    }
+
+    td{
+
+    }
+    td, #customers th {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+
+
+    tr{
+        border-bottom: 1px solid #ddd;
+        padding:10px 10px;
+        text-align:left;
+        vertical-align:middle;
+    }
+    tr:hover {background-color: #ddd;}
+
+
+</style>
+
+
 <title>Contactos</title>
 
-<div class="card shadow-border">
-    <flexrow>
 
-
-
-
-    </flexrow>
-
-
-
+<div class="" style="margin-top:20px; ">
+    <table class=" center shadow-border" style="padding:10px">
+        <div style="padding:10px;">
+            <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Numero</th>
+                <th>Email</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Afonso Vale</td>
+                <td>87583</td>
+                <td>jccga@iscte-iul.com</td>
+            </tr>
+            <tr>
+                <td>David Oliveira</td>
+                <td>87494</td>
+                <td>dcoaa2@iscte-iul.pt</td>
+            </tr>
+            <tr>
+                <td>João Almeida</td>
+                <td>87583</td>
+                <td>jccga@iscte-iul.com</td>
+            </tr>
+            </tbody>
+        </div>
+    </table>
 
 </div>
 
