@@ -16,9 +16,8 @@
         </div>
     </div>
 
-    {% if candeletepub %}
-    <div class="flexside ">
-        <div class="flexrow background shadow-border smallpadding">
+    <div class="smallflexside" style="flex:0%;">
+        <div class="flexrow greyback shadow-border smallpadding">
             <div class="smallflexside center center-align " style="flex-direction:column;">
 
                 <a class="vote" href="{% url 'votaruppub' grupo.id pub.id %}?next={{ request.path }}">
@@ -32,18 +31,21 @@
                 </a>
 
             </div>
+
+            {% if candeletepub %}
             <div class="flexmain">
+
                 <form action="{% url 'apagarpublicacao' grupo.id pub.id %}" method="get">
                     <input class="submit redback-hover" type="submit" value="Apagar Publicação">
                 </form>
-                {% if error_message %}
-                <strong>{{ error_message }}</strong>
-                {% endif %}
             </div>
+            {% endif %}
+            {% if error_message %}
+            <strong>{{ error_message }}</strong>
+            {% endif %}
         </div>
 
     </div>
-    {% endif %}
 
 </div>
 
@@ -66,7 +68,7 @@
                     <div class="content flexrow" style="border:0px">{{ comentario.conteudo }}</div>
                 </div>
 
-                <div class="vote smallflexside center center-alingn">
+                <div class="greyback vote smallflexside shadow-border center center-alingn">
 
                     <div class="center center-align" style="float:right">
                         <div style="flex-direction:row">
@@ -108,7 +110,7 @@
     </div>
 
     <div class="flexside">
-        <div class="background shadow-border smallpadding">
+        <div class="greyback shadow-border smallpadding">
             <form action="{% url 'publicarcomentario' grupo.id pub.id%}?next={{ request.path }}" method="post">
                 {% csrf_token %}
                 <textarea name="conteudo" rows="10" cols="50"></textarea>

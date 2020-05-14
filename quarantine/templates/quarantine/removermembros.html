@@ -4,20 +4,34 @@
 {% block content %}
     <title>Remover Membro Grupo: {{ grupo.titulo }}</title>
 
-    <a href="{% url 'grupo_view' grupo.id %}"><h1> Grupo: {{ grupo.titulo }}</h1></a>
+    <div><a href="{% url 'grupo_view' grupo.id %}"><h1> Grupo: {{ grupo.titulo }}</h1></a>
         <p>Descrição: {{ grupo.descrição }}</p>
+    </div>
+<table class="center left-align">
+    <h1 class="center-align">Remover membro</h1>
 
-        <br><h1>Remover membro</h1></br>
-        <form action="{% url 'removermembros' grupo.id %}" method="post">
-            {% csrf_token %}
-            {% for user in users %}
 
-                <input type="checkbox" name="user" id="user{{ forloop.counter }}" value="{{ user }}" />
-                <label for="user{{ forloop.counter }}"> {{ user }}</label>
-                <br />
-            {% endfor %}
-            <input type="submit" value="RemoverMembros">
+    <form action="{% url 'removermembros' grupo.id %}" method="post">
+        {% csrf_token %}
+        {% for user in users %}
 
-        </form>
+        <tbody>
+        <tr>
+            <td><input type="checkbox" name="user" id="user{{ forloop.counter }}" value="{{ user }}"/>
+                <label for="user{{ forloop.counter }}"> {{ user }}</label></td>
+        </tr>
+        </tbody>
+
+        {% endfor %}
+        <tbody>
+        <tr>
+            <td>
+                <input type="submit" value="RemoverMembros">
+            </td>
+        </tr>
+        </tbody>
+
+    </form>
+</table>
 
 {% endblock content %}
