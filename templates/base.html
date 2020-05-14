@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,19 +9,19 @@
 
         <a class="greenback padding-hover" style="widht:15%" href="{% url 'menu' %}"> Quarantine</a>
         {% if request.user.is_authenticated %}
-        <a class="padding-hover greyback-hover" href= "{% url 'gruposutilizador' %}">Seus grupos</a>
-        <a class="padding-hover greyback-hover" href= "{% url 'grupospublicos' %}">Grupos públicos</a>
+        <a class="padding-hover greyback-hover" href="{% url 'gruposutilizador' %}">Seus grupos</a>
+        <a class="padding-hover greyback-hover" href="{% url 'grupospublicos' %}">Grupos públicos</a>
         <div style="float:right" class="dropdown">
-            <button  class="greenback-hover dropbtn" style="font-size:">{{request.user.username}}
+            <button class="greenback-hover dropbtn" style="font-size:">{{request.user.username}}
             </button>
             <div class="dropdown-content">
-                    <a class="greenback-hover" href="{% url 'perfilutilizador' request.user.username %}">Profile</a>
-                    <a class="redback-hover" href="{% url 'logout_view' %}"> Logout</a>
+                <a class="greenback-hover" href="{% url 'perfilutilizador' request.user.username %}">Profile</a>
+                <a class="redback-hover" href="{% url 'logout_view' %}"> Logout</a>
             </div>
         </div>
         {% else %}
-            <a class="greenback-hover" style="float:right" href="{% url 'login_view' %}"> Login</a>
-            <a class="greenback-hover" style="float:right" href="{% url 'registo_view' %}"> Registo</a>
+        <a class="greenback-hover" style="float:right" href="{% url 'login_view' %}"> Login</a>
+        <a class="greenback-hover" style="float:right" href="{% url 'registo_view' %}"> Registo</a>
         {% endif %}
     </div>
 
@@ -31,19 +30,23 @@
 <body>
 {% if request.user.is_authenticated %}
 
-     <div class="sidenews">
+<div class="sidenews">
 
-        <script src="//rss.bloople.net/?url=https%3A%2F%2Fwww.google.pt%2Falerts%2Ffeeds%2F00537780355070238321%2F7547967673187040234&showtitle=false&type=js"></script>
+    <script src="//rss.bloople.net/?url=https%3A%2F%2Fwww.google.pt%2Falerts%2Ffeeds%2F00537780355070238321%2F7547967673187040234&showtitle=false&type=js"></script>
+    <!--        <script src="http://rss2js.geckotribe.com/jssample.php?e=UTF-8&i=5&s=2&f=https%3A%2F%2Fwww.google.pt%2Falerts%2Ffeeds%2F00537780355070238321%2F7547967673187040234"></script>-->
+    <!--<script language="JavaScript" src="http://www.vanderbilt.edu/asset/feed/feed2js.php?src=https%3A%2F%2Fwww.google.pt%2Falerts%2Ffeeds%2F00537780355070238321%2F16284953473229416866&amp;num=15&amp;date=y&amp;html=a" type="text/javascript"></script>-->
+    <!--<script language='Javascript' src='http://www.rss2java.com/feed.php?number=0&date=1&desc=2&html=1&new=1&url=https%3A%2F%2Fwww.google.pt%2Falerts%2Ffeeds%2F00537780355070238321%2F16284953473229416866'></script>-->
 
-    </div>
+
+</div>
 {% endif %}
 {% if request.user.is_authenticated %}
-    <div style="margin-left:15%;padding:1px 16px;  ">
-{% else %}
+<div style="margin-left:15%;padding:1px 16px;  ">
+    {% else %}
     <div style="padding:0px 0px;  ">
-{% endif %}
-         {% block content %}
-         {% endblock content %}
+        {% endif %}
+        {% block content %}
+        {% endblock content %}
     </div>
 
 

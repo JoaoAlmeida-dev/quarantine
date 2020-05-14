@@ -2,31 +2,67 @@
 
 
 {% block content %}
-    <title>Criar Grupo</title>
-    <h1>Criar Grupo</h1>
-        <form action="{% url 'criargrupo' %}" method="post">
-            {% csrf_token %}
-            <label for="1"><b>Titulo:</b></label>
+<title>Criar Grupo</title>
+<table class="center left-align" style="margin-top:10px;border-collapse:collapse">
+
+    <h1 class="center-align">Criar Grupo</h1>
+    <form action="{% url 'criargrupo' %}" method="post">
+        {% csrf_token %}
+        <tbody>
+
+        <tr>
+            <td>
+                <label for="1">Titulo:</label>
                 <input type="text" id="1" name="titulo">
-            <br>
-            <label for="2"><b>Descrição:</b></label>
+            </td>
+        </tr>
+
+        <tr>
+            <td>
+                <label for="2">Descrição:</label>
                 <input type="text" id="2" name="desc">
-            <br>
-            <br>
-            <b>Adicionar utilizadores:</b>
-            <br>
-            {% for user in users %}
-                <input type="checkbox" name="user" id="user{{ forloop.counter }}" value="{{ user.username }}" />
-                <label for="user{{ forloop.counter }}"> {{ user.username }}</label>
-                <br />
-            {% endfor %}
-            <p>
-                <label for="visibilidade">Visibilidade:</label>
+            </td>
+        </tr>
+        </tbody>
+        <tbody>
+        <tr>
+            <td>
+                <h4 class="center-align">Adicionar utilizadores:</h4>
+            </td>
+        </tr>
+        </tbody>
+        <tbody style="max-height:100px; overflow:scroll;">
+        {% for user in users %}
+        <tr style="border-bottom:1px solid black;">
+            <td style="text-align: left; padding-bottom:10px">
+                <input class="css-checkbox" type="checkbox" name="user" id="user{{ forloop.counter }}"
+                       value="{{ user.username }}"/>
+                <label style="margin:auto;" for="user{{ forloop.counter }}"> {{ user.username }}</label>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+
+        <tr style="margin-top:10px">
+            <td>
+                <label  for="visibilidade">Visibilidade:</label>
                 <select id="visibilidade" name="visibilidade">
                     <option value="publico">Público</option>
                     <option value="privado">Privado</option>
                 </select>
-            </p>
-            <input class="submit" type="submit" value="Criar Grupo">
-        </form>
+            </td>
+        </tr>
+
+        <tbody>
+        <tr>
+            <td>
+                <input class="submit" type="submit" value="Criar Grupo">
+
+            </td>
+        </tr>
+        </tbody>
+
+    </form>
+</table>
+
 {% endblock content %}

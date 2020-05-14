@@ -17,9 +17,20 @@
 
 
 <div>
-    <h1>GRUPOS</h1>
+    <div class="flexrow">
+        <div class="flexmain">
+            <h1>GRUPOS</h1>
+        </div>
+        <div class="flexside">
+            <form action="{% url 'criargrupo' %}" method="get">
+                <input class="submit greenback-hover" type="submit" value="Criar Grupo">
+            </form>
+        </div>
+    </div>
+
     {% if grupos %}
-    <div class="lista">
+
+    <div class="lista center" style="width:50%;">
         {% for grupo in grupos %}
         <li>
             <a href="{% url 'grupo_view' grupo.id %}">
@@ -31,9 +42,7 @@
     {% else %}
     <p>Nao participa em nenhum grupo, mas pode aceder aos seguintes grupos públicos:</p>
     {% endif %}
-    <form action="{% url 'criargrupo' %}" method="get">
-        <input class="submit greenback-hover" type="submit" value="Criar Grupo">
-    </form>
+
 </div>
 
 {%  endif %}
