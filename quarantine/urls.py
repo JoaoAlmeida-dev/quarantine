@@ -20,7 +20,7 @@ urlpatterns = [
 
     # ----------------------------------------------------------------------Footer
     url(r'^sobre/$', views.sobre, name='sobre'),
-    url(r'^/contactos$', views.contactos, name='contactos'),
+    url(r'^contactos$', views.contactos, name='contactos'),
 
 
     # ----------------------------------------------------------------------Account
