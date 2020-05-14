@@ -126,7 +126,7 @@ def apagargrupo(request, grupo_id):
     # for membrogrupo in MembroGrupo.objects.filter(grupo_id=grupo_id, Account_id=request.user.id):
     # if membrogrupo.is_admin:
 
-    if MembroGrupo.objects.get(grupo_id=grupo_id, Account_id=request.user.id).is_admin:
+    if is_admin(request, grupo_id):
         grupo.delete()
         return HttpResponseRedirect(reverse('menu', args=()))
     else:
@@ -158,8 +158,7 @@ def grupo_view(request, grupo_id):
                           {'grupo': grupo, 'membrosgrupo': membrosgrupo, 'publicacoes': publicacoes,
                            'ismembro': ismembro, 'isadmin': admin})
         else:
-            membrosgrupo = MembroGrupo.objects.filter(grupo_id=grupo_id, account_id=request.user.id) \
-                .order_by('MembroGrupo_account__username')
+            membrosgrupo = MembroGrupo.objects.filter(grupo_id=grupo_id).order_by('MembroGrupo_account__username')
             if not admin:
                 membro = membrosgrupo.get(grupo_id=grupo_id, account=request.user)
             return render(request, 'quarantine/grupo.html',
@@ -203,7 +202,7 @@ def apagarpublicacao(request, grupo_id, pub_id):
         pub.delete()
         ismembro = is_membro(request, grupo_id)
 
-        return HttpResponseRedirect(reverse('grupo_view', kwargs={'grupo_id': grupo_id, 'ismembro': ismembro}))
+        return HttpResponseRedirect(reverse('grupo_view', kwargs={'grupo_id': grupo_id}))
 
         # return render(request, 'quarantine/grupo.html', {'grupo': grupo, 'isadmin': isadmin})
     else:
@@ -235,9 +234,7 @@ def adicionarmembros(request, grupo_id):
             mg = MembroGrupo(account=Account.objects.get(username=username), grupo=grupo, is_admin=False)
             mg.save()
 
-        ismembro = is_membro(request, grupo_id)
-
-        return HttpResponseRedirect(reverse('grupo_view', kwargs={"grupo_id": grupo_id, 'ismembro': ismembro}))
+        return HttpResponseRedirect(reverse('grupo_view', kwargs={"grupo_id": grupo_id}))
     else:
         membros = MembroGrupo.objects.filter(grupo_id=grupo_id)
         users = Account.objects.exclude(id=request.user.id)
@@ -265,10 +262,7 @@ def removermembros(request, grupo_id):
         for username in request.POST.getlist('user'):
             mg = MembroGrupo.objects.get(account=Account.objects.get(username=username), grupo=grupo)
             mg.delete()
-        ismembro = is_membro(request, grupo_id)
-        isadmin = is_admin(request, grupo_id)
-        return HttpResponseRedirect(
-            reverse('grupo_view', kwargs={'grupo_id': grupo_id, 'ismembro': ismembro, 'isadmin': isadmin}))
+        return HttpResponseRedirect(reverse('grupo_view', kwargs={'grupo_id': grupo_id}))
     else:
         users = grupo.membros.all().exclude(id=request.user.id)
 
