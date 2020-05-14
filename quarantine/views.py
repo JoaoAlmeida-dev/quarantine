@@ -9,6 +9,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import logout
 from django.db.models import Q, Exists
 
+from django.core.exceptions import ObjectDoesNotExist
 from account.models import Account
 
 
@@ -94,7 +95,8 @@ def apagargrupo(request, grupo_id):
         grupo.delete()
         return HttpResponseRedirect(reverse('menu', args=()))
     else:
-        return render(request, 'quarantine/grupo.html', {'grupo': grupo, 'error_message': "Não é admin do grupo!!"})
+        HttpResponseRedirect(reverse('menu', kwargs={'grupo': grupo, 'error_message': "Não é admin do grupo!!"}))
+        #return render(request, 'quarantine/grupo.html', )
     # if grupo.membrogrupo_set.get(id=request.user.id, Account_id=request.user.id).is_admin:
 
 
@@ -106,21 +108,31 @@ def grupo_view(request, grupo_id):
     admin = isadmin(request, grupo_id)
     try:
         grupo = get_object_or_404(Grupo, pk=grupo_id)
-    except:
+    except (KeyError, ObjectDoesNotExist):
         #Não existe grupo com esse id
         return HttpResponseRedirect(reverse('menu'))
     else:
+        publicacoes = Publicacao.objects.filter(grupo_id=grupo_id).order_by('-karma', 'titulo')
+
+        ismembro=None
+        try:
+            MembroGrupo.objects.get(grupo_id=grupo_id, account_id=request.user.id)
+        except (KeyError, ObjectDoesNotExist):
+           ismembro=False
+        else:
+           ismembro=True
+
         if grupo.publico:
             membrosgrupo = MembroGrupo.objects.filter(grupo_id=grupo_id).order_by('MembroGrupo_account__username')
             return render(request, 'quarantine/grupo.html',
-                          {'grupo': grupo, 'membrosgrupo': membrosgrupo, 'isadmin': admin})
+                          {'grupo': grupo, 'membrosgrupo': membrosgrupo, 'publicacoes': publicacoes,'ismembro': ismembro, 'isadmin': admin})
         else:
             membrosgrupo = MembroGrupo.objects.filter(grupo_id=grupo_id, account_id=request.user.id)\
                 .order_by('MembroGrupo_account__username')
             if not admin:
                 membro = membrosgrupo.get(grupo_id=grupo_id, account=request.user)
             return render(request, 'quarantine/grupo.html',
-                      {'grupo': grupo, 'membrosgrupo': membrosgrupo, 'isadmin': admin})
+                      {'grupo': grupo, 'membrosgrupo': membrosgrupo, 'publicacoes': publicacoes, 'isadmin': admin})
 
 
 def criarpublicacao(request, grupo_id):
@@ -128,15 +140,20 @@ def criarpublicacao(request, grupo_id):
     context = {}
     context['grupo'] = grupo
     if request.POST:
+        try:
+            canpub = MembroGrupo.objects.get(grupo_id=grupo_id, account_id=request.user.id)
+        except (KeyError, ObjectDoesNotExist):
+            #Nao pode publicar neste grupo
+            return HttpResponseRedirect(reverse('grupo_view', kwargs={'grupo_id': grupo_id , 'error_message': 'Nao pode publicar num grupo onde nao pertence'}))
         pub = Publicacao(pub_data=timezone.now(), titulo=request.POST['titulo'], conteudo=request.POST['conteudo'],
                          autor=request.user, grupo=grupo)
         pub.save()
-        candeletepub = MembroGrupo.objects.get(grupo_id=grupo_id,
-                                               account_id=request.user.id).is_admin or pub.autor.id == request.user.id
+        candeletepub = MembroGrupo.objects.get(grupo_id=grupo_id, account_id=request.user.id).is_admin \
+                       or pub.autor.id == request.user.id
         context['pub'] = pub
         context['candeletepub'] = candeletepub
         #return render(request, 'quarantine/publicacao.html', context)
-        return redirect('publicacao', grupo_id=grupo.id, pub_id = pub.id)
+        return redirect('publicacao', grupo_id=grupo.id, pub_id=pub.id)
     else:
         return render(request, 'quarantine/criarpublicacaopage.html', {'grupo': grupo})
 
@@ -150,8 +167,8 @@ def apagarpublicacao(request, grupo_id, pub_id):
 
     if candeletepub:
         pub.delete()
-        return grupo_view(request, grupo_id)
-        # return HttpResponseRedirect(reverse('grupo_view', args=grupo_id))
+        #return grupo_view(request, grupo_id)
+        return HttpResponseRedirect(reverse('grupo_view', kwargs={'grupo_id': grupo_id}))
         # return render(request, 'quarantine/grupo.html', {'grupo': grupo, 'isadmin': isadmin})
     else:
         return render(request, 'quarantine/publicacao.html', {'grupo': grupo, 'pub': pub, 'error_message':
@@ -218,7 +235,7 @@ def removermembros(request, grupo_id):
                                                                       })
 
 def isadmin(request, grupo_id):
-    if request.user.is_admin or MembroGrupo.objects.get(grupo_id=grupo, account=request.user).is_admin:
+    if request.user.is_admin or MembroGrupo.objects.get(grupo_id=grupo_id, account=request.user).is_admin:
         return True
     else:
         return False
@@ -285,16 +302,16 @@ def apagarcomentario(request, grupo_id, pub_id, com_id):
     pub = get_object_or_404(Publicacao, pk=pub_id)
     com = get_object_or_404(Comentario, pk=com_id)
 
-    # candeletepub = MembroGrupo.objects.get(grupo_id=grupo_id, Account_id=request.user.id).is_admin or \
-    #              pub.autor.id == request.user.id
+    candeletepub = MembroGrupo.objects.get(grupo_id=grupo_id, account_id=request.user.id).is_admin or \
+                  pub.autor.id == request.user.id
     candeletecom = MembroGrupo.objects.get(grupo_id=grupo_id, account_id=request.user.id).is_admin or \
                    com.autor.id == request.user.id
 
     if candeletecom:
         com.delete()
-        return publicacao(request, grupo_id, pub_id)
-        # return render(request, 'quarantine/publicacao.html', {'grupo': grupo, 'pub': pub, 'candeletepub': candeletepub, 'candeletecom': candeletecom})
-        # return HttpResponseRedirect(reverse('publicacao', args=(grupo_id, pub_id)))
+        #return publicacao(request, grupo_id, pub_id)
+        # return render(request, 'quarantine/publicacao.html', {'grupo': grupo, 'pub': pub, 'candeletepub': candeletepub})
+        return HttpResponseRedirect(reverse('publicacao', kwargs={'grupo_id': grupo_id, 'pub_id': pub_id}))
     else:
         return render(request, 'quarantine/publicacao.html', {'grupo': grupo,
                                                               'pub': pub, 'error_message': "Não é admin do grupo ou "

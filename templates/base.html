@@ -17,8 +17,8 @@
             <button  class="greenback-hover dropbtn" style="font-size:">{{request.user.username}}
             </button>
             <div class="dropdown-content">
-                    <a class="padding-hover greenback-hover" href="{% url 'perfilutilizador' request.user.username %}">Profile</a>
-                    <a class="padding-hover redback-hover" href="{% url 'logout_view' %}"> Logout</a>
+                    <a class=" greenback-hover" href="{% url 'perfilutilizador' request.user.username %}">Profile</a>
+                    <a class=" redback-hover" href="{% url 'logout_view' %}"> Logout</a>
             </div>
         </div>
         {% else %}

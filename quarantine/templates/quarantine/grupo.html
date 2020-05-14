@@ -21,22 +21,27 @@
         <div class="flexside">
             <div class="background shadow-border">
                 <div>
-                    <form action="{% url 'criarpublicacao' grupo.id %}" method="get">
-                        <input class="submit greenback-hover" type="submit" value="Criar publicação">
-                    </form>
-                </div>
-
-                <div>
                     <form action="{% url 'juntaragrupo' grupo.id %}" method="get">
                         <input class="submit greenback-hover shadow-border" type="submit" value="Juntar ao grupo">
                     </form>
                 </div>
+
+                {% if ismembro %}
+                <div>
+                    <form action="{% url 'criarpublicacao' grupo.id %}" method="get">
+                        <input class="submit greenback-hover shadow-border" type="submit" value="Criar publicação">
+                    </form>
+                </div>
+
 
                 <div>
                     <form action="{% url 'sairgrupo' grupo.id %}" method="get">
                         <input class="submit redback-hover shadow-border" type="submit" value="Sair do grupo">
                     </form>
                 </div>
+
+                {% endif %}
+
             </div>
 
         </div>
@@ -47,7 +52,7 @@
             <h2 style="margin:10px;">Publicações</h2>
             {% if grupo.publicacao_set.all %}
             <div>
-                {% for pub in grupo.publicacao_set.all %}
+                {% for pub in publicacoes %}
 
                 <div class="card clicable shadow-border"
                      onclick="location.href='{% url 'publicacao' grupo.id pub.id %}'">
@@ -93,18 +98,18 @@
                 {% if isadmin %}
                 <div>
                     <form action="{% url 'adicionarmembros' grupo.id %}" method="get">
-                        <input class="submit greenback-hover" type="submit" value="Adicionar membro">
+                        <input class="submit greenback-hover shadow-border" type="submit" value="Adicionar membro">
                     </form>
                 </div>
                 <div>
                     <form action="{% url 'apagargrupo' grupo.id %}" method="get">
-                        <input class="submit redback-hover" type="submit" value="Apagar Grupo">
+                        <input class="submit redback-hover shadow-border" type="submit" value="Apagar Grupo">
                     </form>
                 </div>
 
                 <div>
                     <form action="{% url 'removermembros' grupo.id %}" method="get">
-                        <input class="submit redback-hover" type="submit" value="Remover membro">
+                        <input class="submit redback-hover shadow-border" type="submit" value="Remover membro">
                     </form>
                 </div>
                 {% endif %}

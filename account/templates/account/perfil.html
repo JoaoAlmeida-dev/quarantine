@@ -6,21 +6,23 @@
 
 <div class="center" style="width:50%;">
     <div class="card center" >
-        <h1 class="center-align">{{account.username}}</h1>
-        <img class="profilepic " src={{account.fotoPerfil}} alt="profile pic">
-        <p style="font-size:25px">Username: {{account.username}}</p>
-        <p style="font-size:25px">E-mail: {{account.email}}</p>
+        <div class="top"><h1 class="center-align">{{account.username}}</h1>
+            <img class="profilepic " src={{account.fotoPerfil}} alt="profile pic">
+        </div>
 
+        <div class="content">
+            <p style="font-size:25px">Username: {{account.username}}</p>
+            <p style="font-size:25px">E-mail: {{account.email}}</p>
+            {% if request.user.id == account.id %}
+            <form action="{% url 'account_settings' request.user.username %}" method="get">
+                <input class="greenback-hover" type="submit" value="Atualizar conta">
+            </form>
+            <form action="{% url 'password_change' request.user.username %}" method="get">
+                <input class="greenback-hover" type="submit" value="Alterar Password">
+            </form>
 
-        {% if request.user.id == account.id %}
-        <form action="{% url 'account_settings' request.user.username %}" method="get">
-            <input class="greenback-hover" type="submit" value="Atualizar conta">
-        </form>
-        <form action="{% url 'password_change' request.user.username %}" method="get">
-            <input class="greenback-hover" type="submit" value="Alterar Password">
-        </form>
-
-        {% endif %}
+            {% endif %}
+        </div>
 
     </div>
 </div>
